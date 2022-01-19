@@ -4,7 +4,7 @@
   "package": "net.advancedautopilot.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [],
-  "client": ["AdvancedAutopilotMixin"],
+  "client": ["HudMixin"],
   "injectors": {
     "defaultRequire": 1
   }

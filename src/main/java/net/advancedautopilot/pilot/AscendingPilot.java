@@ -1,6 +1,7 @@
-package net.advancedautopilot.pilots;
+package net.advancedautopilot.pilot;
 
 import net.advancedautopilot.AdvancedAutopilotConfig;
+import net.advancedautopilot.FlightMonitor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
@@ -13,26 +14,26 @@ public class AscendingPilot extends Pilot {
 
     private static final double MAX_FIREWORK_VERTICAL_SPEED = 15d;
 
-    @Override
-    public TickResult onScreenTick(MinecraftClient client, PlayerEntity player, AdvancedAutopilotConfig config) {
-        return TickResult.CONTINUE;
+    public AscendingPilot(AdvancedAutopilotConfig config, FlightMonitor monitor) {
+        super(config, monitor);
     }
 
     @Override
-    public TickResult onClientTick(MinecraftClient client, PlayerEntity player, AdvancedAutopilotConfig config) {
+    public TickResult onClientTick(MinecraftClient client, PlayerEntity player) {
         if (!player.isFallFlying()) {
             client.options.keyJump.setPressed(!client.options.keyJump.isPressed());
             return TickResult.CONTINUE; // Wait for next tick before continuing
         }
 
-        player.setPitch(-90f); // Look directly upwards
+        if (monitor.getHeight() >= config.ascentHeight) {
+            LOGGER.info("Yielded because player reached ascent height");
+            return TickResult.YIELD;
+        }
 
-        updateVelocity(player, CLIENT_TICKS_PER_SECOND);
+        Vec3d velocity = monitor.getVelocity();
         if (PilotHelper.isHoldingFirework(player)) {
-            Vec3d velocity = getVelocity();
-            if (player.getPitch() == -90f
-                    && velocity.getY() < 0
-                    && velocity.getY() >= -MAX_FIREWORK_VERTICAL_SPEED) {
+            if (velocity.getY() >= -MAX_FIREWORK_VERTICAL_SPEED && velocity.getY() < 0) {
+                player.setPitch(-90f); // Look upwards
                 client.options.keyUse.setPressed(true);
             } else {
                 client.options.keyUse.setPressed(false);
@@ -45,15 +46,7 @@ public class AscendingPilot extends Pilot {
         return TickResult.CONTINUE;
     }
 
-    @Override
-    public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player,
-            AdvancedAutopilotConfig config) {
-        updateDistanceToGround(player);
-        if (getDistanceToGround() >= config.ascentHeight) {
-            LOGGER.info("Yielded because player reached ascent height");
-            return TickResult.YIELD;
-        }
-
+    public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player) {
         return TickResult.CONTINUE;
     }
 

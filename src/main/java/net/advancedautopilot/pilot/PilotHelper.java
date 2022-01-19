@@ -1,4 +1,4 @@
-package net.advancedautopilot.pilots;
+package net.advancedautopilot.pilot;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

@@ -1,4 +1,4 @@
-package net.advancedautopilot.pilots;
+package net.advancedautopilot.pilot;
 
 public enum TickResult {
     CONTINUE,

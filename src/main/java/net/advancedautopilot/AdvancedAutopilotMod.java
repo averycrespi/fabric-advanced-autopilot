@@ -1,8 +1,9 @@
 package net.advancedautopilot;
 
-import net.advancedautopilot.pilots.AscendingPilot;
-import net.advancedautopilot.pilots.Pilot;
-import net.advancedautopilot.pilots.TickResult;
+import net.advancedautopilot.pilot.AscendingPilot;
+import net.advancedautopilot.pilot.GlidingPilot;
+import net.advancedautopilot.pilot.Pilot;
+import net.advancedautopilot.pilot.TickResult;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -20,8 +21,13 @@ public class AdvancedAutopilotMod implements ModInitializer {
 
 	public static final Logger LOGGER = LogManager.getLogger("advancedautopilot");
 
-	private MinecraftClient client = null;
-	private AdvancedAutopilotConfig config = null;
+	public static AdvancedAutopilotMod instance = null;
+
+	public MinecraftClient client = null;
+	public AdvancedAutopilotConfig config = null;
+	public FlightMonitor monitor = null;
+	public HudManager hudManager = null;
+
 	private Pilot pilot = null;
 	private KeyBinding keyBinding = null;
 	private boolean keyBindingWasPressedOnPreviousTick = false;
@@ -29,12 +35,22 @@ public class AdvancedAutopilotMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		AdvancedAutopilotMod.instance = this;
+
 		if (client == null) {
 			client = MinecraftClient.getInstance();
 		}
 
 		if (config == null) {
 			config = new AdvancedAutopilotConfig();
+		}
+
+		if (monitor == null) {
+			monitor = new FlightMonitor();
+		}
+
+		if (hudManager == null) {
+			hudManager = new HudManager(monitor);
 		}
 
 		keyBinding = new KeyBinding(
@@ -51,21 +67,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
 	}
 
 	private void onScreenTick() {
-		if (client.isPaused() && client.isInSingleplayer()) {
-			return;
-		}
-
-		PlayerEntity player = client.player;
-		if (player == null) {
-			return;
-		}
-
-		if (pilot != null) {
-			if (pilot.onScreenTick(client, player, config) == TickResult.YIELD) {
-				pilot.reset(client, player);
-				pilot = null;
-			}
-		}
+		// TODO: implement
 	}
 
 	private void onClientTick() {
@@ -80,37 +82,41 @@ public class AdvancedAutopilotMod implements ModInitializer {
 			return;
 		}
 
-		if (pilot != null) {
-			if (pilot.onClientTick(client, player, config) == TickResult.YIELD) {
-				pilot.reset(client, player);
-				pilot = null;
-			}
+		monitor.onClientTick(client, player);
+
+		if (pilot != null && pilot.onClientTick(client, player) == TickResult.YIELD) {
+			handlePilotYield(player);
 		}
 
 		if (ticksSincePreviousInfrequentTick >= 20) {
-			onInfrequentClientTick(player);
+			monitor.onInfrequentClientTick(client, player);
+			hudManager.onInfrequentClientTick(pilot);
+			if (pilot != null && pilot.onInfrequentClientTick(client, player) == TickResult.YIELD) {
+				handlePilotYield(player);
+			}
 			ticksSincePreviousInfrequentTick = 0;
 		}
 
 		if (!keyBindingWasPressedOnPreviousTick && keyBinding.isPressed()) {
-			handleKeyBindingPress(client, player);
+			handleKeyBindingPress(player);
 		}
 		keyBindingWasPressedOnPreviousTick = keyBinding.isPressed();
 	}
 
-	private void onInfrequentClientTick(PlayerEntity player) {
-		if (pilot != null) {
-			if (pilot.onInfrequentClientTick(client, player, config) == TickResult.YIELD) {
-				pilot.reset(client, player);
-				pilot = null;
-			}
+	private void handlePilotYield(PlayerEntity player) {
+		pilot.reset(client, player);
+		pilot = null;
+
+		double height = monitor.getHeight();
+		if (height >= config.minHeightToStartGliding) {
+			pilot = new GlidingPilot(config, monitor);
 		}
 	}
 
-	private void handleKeyBindingPress(MinecraftClient client, PlayerEntity player) {
+	private void handleKeyBindingPress(PlayerEntity player) {
 		LOGGER.info("Keybinding was pressed");
 		if (pilot == null) {
-			pilot = new AscendingPilot();
+			pilot = new AscendingPilot(config, monitor);
 		} else {
 			pilot.reset(client, player);
 			pilot = null;

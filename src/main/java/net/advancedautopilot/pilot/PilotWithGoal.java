@@ -1,6 +1,7 @@
-package net.advancedautopilot.pilots;
+package net.advancedautopilot.pilot;
 
-import net.minecraft.client.MinecraftClient;
+import net.advancedautopilot.AdvancedAutopilotConfig;
+import net.advancedautopilot.FlightMonitor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -16,10 +17,12 @@ public abstract class PilotWithGoal extends Pilot {
 
     private Vec3d goalPos = null;
 
-    @Override
-    public void reset(MinecraftClient client, PlayerEntity player) {
-        super.reset(client, player);
-        goalPos = null;
+    public PilotWithGoal(AdvancedAutopilotConfig config, FlightMonitor monitor) {
+        super(config, monitor);
+    }
+
+    public boolean hasGoal() {
+        return goalPos != null;
     }
 
     public Vec3d getGoalPos() {
@@ -28,6 +31,17 @@ public abstract class PilotWithGoal extends Pilot {
 
     public void setGoalPos(Vec3d newGoalPos) {
         goalPos = newGoalPos;
+    }
+
+    public double getDistanceToGoal(PlayerEntity player) {
+        if (goalPos == null) {
+            return -1d;
+        } else {
+            Vec3d playerPos = player.getPos();
+            return new Vec3d(goalPos.getX(), 0, goalPos.getZ())
+                    .subtract(new Vec3d(playerPos.getX(), 0, playerPos.getY()))
+                    .length();
+        }
     }
 
     public void lookTowardsGoal(PlayerEntity player) {

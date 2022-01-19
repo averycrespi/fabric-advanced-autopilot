@@ -1,4 +1,8 @@
 {
   "key.advancedautopilot.toggle": "Toggle autopilot / Open settings",
+  "text.advancedautopilot.height": "Height : %s m",
+  "text.advancedautopilot.pilot": "Pilot : %s",
+  "text.advancedautopilot.position": "Position: %s / %s / %s",
+  "text.advancedautopilot.speed": "Speed : %s m/s",
   "title.advancedautopilot": "Advanced Autopilot"
 }
