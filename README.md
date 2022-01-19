@@ -1,9 +1,19 @@
-# Fabric Example Mod
+# Advanced Autopilot
 
-## Setup
+> Advanced, automatic elytra flight.
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+## Requirements
+
+- Minecraft 1.18
+- [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
+- [Cloth Config API](https://www.curseforge.com/minecraft/mc-mods/cloth-config)
+- [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu)
+
+## Credits
+
+- This project was bootstrapped from the [Fabric Example Mod](https://github.com/FabricMC/fabric-example-mod) template
+- This project is based on TheMegax's [Elytra AutoPilot](https://github.com/TheMegax/fabric-elytra-autopilot), which was forked from Simon Lourson's [Elytra Auto Flight](https://github.com/simonlourson/fabric-elytra-auto-flight)
 
 ## License
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+This project is available under the CC0 license.
