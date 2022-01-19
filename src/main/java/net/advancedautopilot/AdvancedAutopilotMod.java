@@ -16,6 +16,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
+import java.io.ObjectInputFilter.Config;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -116,21 +118,53 @@ public class AdvancedAutopilotMod implements ModInitializer {
 			handlePilotYield(player);
 		}
 
+		if (ConfigManager.currentConfig.swapElytra || ConfigManager.currentConfig.emergencyLanding) {
+			monitorElytraDurability(player);
+		}
+	}
+
+	private void monitorElytraDurability(PlayerEntity player) {
 		if (pilot != null && PilotHelper.hasElytraEquipped(player)) {
 			int elytraDurability = PilotHelper.getElytraDurability(player);
-			if (ConfigManager.currentConfig.swapElytra && elytraDurability < 5) {
-				PilotHelper.swapElytra(client, player);
-			} else if (elytraDurability < ConfigManager.currentConfig.emergencyLandingDurability) {
-				pilot.cleanup(client, player);
-				pilot = new LandingPilot(monitor);
+
+			if (ConfigManager.currentConfig.swapElytra && ConfigManager.currentConfig.emergencyLanding) {
+				if (PilotHelper.canSwapElytra(player)) {
+					if (elytraDurability <= ConfigManager.currentConfig.maxElytraSwapDurability) {
+						if (!PilotHelper.swapElytra(client, player)) {
+							LOGGER.warn("Failed to swap elytra despite pre-check; attempting dangerous landing");
+							performEmergencyLanding(player);
+						}
+					}
+				} else if (elytraDurability <= ConfigManager.currentConfig.maxEmergencyLandingDurability) {
+					performEmergencyLanding(player);
+				}
+			} else if (ConfigManager.currentConfig.swapElytra) {
+				if (elytraDurability <= ConfigManager.currentConfig.maxElytraSwapDurability) {
+					PilotHelper.swapElytra(client, player); // Ignore swap failure
+				}
+			} else if (ConfigManager.currentConfig.emergencyLanding) {
+				if (elytraDurability <= ConfigManager.currentConfig.maxEmergencyLandingDurability) {
+					performEmergencyLanding(player);
+				}
 			}
 		}
+	}
 
+	private void performEmergencyLanding(PlayerEntity player) {
+		if (pilot != null) {
+			pilot.cleanup(client, player);
+		}
+
+		player.sendMessage(
+				new TranslatableText("text.advancedautopilot.emergencyLanding").formatted(Formatting.RED),
+				true);
+		pilot = new LandingPilot(monitor);
 	}
 
 	private void handlePilotYield(PlayerEntity player) {
-		pilot.cleanup(client, player);
-		pilot = null;
+		if (pilot != null) {
+			pilot.cleanup(client, player);
+		}
 
 		if (player.isFallFlying()) {
 			double height = monitor.getHeight();
@@ -141,6 +175,8 @@ public class AdvancedAutopilotMod implements ModInitializer {
 			} else {
 				pilot = new LandingPilot(monitor);
 			}
+		} else {
+			pilot = null;
 		}
 	}
 
@@ -161,8 +197,6 @@ public class AdvancedAutopilotMod implements ModInitializer {
 				pilot.cleanup(client, player);
 				pilot = null;
 			}
-		} else {
-			client.setScreen(ConfigManager.createConfigScreen(client.currentScreen));
 		}
 	}
 }

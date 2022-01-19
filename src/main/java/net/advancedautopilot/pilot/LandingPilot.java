@@ -23,7 +23,7 @@ public class LandingPilot extends Pilot {
             return TickResult.YIELD;
         }
 
-        player.setPitch(30f); // Slightly downwards
+        player.setPitch((float) MathHelper.wrapDegrees(ConfigManager.currentConfig.landingPitch));
 
         return TickResult.CONTINUE;
     }
@@ -33,7 +33,7 @@ public class LandingPilot extends Pilot {
         double speed = monitor.getSpeed();
 
         if (speed >= ConfigManager.currentConfig.maxLandingSpeed) {
-            float oppositeYaw = MathHelper.wrapDegrees(player.getYaw() + 180f);
+            float oppositeYaw = (float) MathHelper.wrapDegrees(player.getYaw() + 180f);
             player.setYaw(oppositeYaw); // Turn around
         }
 

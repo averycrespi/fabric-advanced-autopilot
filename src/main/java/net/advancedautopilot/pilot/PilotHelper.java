@@ -1,5 +1,6 @@
 package net.advancedautopilot.pilot;
 
+import net.advancedautopilot.ConfigManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -35,25 +36,26 @@ public class PilotHelper {
                 - player.getInventory().armor.get(2).getDamage();
     }
 
-    public static boolean swapElytra(MinecraftClient client, PlayerEntity player) {
-        // Optimization: find the first elytra with sufficient durability
-        ItemStack newElytra = null;
-        int minDurability = 10;
+    public static boolean canSwapElytra(PlayerEntity player) {
+        // Optimization: look for the first viable replacement, not the best
         for (ItemStack itemStack : player.getInventory().main) {
             if (itemStack.getItem().getTranslationKey().equals(ELYTRA_KEY)) {
                 int itemDurability = itemStack.getMaxDamage() - itemStack.getDamage();
-                if (itemDurability >= minDurability) {
-                    newElytra = itemStack;
-                    break;
+                if (itemDurability >= ConfigManager.currentConfig.minSpeedBeforePullingDown) {
+                    return true;
                 }
             }
         }
+        return false;
+    }
 
-        if (newElytra != null) {
+    public static boolean swapElytra(MinecraftClient client, PlayerEntity player) {
+        ItemStack replacementElytra = findReplacementElytra(player);
+        if (replacementElytra != null) {
             client.interactionManager.clickSlot(
                     player.playerScreenHandler.syncId,
                     CHEST_SLOT,
-                    player.getInventory().main.indexOf(newElytra),
+                    player.getInventory().main.indexOf(replacementElytra),
                     SlotActionType.SWAP,
                     player);
             player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA, 1.0F, 1.0F);
@@ -63,5 +65,21 @@ public class PilotHelper {
         } else {
             return false;
         }
+    }
+
+    private static ItemStack findReplacementElytra(PlayerEntity player) {
+        ItemStack replacementElytra = null;
+        int bestDurability = ConfigManager.currentConfig.minElytraSwapReplacementDurability;
+        for (ItemStack itemStack : player.getInventory().main) {
+            if (itemStack.getItem().getTranslationKey().equals(ELYTRA_KEY)) {
+                int itemDurability = itemStack.getMaxDamage() - itemStack.getDamage();
+                if (itemDurability >= bestDurability) {
+                    replacementElytra = itemStack;
+                    bestDurability = itemDurability;
+                    break;
+                }
+            }
+        }
+        return replacementElytra;
     }
 }
