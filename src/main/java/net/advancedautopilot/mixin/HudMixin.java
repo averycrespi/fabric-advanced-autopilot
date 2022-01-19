@@ -20,18 +20,17 @@ public class HudMixin {
     public void renderPost(MatrixStack matrixStack, float f, CallbackInfo ci) {
         if (!ci.isCancelled()) {
             AdvancedAutopilotMod mod = AdvancedAutopilotMod.instance;
-            if (mod == null) {
-                return;
-            }
-
-            if (mod.client.options.debugEnabled) {
+            if (mod == null
+                    || mod.client.options.debugEnabled
+                    || mod.client.player == null
+                    || !mod.client.player.isFallFlying()) {
                 return;
             }
 
             float stringX = ConfigManager.currentConfig.guiX;
             float stringY = ConfigManager.currentConfig.guiY;
 
-            ArrayList<Text> lines = mod.hudManager.getLines();
+            ArrayList<Text> lines = mod.formatter.getLines();
             for (int i = 0; i < lines.size(); i++) {
                 mod.client.textRenderer.drawWithShadow(
                         matrixStack,

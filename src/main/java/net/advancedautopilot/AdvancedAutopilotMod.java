@@ -2,6 +2,7 @@ package net.advancedautopilot;
 
 import net.advancedautopilot.pilot.AscendingPilot;
 import net.advancedautopilot.pilot.GlidingPilot;
+import net.advancedautopilot.pilot.LandingPilot;
 import net.advancedautopilot.pilot.Pilot;
 import net.advancedautopilot.pilot.TickResult;
 import net.fabricmc.api.ModInitializer;
@@ -11,6 +12,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,7 +27,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
 
 	public MinecraftClient client = null;
 	public FlightMonitor monitor = null;
-	public HudManager hudManager = null;
+	public HudFormatter formatter = null;
 
 	private Pilot pilot = null;
 	private KeyBinding keyBinding = null;
@@ -43,8 +46,8 @@ public class AdvancedAutopilotMod implements ModInitializer {
 			monitor = new FlightMonitor();
 		}
 
-		if (hudManager == null) {
-			hudManager = new HudManager(monitor);
+		if (formatter == null) {
+			formatter = new HudFormatter(monitor);
 		}
 
 		keyBinding = new KeyBinding(
@@ -57,8 +60,22 @@ public class AdvancedAutopilotMod implements ModInitializer {
 		ClientTickEvents.END_CLIENT_TICK.register(e -> this.onClientTick());
 
 		ConfigManager.initialize();
+		CommandManager.register(AdvancedAutopilotMod.instance, client);
 
 		LOGGER.info("Initialized Advanced Autopilot mod");
+	}
+
+	public void land() {
+		PlayerEntity player = client.player;
+		if (player == null) {
+			return;
+		}
+
+		if (!player.isFallFlying()) {
+			return;
+		}
+
+		pilot = new LandingPilot(monitor);
 	}
 
 	private void onClientTick() {
@@ -81,7 +98,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
 
 		if (ticksSincePreviousInfrequentTick >= 20) {
 			monitor.onInfrequentClientTick(client, player);
-			hudManager.onInfrequentClientTick(pilot);
+			formatter.onInfrequentClientTick(pilot);
 			if (pilot != null && pilot.onInfrequentClientTick(client, player) == TickResult.YIELD) {
 				handlePilotYield(player);
 			}
@@ -98,9 +115,11 @@ public class AdvancedAutopilotMod implements ModInitializer {
 		pilot.reset(client, player);
 		pilot = null;
 
-		double height = monitor.getHeight();
-		if (height >= ConfigManager.currentConfig.minHeightToStartGliding) {
-			pilot = new GlidingPilot(monitor);
+		if (player.isFallFlying()) {
+			double height = monitor.getHeight();
+			if (height >= ConfigManager.currentConfig.minHeightToStartGliding) {
+				pilot = new GlidingPilot(monitor);
+			}
 		}
 	}
 
@@ -108,8 +127,15 @@ public class AdvancedAutopilotMod implements ModInitializer {
 		LOGGER.info("Keybinding was pressed");
 		if (player.isFallFlying()) {
 			if (pilot == null) {
+				player.sendMessage(
+						new TranslatableText("text.advancedautopilot.autopilot.engaged").formatted(Formatting.GREEN),
+						true);
 				pilot = new AscendingPilot(monitor);
 			} else {
+				player.sendMessage(
+						new TranslatableText("text.advancedautopilot.autopilot.disengaged")
+								.formatted(Formatting.YELLOW),
+						true);
 				pilot.reset(client, player);
 				pilot = null;
 			}

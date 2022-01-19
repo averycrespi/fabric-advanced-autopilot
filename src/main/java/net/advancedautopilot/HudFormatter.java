@@ -9,14 +9,14 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Vec3d;
 
 /**
- * Manages the contents of the HUD.
+ * Formats the contents of the HUD.
  */
-public class HudManager {
+public class HudFormatter {
 
     private FlightMonitor monitor = null;
     private ArrayList<Text> lines = null;
 
-    public HudManager(FlightMonitor monitor) {
+    public HudFormatter(FlightMonitor monitor) {
         this.monitor = monitor;
         lines = new ArrayList<>();
     }

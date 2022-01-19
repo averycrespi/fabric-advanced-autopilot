@@ -7,6 +7,8 @@ public class AdvancedAutopilotConfig {
 
     public double ascentHeight = 240d;
 
+    public double maxLandingSpeed = 5d;
+
     public double minHeightToStartGliding = 180d;
     public double maxHeightWhileGliding = 360d;
 

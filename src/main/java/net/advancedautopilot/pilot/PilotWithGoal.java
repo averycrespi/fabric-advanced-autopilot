@@ -24,6 +24,10 @@ public abstract class PilotWithGoal extends Pilot {
         return goalPos != null;
     }
 
+    public void clearGoal() {
+        goalPos = null;
+    }
+
     public Vec3d getGoalPos() {
         return goalPos;
     }
