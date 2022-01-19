@@ -45,7 +45,8 @@ public class ConfigManager {
                 .getOrCreateCategory(new TranslatableText("category.advancedautopilot.general"));
 
         generalCategory.addEntry(entryBuilder
-                .startBooleanToggle(new TranslatableText("option.advancedautopilot.swapElytra"), config.swapElytra)
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.swapElytra"),
+                        config.swapElytra)
                 .setDefaultValue(true)
                 .setSaveConsumer(newValue -> config.swapElytra = newValue)
                 .build());
@@ -61,13 +62,15 @@ public class ConfigManager {
                 .build());
 
         generalCategory.addEntry(entryBuilder
-                .startIntField(new TranslatableText("option.advancedautopilot.minElytraSwapReplacementDurability"),
+                .startIntField(new TranslatableText(
+                        "option.advancedautopilot.minElytraSwapReplacementDurability"),
                         config.minElytraSwapReplacementDurability)
                 .setDefaultValue(50)
                 .setMin(Math.max(config.maxElytraSwapDurability + 1, ELYTRA_MIN_DURABILITY + 1))
                 .setMax(ELYTRA_MAX_DURABILITY) // Allow user to restrict swap to fully-repaired elytra
                 .setSaveConsumer(newValue -> config.minElytraSwapReplacementDurability = newValue)
-                .setTooltip(new TranslatableText("tooltip.advancedautopilot.minElytraSwapReplacementDurability"))
+                .setTooltip(new TranslatableText(
+                        "tooltip.advancedautopilot.minElytraSwapReplacementDurability"))
                 .build());
 
         generalCategory.addEntry(entryBuilder
@@ -79,20 +82,29 @@ public class ConfigManager {
                 .build());
 
         generalCategory.addEntry(entryBuilder
-                .startIntField(new TranslatableText("option.advancedautopilot.maxEmergencyLandingDurability"),
+                .startIntField(new TranslatableText(
+                        "option.advancedautopilot.maxEmergencyLandingDurability"),
                         config.maxEmergencyLandingDurability)
                 .setDefaultValue(50)
                 .setSaveConsumer(newValue -> config.maxEmergencyLandingDurability = newValue)
                 .setMin(Math.max(config.maxElytraSwapDurability + 1, ELYTRA_MIN_DURABILITY + 1))
                 .setMax(ELYTRA_MAX_DURABILITY - 1)
-                .setTooltip(new TranslatableText("tooltip.advancedautopilot.maxEmergencyLandingDurability"))
+                .setTooltip(new TranslatableText(
+                        "tooltip.advancedautopilot.maxEmergencyLandingDurability"))
+                .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.debug"), config.debug)
+                .setDefaultValue(false)
+                .setSaveConsumer(newValue -> config.debug = newValue)
                 .build());
 
         ConfigCategory ascendingCategory = builder
                 .getOrCreateCategory(new TranslatableText("category.advancedautopilot.ascending"));
 
         ascendingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.ascentHeight"), config.ascentHeight)
+                .startDoubleField(new TranslatableText("option.advancedautopilot.ascentHeight"),
+                        config.ascentHeight)
                 .setDefaultValue(240d)
                 .setMin(0d) // Non-negative
                 .setSaveConsumer(newValue -> config.ascentHeight = newValue)
@@ -102,7 +114,9 @@ public class ConfigManager {
                 .getOrCreateCategory(new TranslatableText("category.advancedautopilot.gliding"));
 
         glidingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.minHeightToStartGliding"),
+                .startDoubleField(
+                        new TranslatableText(
+                                "option.advancedautopilot.minHeightToStartGliding"),
                         config.minHeightToStartGliding)
                 .setDefaultValue(180d)
                 .setMin(0d) // Non-negative
@@ -110,7 +124,8 @@ public class ConfigManager {
                 .build());
 
         glidingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.maxHeightWhileGliding"),
+                .startDoubleField(
+                        new TranslatableText("option.advancedautopilot.maxHeightWhileGliding"),
                         config.maxHeightWhileGliding)
                 .setDefaultValue(360d)
                 .setMin(0d) // Non-negative
@@ -118,7 +133,9 @@ public class ConfigManager {
                 .build());
 
         glidingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.minSpeedBeforePullingDown"),
+                .startDoubleField(
+                        new TranslatableText(
+                                "option.advancedautopilot.minSpeedBeforePullingDown"),
                         config.minSpeedBeforePullingDown)
                 .setDefaultValue(10d)
                 .setMin(0d) // Non-negative
@@ -126,7 +143,9 @@ public class ConfigManager {
                 .build());
 
         glidingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.maxSpeedBeforePullingUp"),
+                .startDoubleField(
+                        new TranslatableText(
+                                "option.advancedautopilot.maxSpeedBeforePullingUp"),
                         config.maxSpeedBeforePullingUp)
                 .setDefaultValue(40d)
                 .setMin(0d) // Non-negative

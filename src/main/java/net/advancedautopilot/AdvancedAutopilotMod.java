@@ -16,8 +16,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 
-import java.io.ObjectInputFilter.Config;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.GLFW;
@@ -156,7 +154,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
 		}
 
 		player.sendMessage(
-				new TranslatableText("text.advancedautopilot.emergencyLanding").formatted(Formatting.RED),
+				new TranslatableText("text.advancedautopilot.performingEmergencyLanding").formatted(Formatting.RED),
 				true);
 		pilot = new LandingPilot(monitor);
 	}

@@ -43,6 +43,18 @@ public class HudFormatter {
                 String.format("%d", (long) playerPos.getX()),
                 String.format("%d", (long) playerPos.getY()),
                 String.format("%d", (long) playerPos.getZ())));
+
+        if (ConfigManager.currentConfig.debug) {
+            lines.add(new LiteralText(""));
+            lines.add((Text) new TranslatableText("text.advancedautopilot.swapElytra").append(
+                    ConfigManager.currentConfig.swapElytra
+                            ? new TranslatableText("text.advancedautopilot.enabled")
+                            : new TranslatableText("text.advancedautopilot.disabled")));
+            lines.add((Text) new TranslatableText("text.advancedautopilot.emergencyLanding").append(
+                    ConfigManager.currentConfig.emergencyLanding
+                            ? new TranslatableText("text.advancedautopilot.enabled")
+                            : new TranslatableText("text.advancedautopilot.disabled")));
+        }
     }
 
     public ArrayList<Text> getLines() {

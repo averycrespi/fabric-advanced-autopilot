@@ -7,6 +7,7 @@
   "key.advancedautopilot.toggle": "Toggle Autopilot",
 
   "option.advancedautopilot.ascentHeight": "Height to ascend to",
+  "option.advancedautopilot.debug": "Show debug information in the HUD",
   "option.advancedautopilot.emergencyLanding": "Perform emergency landing when elytra durability is low",
   "option.advancedautopilot.landingPitch": "Landing pitch (degrees)",
   "option.advancedautopilot.maxElytraSwapDurability": "Maximum durability to swap elytra at",
@@ -19,13 +20,17 @@
   "option.advancedautopilot.minSpeedBeforePullingDown": "Minimum speed before pulling down (m/s)",
   "option.advancedautopilot.swapElytra": "Automatically swap out elytra when durability is low",
 
+  "text.advancedautopilot.disabled": "Disabled",
   "text.advancedautopilot.disengagedAutopilot": "Disengaged autopilot",
-  "text.advancedautopilot.emergencyLanding": "Performing emergency landing",
+  "text.advancedautopilot.emergencyLanding": "Emergency landing : ",
+  "text.advancedautopilot.performingEmergencyLanding": "Performing emergency landing",
   "text.advancedautopilot.engagedAutopilot": "Engaged autopilot",
+  "text.advancedautopilot.enabled": "Enabled",
   "text.advancedautopilot.height": "Height : %s m",
   "text.advancedautopilot.pilot": "Pilot : %s",
   "text.advancedautopilot.position": "Position: %s / %s / %s",
   "text.advancedautopilot.speed": "Speed : %s m/s",
+  "text.advancedautopilot.swapElytra": "Swap elytra : ",
   "text.advancedautopilot.swappedElytra": "Swapped out elytra with low durability",
 
   "title.advancedautopilot": "Advanced Autopilot",

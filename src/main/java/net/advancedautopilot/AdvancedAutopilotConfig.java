@@ -12,6 +12,8 @@ public class AdvancedAutopilotConfig {
     public boolean emergencyLanding = true;
     public int maxEmergencyLandingDurability = 50;
 
+    public boolean debug = false;
+
     public double ascentHeight = 240d;
 
     public double landingPitch = 30d;
