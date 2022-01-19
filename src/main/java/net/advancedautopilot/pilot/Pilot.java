@@ -19,7 +19,7 @@ public abstract class Pilot {
 
     public abstract TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player);
 
-    public void reset(MinecraftClient client, PlayerEntity player) {
+    public void cleanup(MinecraftClient client, PlayerEntity player) {
         // Intentionally left empty
     }
 }

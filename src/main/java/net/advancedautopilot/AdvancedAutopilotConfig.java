@@ -5,10 +5,14 @@ public class AdvancedAutopilotConfig {
     public float guiX = 5f;
     public float guiY = 5f;
 
+    public boolean swapElytra = true;
+    public boolean emergencyLanding = true;
+
     public double ascentHeight = 240d;
 
     public double landingPitch = 30d;
     public double maxLandingSpeed = 5d;
+    public int emergencyLandingDurability = 1;
 
     public double minHeightToStartGliding = 180d;
     public double minHeightWhileGliding = 50d;

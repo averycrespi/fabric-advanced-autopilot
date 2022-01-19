@@ -52,8 +52,8 @@ public class AscendingPilot extends Pilot {
     }
 
     @Override
-    public void reset(MinecraftClient client, PlayerEntity player) {
-        super.reset(client, player);
+    public void cleanup(MinecraftClient client, PlayerEntity player) {
+        super.cleanup(client, player);
         client.options.keyUse.setPressed(false);
         client.options.keyJump.setPressed(false);
         player.setPitch(0); // Look forwards

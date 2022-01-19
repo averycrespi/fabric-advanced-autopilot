@@ -15,7 +15,6 @@ import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.TranslatableText;
 
 /**
@@ -39,54 +38,85 @@ public class ConfigManager {
 
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-        ConfigCategory category = builder.getOrCreateCategory(new LiteralText(""));
+        ConfigCategory generalCategory = builder
+                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.general"));
 
-        category.addEntry(entryBuilder
+        generalCategory.addEntry(entryBuilder
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.swapElytra"), config.swapElytra)
+                .setDefaultValue(true)
+                .setSaveConsumer(newValue -> config.swapElytra = newValue)
+                .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.emergencyLanding"),
+                        config.emergencyLanding)
+                .setDefaultValue(true)
+                .setSaveConsumer(newValue -> config.emergencyLanding = newValue)
+                .setTooltip(new TranslatableText("tooltip.advancedautopilot.emergencyLanding"))
+                .build());
+
+        ConfigCategory ascendingCategory = builder
+                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.ascending"));
+
+        ascendingCategory.addEntry(entryBuilder
                 .startDoubleField(new TranslatableText("option.advancedautopilot.ascentHeight"), config.ascentHeight)
                 .setDefaultValue(240d)
                 .setSaveConsumer(newValue -> config.ascentHeight = newValue)
                 .build());
 
-        category.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.landingPitch"),
-                        config.landingPitch)
-                .setDefaultValue(30d)
-                .setSaveConsumer(newValue -> config.landingPitch = newValue)
-                .build());
+        ConfigCategory glidingCategory = builder
+                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.gliding"));
 
-        category.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.maxLandingSpeed"),
-                        config.maxLandingSpeed)
-                .setDefaultValue(5d)
-                .setSaveConsumer(newValue -> config.maxLandingSpeed = newValue)
-                .build());
-
-        category.addEntry(entryBuilder
+        glidingCategory.addEntry(entryBuilder
                 .startDoubleField(new TranslatableText("option.advancedautopilot.minHeightToStartGliding"),
                         config.minHeightToStartGliding)
                 .setDefaultValue(180d)
                 .setSaveConsumer(newValue -> config.minHeightToStartGliding = newValue)
                 .build());
 
-        category.addEntry(entryBuilder
+        glidingCategory.addEntry(entryBuilder
                 .startDoubleField(new TranslatableText("option.advancedautopilot.maxHeightWhileGliding"),
                         config.maxHeightWhileGliding)
                 .setDefaultValue(360d)
                 .setSaveConsumer(newValue -> config.maxHeightWhileGliding = newValue)
                 .build());
 
-        category.addEntry(entryBuilder
+        glidingCategory.addEntry(entryBuilder
                 .startDoubleField(new TranslatableText("option.advancedautopilot.minSpeedBeforePullingDown"),
                         config.minSpeedBeforePullingDown)
                 .setDefaultValue(10d)
                 .setSaveConsumer(newValue -> config.minSpeedBeforePullingDown = newValue)
                 .build());
 
-        category.addEntry(entryBuilder
+        glidingCategory.addEntry(entryBuilder
                 .startDoubleField(new TranslatableText("option.advancedautopilot.maxSpeedBeforePullingUp"),
                         config.maxSpeedBeforePullingUp)
                 .setDefaultValue(40d)
                 .setSaveConsumer(newValue -> config.maxSpeedBeforePullingUp = newValue)
+                .build());
+
+        ConfigCategory landingCategory = builder
+                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.landing"));
+
+        landingCategory.addEntry(entryBuilder
+                .startDoubleField(new TranslatableText("option.advancedautopilot.landingPitch"),
+                        config.landingPitch)
+                .setDefaultValue(30d)
+                .setSaveConsumer(newValue -> config.landingPitch = newValue)
+                .build());
+
+        landingCategory.addEntry(entryBuilder
+                .startDoubleField(new TranslatableText("option.advancedautopilot.maxLandingSpeed"),
+                        config.maxLandingSpeed)
+                .setDefaultValue(5d)
+                .setSaveConsumer(newValue -> config.maxLandingSpeed = newValue)
+                .build());
+
+        landingCategory.addEntry(entryBuilder
+                .startIntField(new TranslatableText("option.advancedautopilot.emergencyLandingDurability"),
+                        config.emergencyLandingDurability)
+                .setDefaultValue(50)
+                .setSaveConsumer(newValue -> config.emergencyLandingDurability = newValue)
                 .build());
 
         builder.setSavingRunnable(() -> {

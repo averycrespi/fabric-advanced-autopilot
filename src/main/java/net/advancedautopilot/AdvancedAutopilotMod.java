@@ -98,11 +98,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
 		}
 
 		if (ticksSincePreviousInfrequentTick >= 20) {
-			monitor.onInfrequentClientTick(client, player);
-			formatter.onInfrequentClientTick(pilot);
-			if (pilot != null && pilot.onInfrequentClientTick(client, player) == TickResult.YIELD) {
-				handlePilotYield(player);
-			}
+			onInfrequentClientTick(player);
 			ticksSincePreviousInfrequentTick = 0;
 		}
 
@@ -112,8 +108,28 @@ public class AdvancedAutopilotMod implements ModInitializer {
 		keyBindingWasPressedOnPreviousTick = keyBinding.isPressed();
 	}
 
+	private void onInfrequentClientTick(PlayerEntity player) {
+		monitor.onInfrequentClientTick(client, player);
+		formatter.onInfrequentClientTick(pilot);
+
+		if (pilot != null && pilot.onInfrequentClientTick(client, player) == TickResult.YIELD) {
+			handlePilotYield(player);
+		}
+
+		if (pilot != null && PilotHelper.hasElytraEquipped(player)) {
+			int elytraDurability = PilotHelper.getElytraDurability(player);
+			if (ConfigManager.currentConfig.swapElytra && elytraDurability < 5) {
+				PilotHelper.swapElytra(client, player);
+			} else if (elytraDurability < ConfigManager.currentConfig.emergencyLandingDurability) {
+				pilot.cleanup(client, player);
+				pilot = new LandingPilot(monitor);
+			}
+		}
+
+	}
+
 	private void handlePilotYield(PlayerEntity player) {
-		pilot.reset(client, player);
+		pilot.cleanup(client, player);
 		pilot = null;
 
 		if (player.isFallFlying()) {
@@ -133,15 +149,16 @@ public class AdvancedAutopilotMod implements ModInitializer {
 		if (player.isFallFlying()) {
 			if (pilot == null) {
 				player.sendMessage(
-						new TranslatableText("text.advancedautopilot.autopilot.engaged").formatted(Formatting.GREEN),
+						new TranslatableText("text.advancedautopilot.engagedAutopilot")
+								.formatted(Formatting.GREEN),
 						true);
 				pilot = new AscendingPilot(monitor);
 			} else {
 				player.sendMessage(
-						new TranslatableText("text.advancedautopilot.autopilot.disengaged")
+						new TranslatableText("text.advancedautopilot.disengagedAutopilot")
 								.formatted(Formatting.YELLOW),
 						true);
-				pilot.reset(client, player);
+				pilot.cleanup(client, player);
 				pilot = null;
 			}
 		} else {

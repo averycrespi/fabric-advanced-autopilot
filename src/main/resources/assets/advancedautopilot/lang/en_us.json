@@ -1,18 +1,32 @@
 {
+  "category.advancedautopilot.ascending": "Ascending",
+  "category.advancedautopilot.general": "General",
+  "category.advancedautopilot.gliding": "Gliding",
+  "category.advancedautopilot.landing": "Landing",
+
   "key.advancedautopilot.toggle": "Toggle autopilot / Open settings",
+
   "option.advancedautopilot.ascentHeight": "Height to ascend to",
+  "option.advancedautopilot.emergencyLanding": "Perform emergency landing when elytra durability is low",
+  "option.advancedautopilot.emergencyLandingDurability": "Elytra durability threshold for emergency landing",
   "option.advancedautopilot.landingPitch": "Landing pitch (degrees)",
   "option.advancedautopilot.maxHeightWhileGliding": "Maximum height while gliding",
   "option.advancedautopilot.maxLandingSpeed": "Maximum landing speed (m/s)",
   "option.advancedautopilot.maxSpeedBeforePullingUp": "Maximum speed before pulling up (m/s)",
   "option.advancedautopilot.minHeightToStartGliding": "Minimum height to start gliding",
   "option.advancedautopilot.minSpeedBeforePullingDown": "Minimum speed before pulling down (m/s)",
-  "text.advancedautopilot.autopilot.disengaged": "Disengaged autopilot",
-  "text.advancedautopilot.autopilot.engaged": "Engaged autopilot",
+  "option.advancedautopilot.swapElytra": "Automatically swap out elytra when durability is low",
+
+  "text.advancedautopilot.disengagedAutopilot": "Disengaged autopilot",
+  "text.advancedautopilot.engagedAutopilot": "Engaged autopilot",
   "text.advancedautopilot.height": "Height : %s m",
   "text.advancedautopilot.pilot": "Pilot : %s",
   "text.advancedautopilot.position": "Position: %s / %s / %s",
   "text.advancedautopilot.speed": "Speed : %s m/s",
+  "text.advancedautopilot.swappedElytra": "Swapped out elytra with low durability",
+
   "title.advancedautopilot": "Advanced Autopilot",
-  "title.advancedautopilot.config": "Advanced Autopilot Settings"
+  "title.advancedautopilot.config": "Advanced Autopilot Settings",
+
+  "tooltip.advancedautopilot.emergencyLanding": "If elytra hotswap is enabled, this only activates when all elytra have low durability"
 }
