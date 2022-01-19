@@ -47,6 +47,12 @@ public class GlidingPilot extends PilotWithGoal {
     public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player) {
         double speed = monitor.getSpeed();
         double height = monitor.getHeight();
+
+        if (height <= ConfigManager.currentConfig.minHeightWhileGliding) {
+            AdvancedAutopilotMod.LOGGER.info("Yielded because player is too low");
+            return TickResult.YIELD;
+        }
+
         if (pullDirection == PullDirection.UP) {
             if (speed < ConfigManager.currentConfig.minSpeedBeforePullingDown) {
                 AdvancedAutopilotMod.LOGGER.info("Started pulling down because speed is too low");

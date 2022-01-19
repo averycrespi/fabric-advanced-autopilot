@@ -33,8 +33,8 @@ public class LandingPilot extends Pilot {
         double speed = monitor.getSpeed();
 
         if (speed >= ConfigManager.currentConfig.maxLandingSpeed) {
-            float yaw = MathHelper.wrapDegrees(player.getYaw());
-            player.setYaw(360f - yaw); // Turn around
+            float oppositeYaw = MathHelper.wrapDegrees(player.getYaw() + 180f);
+            player.setYaw(oppositeYaw); // Turn around
         }
 
         return TickResult.CONTINUE;

@@ -4,6 +4,7 @@ import net.advancedautopilot.pilot.AscendingPilot;
 import net.advancedautopilot.pilot.GlidingPilot;
 import net.advancedautopilot.pilot.LandingPilot;
 import net.advancedautopilot.pilot.Pilot;
+import net.advancedautopilot.pilot.PilotHelper;
 import net.advancedautopilot.pilot.TickResult;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -119,6 +120,10 @@ public class AdvancedAutopilotMod implements ModInitializer {
 			double height = monitor.getHeight();
 			if (height >= ConfigManager.currentConfig.minHeightToStartGliding) {
 				pilot = new GlidingPilot(monitor);
+			} else if (PilotHelper.isHoldingFirework(player)) {
+				pilot = new AscendingPilot(monitor);
+			} else {
+				pilot = new LandingPilot(monitor);
 			}
 		}
 	}

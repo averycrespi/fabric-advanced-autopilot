@@ -7,9 +7,11 @@ public class AdvancedAutopilotConfig {
 
     public double ascentHeight = 240d;
 
+    public double landingPitch = 30d;
     public double maxLandingSpeed = 5d;
 
     public double minHeightToStartGliding = 180d;
+    public double minHeightWhileGliding = 50d;
     public double maxHeightWhileGliding = 360d;
 
     // These are magic witchcraft, don't touch them

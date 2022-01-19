@@ -48,6 +48,13 @@ public class ConfigManager {
                 .build());
 
         category.addEntry(entryBuilder
+                .startDoubleField(new TranslatableText("option.advancedautopilot.landingPitch"),
+                        config.landingPitch)
+                .setDefaultValue(30d)
+                .setSaveConsumer(newValue -> config.landingPitch = newValue)
+                .build());
+
+        category.addEntry(entryBuilder
                 .startDoubleField(new TranslatableText("option.advancedautopilot.maxLandingSpeed"),
                         config.maxLandingSpeed)
                 .setDefaultValue(5d)
