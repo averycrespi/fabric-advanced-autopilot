@@ -1,6 +1,7 @@
 package net.advancedautopilot;
 
 public class AdvancedAutopilotConfig {
+
     public float guiX = 5f;
     public float guiY = 5f;
 

@@ -7,7 +7,6 @@ import net.advancedautopilot.pilot.TickResult;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
@@ -24,7 +23,6 @@ public class AdvancedAutopilotMod implements ModInitializer {
 	public static AdvancedAutopilotMod instance = null;
 
 	public MinecraftClient client = null;
-	public AdvancedAutopilotConfig config = null;
 	public FlightMonitor monitor = null;
 	public HudManager hudManager = null;
 
@@ -39,10 +37,6 @@ public class AdvancedAutopilotMod implements ModInitializer {
 
 		if (client == null) {
 			client = MinecraftClient.getInstance();
-		}
-
-		if (config == null) {
-			config = new AdvancedAutopilotConfig();
 		}
 
 		if (monitor == null) {
@@ -60,14 +54,11 @@ public class AdvancedAutopilotMod implements ModInitializer {
 				"title.advancedautopilot");
 		KeyBindingHelper.registerKeyBinding(keyBinding);
 
-		HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> AdvancedAutopilotMod.this.onScreenTick());
 		ClientTickEvents.END_CLIENT_TICK.register(e -> this.onClientTick());
 
-		LOGGER.info("Initialized Advanced Autopilot mod");
-	}
+		ConfigManager.initialize();
 
-	private void onScreenTick() {
-		// TODO: implement
+		LOGGER.info("Initialized Advanced Autopilot mod");
 	}
 
 	private void onClientTick() {
@@ -108,18 +99,22 @@ public class AdvancedAutopilotMod implements ModInitializer {
 		pilot = null;
 
 		double height = monitor.getHeight();
-		if (height >= config.minHeightToStartGliding) {
-			pilot = new GlidingPilot(config, monitor);
+		if (height >= ConfigManager.currentConfig.minHeightToStartGliding) {
+			pilot = new GlidingPilot(monitor);
 		}
 	}
 
 	private void handleKeyBindingPress(PlayerEntity player) {
 		LOGGER.info("Keybinding was pressed");
-		if (pilot == null) {
-			pilot = new AscendingPilot(config, monitor);
+		if (player.isFallFlying()) {
+			if (pilot == null) {
+				pilot = new AscendingPilot(monitor);
+			} else {
+				pilot.reset(client, player);
+				pilot = null;
+			}
 		} else {
-			pilot.reset(client, player);
-			pilot = null;
+			client.setScreen(ConfigManager.createConfigScreen(client.currentScreen));
 		}
 	}
 }

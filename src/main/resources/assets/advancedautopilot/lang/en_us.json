@@ -1,8 +1,14 @@
 {
   "key.advancedautopilot.toggle": "Toggle autopilot / Open settings",
+  "option.advancedautopilot.ascentHeight": "Ascent height",
+  "option.advancedautopilot.maxHeightWhileGliding": "Maximum height while gliding",
+  "option.advancedautopilot.maxSpeedBeforePullingUp": "Maximum speed before pulling up",
+  "option.advancedautopilot.minHeightToStartGliding": "Minimum height to start gliding",
+  "option.advancedautopilot.minSpeedBeforePullingDown": "Minimum speed before pulling down",
   "text.advancedautopilot.height": "Height : %s m",
   "text.advancedautopilot.pilot": "Pilot : %s",
   "text.advancedautopilot.position": "Position: %s / %s / %s",
   "text.advancedautopilot.speed": "Speed : %s m/s",
-  "title.advancedautopilot": "Advanced Autopilot"
+  "title.advancedautopilot": "Advanced Autopilot",
+  "title.advancedautopilot.config": "Advanced Autopilot Settings"
 }

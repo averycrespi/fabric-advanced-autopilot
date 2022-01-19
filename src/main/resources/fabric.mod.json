@@ -16,7 +16,8 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": ["net.advancedautopilot.AdvancedAutopilotMod"]
+    "main": ["net.advancedautopilot.AdvancedAutopilotMod"],
+    "modmenu": ["net.advancedautopilot.ModMenuIntegration"]
   },
   "mixins": ["advancedautopilot.mixins.json"],
 

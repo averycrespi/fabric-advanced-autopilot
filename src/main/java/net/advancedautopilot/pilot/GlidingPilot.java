@@ -1,6 +1,7 @@
 package net.advancedautopilot.pilot;
 
-import net.advancedautopilot.AdvancedAutopilotConfig;
+import net.advancedautopilot.AdvancedAutopilotMod;
+import net.advancedautopilot.ConfigManager;
 import net.advancedautopilot.FlightMonitor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,20 +13,20 @@ public class GlidingPilot extends PilotWithGoal {
 
     private PullDirection pullDirection = PullDirection.DOWN;
 
-    public GlidingPilot(AdvancedAutopilotConfig config, FlightMonitor monitor) {
-        super(config, monitor);
+    public GlidingPilot(FlightMonitor monitor) {
+        super(monitor);
     }
 
     @Override
     public TickResult onClientTick(MinecraftClient client, PlayerEntity player) {
         if (!player.isFallFlying()) {
-            LOGGER.info("Yielded because player is not flying");
+            AdvancedAutopilotMod.LOGGER.info("Yielded because player is not flying");
             return TickResult.YIELD;
         }
 
         if (hasGoal()) {
             if (getDistanceToGoal(player) < 20) {
-                LOGGER.info("Yielded because player is near goal");
+                AdvancedAutopilotMod.LOGGER.info("Yielded because player is near goal");
                 return TickResult.YIELD;
             }
             lookTowardsGoal(player);
@@ -33,10 +34,10 @@ public class GlidingPilot extends PilotWithGoal {
 
         switch (pullDirection) {
             case UP:
-                player.setPitch((float) config.pullUpPitch);
+                player.setPitch((float) ConfigManager.currentConfig.pullUpPitch);
                 break;
             case DOWN:
-                player.setPitch((float) config.pullDownPitch);
+                player.setPitch((float) ConfigManager.currentConfig.pullDownPitch);
                 break;
         }
 
@@ -47,16 +48,16 @@ public class GlidingPilot extends PilotWithGoal {
         double speed = monitor.getSpeed();
         double height = monitor.getHeight();
         if (pullDirection == PullDirection.UP) {
-            if (speed < config.minSpeedBeforePullingDown) {
-                LOGGER.info("Started pulling down because speed is too low");
+            if (speed < ConfigManager.currentConfig.minSpeedBeforePullingDown) {
+                AdvancedAutopilotMod.LOGGER.info("Started pulling down because speed is too low");
                 pullDirection = PullDirection.DOWN;
-            } else if (height >= config.maxHeightWhileGliding) {
-                LOGGER.info("Started pulling down because player is too high");
+            } else if (height >= ConfigManager.currentConfig.maxHeightWhileGliding) {
+                AdvancedAutopilotMod.LOGGER.info("Started pulling down because player is too high");
                 pullDirection = PullDirection.DOWN;
             }
         } else if (pullDirection == PullDirection.DOWN) {
-            if (speed > config.maxSpeedBeforePullingUp) {
-                LOGGER.info("Started pulling up because speed is too high");
+            if (speed > ConfigManager.currentConfig.maxSpeedBeforePullingUp) {
+                AdvancedAutopilotMod.LOGGER.info("Started pulling up because speed is too high");
                 pullDirection = PullDirection.UP;
             }
         }

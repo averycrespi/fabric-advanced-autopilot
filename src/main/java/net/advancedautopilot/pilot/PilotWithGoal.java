@@ -1,6 +1,5 @@
 package net.advancedautopilot.pilot;
 
-import net.advancedautopilot.AdvancedAutopilotConfig;
 import net.advancedautopilot.FlightMonitor;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
@@ -17,8 +16,8 @@ public abstract class PilotWithGoal extends Pilot {
 
     private Vec3d goalPos = null;
 
-    public PilotWithGoal(AdvancedAutopilotConfig config, FlightMonitor monitor) {
-        super(config, monitor);
+    public PilotWithGoal(FlightMonitor monitor) {
+        super(monitor);
     }
 
     public boolean hasGoal() {

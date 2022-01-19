@@ -1,6 +1,7 @@
 package net.advancedautopilot.pilot;
 
-import net.advancedautopilot.AdvancedAutopilotConfig;
+import net.advancedautopilot.AdvancedAutopilotMod;
+import net.advancedautopilot.ConfigManager;
 import net.advancedautopilot.FlightMonitor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,8 +15,8 @@ public class AscendingPilot extends Pilot {
 
     private static final double MAX_FIREWORK_VERTICAL_SPEED = 15d;
 
-    public AscendingPilot(AdvancedAutopilotConfig config, FlightMonitor monitor) {
-        super(config, monitor);
+    public AscendingPilot(FlightMonitor monitor) {
+        super(monitor);
     }
 
     @Override
@@ -25,8 +26,8 @@ public class AscendingPilot extends Pilot {
             return TickResult.CONTINUE; // Wait for next tick before continuing
         }
 
-        if (monitor.getHeight() >= config.ascentHeight) {
-            LOGGER.info("Yielded because player reached ascent height");
+        if (monitor.getHeight() >= ConfigManager.currentConfig.ascentHeight) {
+            AdvancedAutopilotMod.LOGGER.info("Yielded because player reached ascent height");
             return TickResult.YIELD;
         }
 
@@ -39,7 +40,7 @@ public class AscendingPilot extends Pilot {
                 client.options.keyUse.setPressed(false);
             }
         } else {
-            LOGGER.info("Yielded because player ran out of fireworks");
+            AdvancedAutopilotMod.LOGGER.info("Yielded because player ran out of fireworks");
             return TickResult.YIELD;
         }
 

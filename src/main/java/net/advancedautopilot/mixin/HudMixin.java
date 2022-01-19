@@ -1,6 +1,7 @@
 package net.advancedautopilot.mixin;
 
 import net.advancedautopilot.AdvancedAutopilotMod;
+import net.advancedautopilot.ConfigManager;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
@@ -27,8 +28,8 @@ public class HudMixin {
                 return;
             }
 
-            float stringX = mod.config.guiX;
-            float stringY = mod.config.guiY;
+            float stringX = ConfigManager.currentConfig.guiX;
+            float stringY = ConfigManager.currentConfig.guiY;
 
             ArrayList<Text> lines = mod.hudManager.getLines();
             for (int i = 0; i < lines.size(); i++) {
