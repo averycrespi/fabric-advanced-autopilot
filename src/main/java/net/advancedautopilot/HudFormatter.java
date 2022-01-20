@@ -37,13 +37,19 @@ public class HudFormatter {
             addGoalAndEta(goal);
         }
 
-        if (ConfigManager.currentConfig.showDebugInfo) {
+        if (ConfigManager.currentConfig.showAverageSpeedInHud) {
             addSpacer();
             addAverageSpeed();
+        }
+
+        if (ConfigManager.currentConfig.showAnglesInHud) {
             addSpacer();
-            addPitchAndYaw();
+            addAngles();
+        }
+
+        if (ConfigManager.currentConfig.showConfigOptionsInHud) {
             addSpacer();
-            addOptions();
+            addConfigOptions();
         }
     }
 
@@ -93,14 +99,14 @@ public class HudFormatter {
                 String.format("%.2f", monitor.getAverageHorizontalSpeed())));
     }
 
-    private void addPitchAndYaw() {
+    private void addAngles() {
         lines.add(new TranslatableText("text.advancedautopilot.pitch",
                 String.format("%.2f", monitor.getApproxPitch())));
         lines.add(new TranslatableText("text.advancedautopilot.yaw",
                 String.format("%.2f", monitor.getApproxYaw())));
     }
 
-    private void addOptions() {
+    private void addConfigOptions() {
         lines.add((Text) new TranslatableText("text.advancedautopilot.swapElytra").append(
                 ConfigManager.currentConfig.swapElytra
                         ? new TranslatableText("text.advancedautopilot.enabled")

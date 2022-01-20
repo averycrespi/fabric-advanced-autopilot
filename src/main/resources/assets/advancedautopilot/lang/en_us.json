@@ -20,7 +20,9 @@
   "option.advancedautopilot.minElytraSwapReplacementDurability": "Minimum durability for replacement elytra during swap",
   "option.advancedautopilot.minHeightBeforePullingUp": "Minimum height before pulling up",
   "option.advancedautopilot.minHeightWhileGliding": "Minimum height while gliding",
-  "option.advancedautopilot.showDebugInfo": "Show debug information in the HUD",
+  "option.advancedautopilot.showAnglesInHud": "Show pitch and yaw in the HUD",
+  "option.advancedautopilot.showAverageSpeedInHud": "Show average speed in the HUD",
+  "option.advancedautopilot.showConfigOptionsInHud": "Show config options in the HUD",
   "option.advancedautopilot.swapElytra": "Automatically swap out elytra when durability is low",
 
   "text.advancedautopilot.averageSpeed": "Average speed: %s m/s",

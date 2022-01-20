@@ -13,7 +13,9 @@ public class Config {
     public static final double DEFAULT_MAX_HEIGHT_BEFORE_PULLING_DOWN = 360d;
     public static final double DEFAULT_LANDING_PITCH = 30d;
     public static final double DEFAULT_MAX_LANDING_SPEED = 5d;
-    public static final boolean DEFAULT_SHOW_DEBUG_INFO = false;
+    public static final boolean DEFAULT_SHOW_ANGLES_IN_HUD = false;
+    public static final boolean DEFAULT_SHOW_AVERAGE_SPEED_IN_HUD = false;
+    public static final boolean DEFAULT_SHOW_CONFIG_OPTIONS_IN_HUD = false;
     public static final double DEFAULT_HUD_TEXT_WIDTH = 5f;
     public static final double DEFAULT_HUD_TEXT_HEIGHT = 5f;
 
@@ -21,7 +23,9 @@ public class Config {
     public int maxElytraSwapDurability = DEFAULT_MAX_ELYTRA_SWAP_DURABILITY;
     public int minElytraSwapReplacementDurability = DEFAULT_MIN_ELYTRA_SWAP_REPLACEMENT_DURABILITY;
 
-    public boolean showDebugInfo = DEFAULT_SHOW_DEBUG_INFO;
+    public boolean showAnglesInHud = DEFAULT_SHOW_ANGLES_IN_HUD;
+    public boolean showAverageSpeedInHud = DEFAULT_SHOW_AVERAGE_SPEED_IN_HUD;
+    public boolean showConfigOptionsInHud = DEFAULT_SHOW_CONFIG_OPTIONS_IN_HUD;
     public double hudTextWidth = DEFAULT_HUD_TEXT_WIDTH;
     public double hudTextHeight = DEFAULT_HUD_TEXT_HEIGHT;
 

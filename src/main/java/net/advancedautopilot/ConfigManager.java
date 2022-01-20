@@ -128,10 +128,24 @@ public final class ConfigManager {
                 .getOrCreateCategory(new TranslatableText("category.advancedautopilot.hud"));
 
         hudCategory.addEntry(entryBuilder
-                .startBooleanToggle(new TranslatableText("option.advancedautopilot.showDebugInfo"),
-                        config.showDebugInfo)
-                .setDefaultValue(Config.DEFAULT_SHOW_DEBUG_INFO)
-                .setSaveConsumer(newValue -> config.showDebugInfo = newValue)
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.showAnglesInHud"),
+                        config.showAnglesInHud)
+                .setDefaultValue(Config.DEFAULT_SHOW_ANGLES_IN_HUD)
+                .setSaveConsumer(newValue -> config.showAnglesInHud = newValue)
+                .build());
+
+        hudCategory.addEntry(entryBuilder
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.showAverageSpeedInHud"),
+                        config.showAverageSpeedInHud)
+                .setDefaultValue(Config.DEFAULT_SHOW_AVERAGE_SPEED_IN_HUD)
+                .setSaveConsumer(newValue -> config.showAverageSpeedInHud = newValue)
+                .build());
+
+        hudCategory.addEntry(entryBuilder
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.showConfigOptionsInHud"),
+                        config.showConfigOptionsInHud)
+                .setDefaultValue(Config.DEFAULT_SHOW_CONFIG_OPTIONS_IN_HUD)
+                .setSaveConsumer(newValue -> config.showConfigOptionsInHud = newValue)
                 .build());
 
         hudCategory.addEntry(entryBuilder

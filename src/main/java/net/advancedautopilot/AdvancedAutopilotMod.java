@@ -94,7 +94,9 @@ public class AdvancedAutopilotMod implements ModInitializer {
             pilot.cleanup(client, player);
         }
 
-        player.sendMessage(new TranslatableText("text.advancedautopilot.performingAutomaticLanding"), true);
+        player.sendMessage(
+                new TranslatableText("text.advancedautopilot.performingAutomaticLanding").formatted(SUCCESS),
+                true);
         pilot = new LandingPilot(monitor);
     }
 
