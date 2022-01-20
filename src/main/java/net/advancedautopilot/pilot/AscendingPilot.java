@@ -20,7 +20,7 @@ public class AscendingPilot extends Pilot {
     }
 
     @Override
-    public TickResult onClientTick(MinecraftClient client, PlayerEntity player) {
+    public TickResult onClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
         if (!player.isFallFlying()) {
             client.options.keyJump.setPressed(!client.options.keyJump.isPressed());
             return TickResult.CONTINUE; // Wait for next tick before continuing
@@ -47,7 +47,8 @@ public class AscendingPilot extends Pilot {
         return TickResult.CONTINUE;
     }
 
-    public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player) {
+    public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
+        // TODO: handle high downwards velocity due to chat being open
         return TickResult.CONTINUE;
     }
 

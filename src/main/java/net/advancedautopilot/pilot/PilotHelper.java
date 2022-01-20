@@ -9,6 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 /**
  * Defines helper methods that are out-of-scope for the Pilot class.
@@ -18,6 +20,20 @@ public class PilotHelper {
     private static final int CHEST_SLOT = 6;
     private static final String ELYTRA_KEY = "item.minecraft.elytra";
     private static final String FIREWORK_ROCKET_KEY = "item.minecraft.firework_rocket";
+    private static final double ONE_RADIAN_IN_DEGREES = 57.2957763671875;
+
+    public static float getGoalYaw(PlayerEntity player, Vec3d goal) {
+        if (goal == null) {
+            return player.getYaw();
+        }
+
+        Vec3d playerPos = player.getPos();
+        double xDiff = (double) goal.x - playerPos.x;
+        double yDiff = (double) goal.z - playerPos.z;
+        float goalYaw = MathHelper
+                .wrapDegrees((float) (MathHelper.atan2(yDiff, xDiff) * ONE_RADIAN_IN_DEGREES) - 90f);
+        return goalYaw;
+    }
 
     public static boolean isHoldingFirework(PlayerEntity player) {
         Item mainHandItem = player.getMainHandStack().getItem();

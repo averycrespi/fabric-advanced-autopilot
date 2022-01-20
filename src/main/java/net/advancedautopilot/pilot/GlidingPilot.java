@@ -5,11 +5,12 @@ import net.advancedautopilot.ConfigManager;
 import net.advancedautopilot.FlightMonitor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.math.Vec3d;
 
 /**
  * Glides towards an optional goal, adjusting pitch to gain height over time.
  */
-public class GlidingPilot extends PilotWithGoal {
+public class GlidingPilot extends Pilot {
 
     private PullDirection pullDirection = PullDirection.DOWN;
 
@@ -18,18 +19,14 @@ public class GlidingPilot extends PilotWithGoal {
     }
 
     @Override
-    public TickResult onClientTick(MinecraftClient client, PlayerEntity player) {
+    public TickResult onClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
         if (!player.isFallFlying()) {
             AdvancedAutopilotMod.LOGGER.info("Yielded because player is not flying");
             return TickResult.YIELD;
         }
 
-        if (hasGoal()) {
-            if (getDistanceToGoal(player) < 20) {
-                AdvancedAutopilotMod.LOGGER.info("Yielded because player is near goal");
-                return TickResult.YIELD;
-            }
-            lookTowardsGoal(player);
+        if (goal != null) {
+            player.setYaw(PilotHelper.getGoalYaw(player, goal));
         }
 
         switch (pullDirection) {
@@ -44,9 +41,14 @@ public class GlidingPilot extends PilotWithGoal {
         return TickResult.CONTINUE;
     }
 
-    public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player) {
+    public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
         double speed = monitor.getSpeed();
         double height = monitor.getHeight();
+
+        if (goal != null && monitor.getHorizontalDistanceToGoal() < 20) {
+            AdvancedAutopilotMod.LOGGER.info("Yielded because player is near goal");
+            return TickResult.YIELD;
+        }
 
         if (height <= ConfigManager.currentConfig.minHeightWhileGliding) {
             AdvancedAutopilotMod.LOGGER.info("Yielded because player is too low");

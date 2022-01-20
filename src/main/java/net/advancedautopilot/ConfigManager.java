@@ -19,13 +19,20 @@ import net.minecraft.text.TranslatableText;
 
 /**
  * Manages the mod configuration.
+ *
+ * The configuration can change at any time, so you should always reference
+ * ConfigManager.currentConfig to get the current configuration.
  */
-public class ConfigManager {
+public final class ConfigManager {
 
     public static AdvancedAutopilotConfig currentConfig = new AdvancedAutopilotConfig();
 
     private static final int ELYTRA_MIN_DURABILITY = 1;
     private static final int ELYTRA_MAX_DURABILITY = 432;
+
+    private ConfigManager() {
+        // Intentionally left empty
+    }
 
     public static void initialize() {
         ConfigManager.currentConfig = loadConfigFromFile(findConfigFile());

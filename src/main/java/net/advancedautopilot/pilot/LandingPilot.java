@@ -6,6 +6,7 @@ import net.advancedautopilot.FlightMonitor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 /**
  * Safely lands the player.
@@ -17,7 +18,7 @@ public class LandingPilot extends Pilot {
     }
 
     @Override
-    public TickResult onClientTick(MinecraftClient client, PlayerEntity player) {
+    public TickResult onClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
         if (!player.isFallFlying()) {
             AdvancedAutopilotMod.LOGGER.info("Yielded because player is not flying");
             return TickResult.YIELD;
@@ -29,7 +30,7 @@ public class LandingPilot extends Pilot {
     }
 
     @Override
-    public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player) {
+    public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
         double speed = monitor.getSpeed();
 
         if (speed >= ConfigManager.currentConfig.maxLandingSpeed) {

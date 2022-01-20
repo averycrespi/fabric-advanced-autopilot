@@ -17,17 +17,22 @@ public class FlightMonitor {
     private double height = -1d;
     private Vec3d velocity = new Vec3d(0d, 0d, 0d);
     private Vec3d previousPos = new Vec3d(0d, 0d, 0d);
-    private double pitch = 0d;
-    private double yaw = 0d;
+    private double horizontalDistanceToGoal = Double.POSITIVE_INFINITY;
+
+    // The approximate pitch and yaw are tracked for the benefit of the HUD
+    // formatter; pilots should call player.getPitch() or player.getYaw() directly
+    private double approxPitch = 0d;
+    private double approxYaw = 0d;
 
     public void onClientTick(MinecraftClient client, PlayerEntity player) {
         updateVelocity(player, CLIENT_TICKS_PER_SECOND);
     }
 
-    public void onInfrequentClientTick(MinecraftClient client, PlayerEntity player) {
+    public void onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
         updateHeight(player);
-        pitch = MathHelper.wrapDegrees((float) player.getPitch());
-        yaw = MathHelper.wrapDegrees((float) player.getYaw());
+        updateHorizontalDistanceToGoal(player, goal);
+        approxPitch = MathHelper.wrapDegrees((float) player.getPitch());
+        approxYaw = MathHelper.wrapDegrees((float) player.getYaw());
     }
 
     public double getHeight() {
@@ -46,12 +51,16 @@ public class FlightMonitor {
         return previousPos;
     }
 
-    public double getPitch() {
-        return pitch;
+    public double getHorizontalDistanceToGoal() {
+        return horizontalDistanceToGoal;
     }
 
-    public double getYaw() {
-        return yaw;
+    public double getApproxPitch() {
+        return approxPitch;
+    }
+
+    public double getApproxYaw() {
+        return approxYaw;
     }
 
     private void updateHeight(PlayerEntity player) {
@@ -80,5 +89,17 @@ public class FlightMonitor {
         Vec3d playerPos = player.getPos();
         velocity = playerPos.subtract(previousPos).multiply(callsPerSecond);
         previousPos = playerPos;
+    }
+
+    private void updateHorizontalDistanceToGoal(PlayerEntity player, Vec3d goal) {
+        if (goal == null) {
+            horizontalDistanceToGoal = Double.POSITIVE_INFINITY;
+            return;
+        }
+
+        Vec3d playerPos = player.getPos();
+        horizontalDistanceToGoal = new Vec3d(goal.getX(), 0, goal.getZ())
+                .subtract(new Vec3d(playerPos.getX(), 0, playerPos.getZ()))
+                .length();
     }
 }

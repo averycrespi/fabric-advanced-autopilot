@@ -21,14 +21,40 @@ public class HudFormatter {
         lines = new ArrayList<>();
     }
 
-    public void onInfrequentClientTick(Pilot pilot) {
+    public ArrayList<Text> getLines() {
+        return lines;
+    }
+
+    public void onInfrequentClientTick(Pilot pilot, Vec3d goal) {
         lines.clear();
 
+        addPilot(pilot);
+        addSpacer();
+        addMetrics();
+
+        if (goal != null) {
+            addSpacer();
+            addGoal(goal);
+        }
+
+        if (ConfigManager.currentConfig.debug) {
+            addSpacer();
+            addPitchAndYaw();
+            addSpacer();
+            addOptions();
+        }
+    }
+
+    private void addSpacer() {
+        lines.add(new LiteralText(""));
+    }
+
+    private void addPilot(Pilot pilot) {
         lines.add(new TranslatableText("text.advancedautopilot.pilot",
                 pilot == null ? "None" : pilot.getClass().getSimpleName()));
+    }
 
-        lines.add(new LiteralText(""));
-
+    private void addMetrics() {
         lines.add(new TranslatableText(
                 "text.advancedautopilot.speed",
                 String.format("%.2f", monitor.getSpeed())));
@@ -43,25 +69,31 @@ public class HudFormatter {
                 String.format("%d", (long) playerPos.getX()),
                 String.format("%d", (long) playerPos.getY()),
                 String.format("%d", (long) playerPos.getZ())));
-
-        if (ConfigManager.currentConfig.debug) {
-            lines.add(new LiteralText(""));
-            lines.add(new TranslatableText("text.advancedautopilot.pitch", String.format("%.2f", monitor.getPitch())));
-            lines.add(new TranslatableText("text.advancedautopilot.yaw", String.format("%.2f", monitor.getYaw())));
-
-            lines.add(new LiteralText(""));
-            lines.add((Text) new TranslatableText("text.advancedautopilot.swapElytra").append(
-                    ConfigManager.currentConfig.swapElytra
-                            ? new TranslatableText("text.advancedautopilot.enabled")
-                            : new TranslatableText("text.advancedautopilot.disabled")));
-            lines.add((Text) new TranslatableText("text.advancedautopilot.emergencyLanding").append(
-                    ConfigManager.currentConfig.emergencyLanding
-                            ? new TranslatableText("text.advancedautopilot.enabled")
-                            : new TranslatableText("text.advancedautopilot.disabled")));
-        }
     }
 
-    public ArrayList<Text> getLines() {
-        return lines;
+    private void addGoal(Vec3d goal) {
+        lines.add(new TranslatableText("text.advancedautopilot.goal",
+                String.format("%d", (long) goal.getX()),
+                String.format("%d", (long) goal.getZ())));
+        lines.add(new TranslatableText("text.advancedautopilot.distanceToGoal",
+                String.format("%.2f", monitor.getHorizontalDistanceToGoal())));
+    }
+
+    private void addPitchAndYaw() {
+        lines.add(new TranslatableText("text.advancedautopilot.pitch",
+                String.format("%.2f", monitor.getApproxPitch())));
+        lines.add(new TranslatableText("text.advancedautopilot.yaw",
+                String.format("%.2f", monitor.getApproxYaw())));
+    }
+
+    private void addOptions() {
+        lines.add((Text) new TranslatableText("text.advancedautopilot.swapElytra").append(
+                ConfigManager.currentConfig.swapElytra
+                        ? new TranslatableText("text.advancedautopilot.enabled")
+                        : new TranslatableText("text.advancedautopilot.disabled")));
+        lines.add((Text) new TranslatableText("text.advancedautopilot.emergencyLanding").append(
+                ConfigManager.currentConfig.emergencyLanding
+                        ? new TranslatableText("text.advancedautopilot.enabled")
+                        : new TranslatableText("text.advancedautopilot.disabled")));
     }
 }
