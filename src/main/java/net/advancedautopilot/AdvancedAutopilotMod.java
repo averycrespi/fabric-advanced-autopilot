@@ -131,6 +131,12 @@ public class AdvancedAutopilotMod implements ModInitializer {
         monitor.onInfrequentClientTick(client, player, goal);
         formatter.onInfrequentClientTick(pilot, goal);
 
+        if (pilot != null && (player.isTouchingWater() || player.isInLava())) {
+            LOGGER.info("Disengaging autopilot because player touched liquid");
+            pilot.cleanup(client, player);
+            pilot = null;
+        }
+
         if (pilot != null && pilot.onInfrequentClientTick(client, player, goal) == TickResult.YIELD) {
             handlePilotYield(player);
         }
@@ -196,6 +202,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
             }
         } else {
             pilot = null;
+            goal = null;
         }
     }
 
@@ -213,6 +220,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
                         true);
                 pilot.cleanup(client, player);
                 pilot = null;
+                goal = null;
             }
         } else {
             player.sendMessage(new TranslatableText("text.advancedautopilot.notFlying").formatted(FAILURE), true);

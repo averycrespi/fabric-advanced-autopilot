@@ -76,7 +76,7 @@ public class HudFormatter {
                 String.format("%d", (long) goal.getX()),
                 String.format("%d", (long) goal.getZ())));
         lines.add(new TranslatableText("text.advancedautopilot.distanceToGoal",
-                String.format("%.2f", monitor.getHorizontalDistanceToGoal())));
+                String.format("%d", (long) monitor.getHorizontalDistanceToGoal())));
     }
 
     private void addPitchAndYaw() {

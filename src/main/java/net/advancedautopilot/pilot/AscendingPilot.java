@@ -10,10 +10,12 @@ import net.minecraft.util.math.Vec3d;
 /**
  * Ascends directly upwards (using fireworks) until the configured ascent height
  * is reached or the player runs out of fireworks.
+ *
+ * TODO: avoid splatting when the player opens chat while using fireworks
  */
 public class AscendingPilot extends Pilot {
 
-    private static final double MAX_FIREWORK_VERTICAL_SPEED = 15d;
+    private static final double MAX_FIREWORK_VERTICAL_VELOCITY = 15d;
 
     public AscendingPilot(FlightMonitor monitor) {
         super(monitor);
@@ -33,7 +35,7 @@ public class AscendingPilot extends Pilot {
 
         Vec3d velocity = monitor.getVelocity();
         if (PilotHelper.isHoldingFirework(player)) {
-            if (velocity.getY() >= -MAX_FIREWORK_VERTICAL_SPEED && velocity.getY() < 0) {
+            if (velocity.getY() <= MAX_FIREWORK_VERTICAL_VELOCITY) {
                 player.setPitch(-90f); // Look upwards
                 client.options.keyUse.setPressed(true);
             } else {
@@ -48,7 +50,6 @@ public class AscendingPilot extends Pilot {
     }
 
     public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
-        // TODO: handle high downwards velocity due to chat being open
         return TickResult.CONTINUE;
     }
 

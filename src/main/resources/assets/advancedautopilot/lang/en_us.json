@@ -23,7 +23,7 @@
   "text.advancedautopilot.clearedGoal": "Cleared goal",
   "text.advancedautopilot.disabled": "Disabled",
   "text.advancedautopilot.disengagedAutopilot": "Disengaged autopilot",
-  "text.advancedautopilot.distanceToGoal": "Distance to goal : %s",
+  "text.advancedautopilot.distanceToGoal": "Distance to goal : %s m",
   "text.advancedautopilot.emergencyLanding": "Emergency landing : ",
   "text.advancedautopilot.performingAutomaticLanding": "Performing automatic landing",
   "text.advancedautopilot.performingEmergencyLanding": "Performing emergency landing",
