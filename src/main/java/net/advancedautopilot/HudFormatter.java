@@ -39,6 +39,8 @@ public class HudFormatter {
 
         if (ConfigManager.currentConfig.debug) {
             addSpacer();
+            addAverageSpeed();
+            addSpacer();
             addPitchAndYaw();
             addSpacer();
             addOptions();
@@ -77,6 +79,16 @@ public class HudFormatter {
                 String.format("%d", (long) goal.getZ())));
         lines.add(new TranslatableText("text.advancedautopilot.distanceToGoal",
                 String.format("%d", (long) monitor.getHorizontalDistanceToGoal())));
+    }
+
+    public void addAverageSpeed() {
+        lines.add(new TranslatableText(
+                "text.advancedautopilot.averageSpeed",
+                String.format("%.2f", monitor.getAverageSpeed())));
+
+        lines.add(new TranslatableText(
+                "text.advancedautopilot.averageHorizontalSpeed",
+                String.format("%.2f", monitor.getAverageHorizontalSpeed())));
     }
 
     private void addPitchAndYaw() {

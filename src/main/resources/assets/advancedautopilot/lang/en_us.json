@@ -20,6 +20,8 @@
   "option.advancedautopilot.minSpeedBeforePullingDown": "Minimum speed before pulling down (m/s)",
   "option.advancedautopilot.swapElytra": "Automatically swap out elytra when durability is low",
 
+  "text.advancedautopilot.averageSpeed": "Average speed: %s m/s",
+  "text.advancedautopilot.averageHorizontalSpeed": "Average horizontal speed: %s m/s",
   "text.advancedautopilot.clearedGoal": "Cleared goal",
   "text.advancedautopilot.disabled": "Disabled",
   "text.advancedautopilot.disengagedAutopilot": "Disengaged autopilot",
@@ -30,7 +32,7 @@
   "text.advancedautopilot.engagedAutopilot": "Engaged autopilot",
   "text.advancedautopilot.enabled": "Enabled",
   "text.advancedautopilot.goal": "Goal : %s / %s",
-  "text.advancedautopilot.height": "Height : %s m",
+  "text.advancedautopilot.height": "Height above ground : %s m",
   "text.advancedautopilot.notFlying": "Start flying before engaging the autopilot",
   "text.advancedautopilot.pilot": "Pilot : %s",
   "text.advancedautopilot.pitch": "Pitch : %s degrees",

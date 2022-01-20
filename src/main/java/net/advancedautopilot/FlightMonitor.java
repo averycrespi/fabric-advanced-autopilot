@@ -1,5 +1,7 @@
 package net.advancedautopilot;
 
+import java.util.ArrayList;
+
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -12,12 +14,20 @@ import net.minecraft.world.World;
  */
 public class FlightMonitor {
 
-    public static final double CLIENT_TICKS_PER_SECOND = 20d;
+    public static final int CLIENT_TICKS_PER_SECOND = 20;
+
+    private static final int MAX_PAST_VELOCITIES = 5 * CLIENT_TICKS_PER_SECOND;
 
     private double height = -1d;
     private Vec3d velocity = new Vec3d(0d, 0d, 0d);
     private Vec3d previousPos = new Vec3d(0d, 0d, 0d);
     private double horizontalDistanceToGoal = Double.POSITIVE_INFINITY;
+
+    private int pastVelocityIndex = 0;
+    private ArrayList<Vec3d> pastVelocities = new ArrayList<>();
+    private ArrayList<Vec3d> pastHorizontalVelocities = new ArrayList<>();
+    private double averageSpeed = 0d;
+    private double averageHorizontalSpeed = 0d;
 
     // The approximate pitch and yaw are tracked for the benefit of the HUD
     // formatter; pilots should call player.getPitch() or player.getYaw() directly
@@ -26,11 +36,13 @@ public class FlightMonitor {
 
     public void onClientTick(MinecraftClient client, PlayerEntity player) {
         updateVelocity(player, CLIENT_TICKS_PER_SECOND);
+        updatePastVelocities();
     }
 
     public void onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
         updateHeight(player);
         updateHorizontalDistanceToGoal(player, goal);
+        updateAverageSpeeds();
         approxPitch = MathHelper.wrapDegrees((float) player.getPitch());
         approxYaw = MathHelper.wrapDegrees((float) player.getYaw());
     }
@@ -53,6 +65,14 @@ public class FlightMonitor {
 
     public double getHorizontalDistanceToGoal() {
         return horizontalDistanceToGoal;
+    }
+
+    public double getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public double getAverageHorizontalSpeed() {
+        return averageHorizontalSpeed;
     }
 
     public double getApproxPitch() {
@@ -89,6 +109,26 @@ public class FlightMonitor {
         Vec3d playerPos = player.getPos();
         velocity = playerPos.subtract(previousPos).multiply(callsPerSecond);
         previousPos = playerPos;
+    }
+
+    private void updatePastVelocities() {
+        Vec3d horizontalVelocity = velocity.subtract(new Vec3d(0, velocity.getY(), 0));
+        if (pastVelocities.size() < MAX_PAST_VELOCITIES) {
+            pastVelocities.add(velocity);
+            pastHorizontalVelocities.add(horizontalVelocity);
+        } else {
+            pastVelocities.set(pastVelocityIndex, velocity);
+            pastHorizontalVelocities.set(pastVelocityIndex, horizontalVelocity);
+        }
+
+        pastVelocityIndex = (pastVelocityIndex + 1) % MAX_PAST_VELOCITIES;
+    }
+
+    private void updateAverageSpeeds() {
+        averageSpeed = pastVelocities
+                .stream().mapToDouble(val -> val.length()).average().orElse(0d);
+        averageHorizontalSpeed = pastHorizontalVelocities
+                .stream().mapToDouble(val -> val.length()).average().orElse(0d);
     }
 
     private void updateHorizontalDistanceToGoal(PlayerEntity player, Vec3d goal) {
