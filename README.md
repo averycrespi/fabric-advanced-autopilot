@@ -19,11 +19,11 @@ This mod provides an advanced autopilot system for automatic elytra flight. The 
 ### Goals
 
 - To set a goal, use the `/setgoal X Z` command while flying (with or without the autopilot engaged)
-- To clear a goal, use the `/cleargoal` command, stop flying, or disengage the autopilot
+- To clear the current goal, use the `/cleargoal` command, stop flying, or disengage the autopilot
 
 ### Behaviour
 
-- The pseudocode below describes the rough behaviour of the autopilot
+- The pseudocode below describes the rough behaviour of the autopilot:
 
 ```
 if a goal is set and we are close to the goal:
