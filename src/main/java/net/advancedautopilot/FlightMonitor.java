@@ -3,6 +3,7 @@ package net.advancedautopilot;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -16,6 +17,8 @@ public class FlightMonitor {
     private double height = -1d;
     private Vec3d velocity = new Vec3d(0d, 0d, 0d);
     private Vec3d previousPos = new Vec3d(0d, 0d, 0d);
+    private double pitch = 0d;
+    private double yaw = 0d;
 
     public void onClientTick(MinecraftClient client, PlayerEntity player) {
         updateVelocity(player, CLIENT_TICKS_PER_SECOND);
@@ -23,6 +26,8 @@ public class FlightMonitor {
 
     public void onInfrequentClientTick(MinecraftClient client, PlayerEntity player) {
         updateHeight(player);
+        pitch = MathHelper.wrapDegrees((float) player.getPitch());
+        yaw = MathHelper.wrapDegrees((float) player.getYaw());
     }
 
     public double getHeight() {
@@ -39,6 +44,14 @@ public class FlightMonitor {
 
     public Vec3d getPosition() {
         return previousPos;
+    }
+
+    public double getPitch() {
+        return pitch;
+    }
+
+    public double getYaw() {
+        return yaw;
     }
 
     private void updateHeight(PlayerEntity player) {

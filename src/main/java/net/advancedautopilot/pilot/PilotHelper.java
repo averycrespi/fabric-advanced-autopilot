@@ -1,5 +1,6 @@
 package net.advancedautopilot.pilot;
 
+import net.advancedautopilot.AdvancedAutopilotMod;
 import net.advancedautopilot.ConfigManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -8,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.Formatting;
 
 /**
  * Defines helper methods that are out-of-scope for the Pilot class.
@@ -60,7 +60,8 @@ public class PilotHelper {
                     player);
             player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA, 1.0F, 1.0F);
             player.sendMessage(
-                    new TranslatableText("text.advancedautopilot.swappedElytra").formatted(Formatting.WHITE), true);
+                    new TranslatableText("text.advancedautopilot.swappedElytra").formatted(AdvancedAutopilotMod.INFO),
+                    true);
             return true;
         } else {
             return false;

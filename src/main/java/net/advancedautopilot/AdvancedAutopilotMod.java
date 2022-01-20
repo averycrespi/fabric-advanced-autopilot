@@ -24,6 +24,10 @@ public class AdvancedAutopilotMod implements ModInitializer {
 
 	public static final Logger LOGGER = LogManager.getLogger("advancedautopilot");
 
+	public static final Formatting SUCCESS = Formatting.GREEN;
+	public static final Formatting FAILURE = Formatting.RED;
+	public static final Formatting INFO = Formatting.WHITE;
+
 	public static AdvancedAutopilotMod instance = null;
 
 	public MinecraftClient client = null;
@@ -76,6 +80,11 @@ public class AdvancedAutopilotMod implements ModInitializer {
 			return;
 		}
 
+		if (pilot != null) {
+			pilot.cleanup(client, player);
+		}
+
+		player.sendMessage(new TranslatableText("text.advancedautopilot.performingAutomaticLanding"), true);
 		pilot = new LandingPilot(monitor);
 	}
 
@@ -154,7 +163,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
 		}
 
 		player.sendMessage(
-				new TranslatableText("text.advancedautopilot.performingEmergencyLanding").formatted(Formatting.RED),
+				new TranslatableText("text.advancedautopilot.performingEmergencyLanding").formatted(INFO),
 				true);
 		pilot = new LandingPilot(monitor);
 	}
@@ -183,18 +192,18 @@ public class AdvancedAutopilotMod implements ModInitializer {
 		if (player.isFallFlying()) {
 			if (pilot == null) {
 				player.sendMessage(
-						new TranslatableText("text.advancedautopilot.engagedAutopilot")
-								.formatted(Formatting.GREEN),
+						new TranslatableText("text.advancedautopilot.engagedAutopilot").formatted(SUCCESS),
 						true);
 				pilot = new AscendingPilot(monitor);
 			} else {
 				player.sendMessage(
-						new TranslatableText("text.advancedautopilot.disengagedAutopilot")
-								.formatted(Formatting.YELLOW),
+						new TranslatableText("text.advancedautopilot.disengagedAutopilot").formatted(SUCCESS),
 						true);
 				pilot.cleanup(client, player);
 				pilot = null;
 			}
+		} else {
+			player.sendMessage(new TranslatableText("text.advancedautopilot.notFlying").formatted(FAILURE), true);
 		}
 	}
 }

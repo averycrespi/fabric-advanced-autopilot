@@ -46,6 +46,10 @@ public class HudFormatter {
 
         if (ConfigManager.currentConfig.debug) {
             lines.add(new LiteralText(""));
+            lines.add(new TranslatableText("text.advancedautopilot.pitch", String.format("%.2f", monitor.getPitch())));
+            lines.add(new TranslatableText("text.advancedautopilot.yaw", String.format("%.2f", monitor.getYaw())));
+
+            lines.add(new LiteralText(""));
             lines.add((Text) new TranslatableText("text.advancedautopilot.swapElytra").append(
                     ConfigManager.currentConfig.swapElytra
                             ? new TranslatableText("text.advancedautopilot.enabled")
