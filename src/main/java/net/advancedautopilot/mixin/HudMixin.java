@@ -27,8 +27,8 @@ public class HudMixin {
                 return;
             }
 
-            float stringX = ConfigManager.currentConfig.guiX;
-            float stringY = ConfigManager.currentConfig.guiY;
+            float stringX = (float) ConfigManager.currentConfig.hudTextWidth;
+            float stringY = (float) ConfigManager.currentConfig.hudTextHeight;
 
             ArrayList<Text> lines = mod.formatter.getLines();
             for (int i = 0; i < lines.size(); i++) {

@@ -179,7 +179,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
         }
 
         player.sendMessage(
-                new TranslatableText("text.advancedautopilot.performingEmergencyLanding").formatted(INFO),
+                new TranslatableText("text.advancedautopilot.performingEmergencyLanding").formatted(SUCCESS),
                 true);
         pilot = new LandingPilot(monitor);
     }
@@ -193,7 +193,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
             double height = monitor.getHeight();
             if (goal != null && monitor.getHorizontalDistanceToGoal() < 20) {
                 pilot = new LandingPilot(monitor);
-            } else if (height >= ConfigManager.currentConfig.minHeightToStartGliding) {
+            } else if (height >= ConfigManager.currentConfig.ascentHeight) {
                 pilot = new GlidingPilot(monitor);
             } else if (PilotHelper.isHoldingFirework(player)) {
                 pilot = new AscendingPilot(monitor);

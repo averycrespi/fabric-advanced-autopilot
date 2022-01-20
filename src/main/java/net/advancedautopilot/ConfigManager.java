@@ -25,10 +25,14 @@ import net.minecraft.text.TranslatableText;
  */
 public final class ConfigManager {
 
-    public static AdvancedAutopilotConfig currentConfig = new AdvancedAutopilotConfig();
+    public static Config currentConfig = new Config();
 
-    private static final int ELYTRA_MIN_DURABILITY = 1;
-    private static final int ELYTRA_MAX_DURABILITY = 432;
+    private static final int MIN_ELYTRA_DURABILITY = 1;
+    private static final int MAX_ELYTRA_DURABILITY = 432;
+    private static final double MIN_HEIGHT = 0d; // Cannot be negative
+    private static final double MIN_SPEED = 0d; // Cannot be negative
+    private static final double MIN_WRAPPED_ANGLE = -180d;
+    private static final double MAX_WRAPPED_ANGLE = 180d;
 
     private ConfigManager() {
         // Intentionally left empty
@@ -40,7 +44,7 @@ public final class ConfigManager {
 
     public static Screen createConfigScreen(Screen parentScreen) {
         File configFile = findConfigFile();
-        AdvancedAutopilotConfig config = loadConfigFromFile(configFile);
+        Config config = loadConfigFromFile(configFile);
 
         ConfigBuilder builder = ConfigBuilder.create()
                 .setParentScreen(parentScreen)
@@ -48,134 +52,11 @@ public final class ConfigManager {
 
         ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
-        ConfigCategory generalCategory = builder
-                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.general"));
-
-        generalCategory.addEntry(entryBuilder
-                .startBooleanToggle(new TranslatableText("option.advancedautopilot.swapElytra"),
-                        config.swapElytra)
-                .setDefaultValue(true)
-                .setSaveConsumer(newValue -> config.swapElytra = newValue)
-                .build());
-
-        generalCategory.addEntry(entryBuilder
-                .startIntField(new TranslatableText("option.advancedautopilot.maxElytraSwapDurability"),
-                        config.maxElytraSwapDurability)
-                .setDefaultValue(5)
-                .setMin(ELYTRA_MIN_DURABILITY + 1) // If elytra fully breaks, player will stop flying
-                .setMax(Math.min(config.maxEmergencyLandingDurability - 1, ELYTRA_MAX_DURABILITY - 1))
-                .setSaveConsumer(newValue -> config.maxElytraSwapDurability = newValue)
-                .setTooltip(new TranslatableText("tooltip.advancedautopilot.maxElytraSwapDurability"))
-                .build());
-
-        generalCategory.addEntry(entryBuilder
-                .startIntField(new TranslatableText(
-                        "option.advancedautopilot.minElytraSwapReplacementDurability"),
-                        config.minElytraSwapReplacementDurability)
-                .setDefaultValue(50)
-                .setMin(Math.max(config.maxElytraSwapDurability + 1, ELYTRA_MIN_DURABILITY + 1))
-                .setMax(ELYTRA_MAX_DURABILITY) // Allow user to restrict swap to fully-repaired elytra
-                .setSaveConsumer(newValue -> config.minElytraSwapReplacementDurability = newValue)
-                .setTooltip(new TranslatableText(
-                        "tooltip.advancedautopilot.minElytraSwapReplacementDurability"))
-                .build());
-
-        generalCategory.addEntry(entryBuilder
-                .startBooleanToggle(new TranslatableText("option.advancedautopilot.emergencyLanding"),
-                        config.emergencyLanding)
-                .setDefaultValue(true)
-                .setSaveConsumer(newValue -> config.emergencyLanding = newValue)
-                .setTooltip(new TranslatableText("tooltip.advancedautopilot.emergencyLanding"))
-                .build());
-
-        generalCategory.addEntry(entryBuilder
-                .startIntField(new TranslatableText(
-                        "option.advancedautopilot.maxEmergencyLandingDurability"),
-                        config.maxEmergencyLandingDurability)
-                .setDefaultValue(50)
-                .setSaveConsumer(newValue -> config.maxEmergencyLandingDurability = newValue)
-                .setMin(Math.max(config.maxElytraSwapDurability + 1, ELYTRA_MIN_DURABILITY + 1))
-                .setMax(ELYTRA_MAX_DURABILITY - 1)
-                .setTooltip(new TranslatableText(
-                        "tooltip.advancedautopilot.maxEmergencyLandingDurability"))
-                .build());
-
-        generalCategory.addEntry(entryBuilder
-                .startBooleanToggle(new TranslatableText("option.advancedautopilot.debug"), config.debug)
-                .setDefaultValue(false)
-                .setSaveConsumer(newValue -> config.debug = newValue)
-                .build());
-
-        ConfigCategory ascendingCategory = builder
-                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.ascending"));
-
-        ascendingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.ascentHeight"),
-                        config.ascentHeight)
-                .setDefaultValue(240d)
-                .setMin(0d) // Non-negative
-                .setSaveConsumer(newValue -> config.ascentHeight = newValue)
-                .build());
-
-        ConfigCategory glidingCategory = builder
-                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.gliding"));
-
-        glidingCategory.addEntry(entryBuilder
-                .startDoubleField(
-                        new TranslatableText(
-                                "option.advancedautopilot.minHeightToStartGliding"),
-                        config.minHeightToStartGliding)
-                .setDefaultValue(180d)
-                .setMin(0d) // Non-negative
-                .setSaveConsumer(newValue -> config.minHeightToStartGliding = newValue)
-                .build());
-
-        glidingCategory.addEntry(entryBuilder
-                .startDoubleField(
-                        new TranslatableText("option.advancedautopilot.maxHeightWhileGliding"),
-                        config.maxHeightWhileGliding)
-                .setDefaultValue(360d)
-                .setMin(0d) // Non-negative
-                .setSaveConsumer(newValue -> config.maxHeightWhileGliding = newValue)
-                .build());
-
-        glidingCategory.addEntry(entryBuilder
-                .startDoubleField(
-                        new TranslatableText(
-                                "option.advancedautopilot.minSpeedBeforePullingDown"),
-                        config.minSpeedBeforePullingDown)
-                .setDefaultValue(10d)
-                .setMin(0d) // Non-negative
-                .setSaveConsumer(newValue -> config.minSpeedBeforePullingDown = newValue)
-                .build());
-
-        glidingCategory.addEntry(entryBuilder
-                .startDoubleField(
-                        new TranslatableText(
-                                "option.advancedautopilot.maxSpeedBeforePullingUp"),
-                        config.maxSpeedBeforePullingUp)
-                .setDefaultValue(40d)
-                .setMin(0d) // Non-negative
-                .setSaveConsumer(newValue -> config.maxSpeedBeforePullingUp = newValue)
-                .build());
-
-        ConfigCategory landingCategory = builder
-                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.landing"));
-
-        landingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.landingPitch"),
-                        config.landingPitch)
-                .setDefaultValue(30d)
-                .setSaveConsumer(newValue -> config.landingPitch = newValue)
-                .build());
-
-        landingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.maxLandingSpeed"),
-                        config.maxLandingSpeed)
-                .setDefaultValue(5d)
-                .setMin(0d) // Non-negative
-                .setSaveConsumer(newValue -> config.maxLandingSpeed = newValue)
-                .build());
+        addGeneralCategory(builder, entryBuilder, config);
+        addHudCategory(builder, entryBuilder, config);
+        addAscendingCategory(builder, entryBuilder, config);
+        addGlidingCategory(builder, entryBuilder, config);
+        addLandingCategory(builder, entryBuilder, config);
 
         builder.setSavingRunnable(() -> {
             saveConfigToFile(config, configFile);
@@ -185,6 +66,166 @@ public final class ConfigManager {
         return builder.build();
     }
 
+    private static void addGeneralCategory(
+            ConfigBuilder builder,
+            ConfigEntryBuilder entryBuilder,
+            Config config) {
+
+        ConfigCategory generalCategory = builder
+                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.general"));
+
+        generalCategory.addEntry(entryBuilder
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.swapElytra"),
+                        config.swapElytra)
+                .setDefaultValue(Config.DEFAULT_SWAP_ELYTRA)
+                .setSaveConsumer(newValue -> config.swapElytra = newValue)
+                .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startIntField(new TranslatableText("option.advancedautopilot.maxElytraSwapDurability"),
+                        config.maxElytraSwapDurability)
+                .setDefaultValue(Config.DEFAULT_MAX_ELYTRA_SWAP_DURABILITY)
+                .setMin(MIN_ELYTRA_DURABILITY)
+                .setMax(MAX_ELYTRA_DURABILITY)
+                .setSaveConsumer(newValue -> config.maxElytraSwapDurability = newValue)
+                .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startIntField(new TranslatableText(
+                        "option.advancedautopilot.minElytraSwapReplacementDurability"),
+                        config.minElytraSwapReplacementDurability)
+                .setDefaultValue(Config.DEFAULT_MIN_ELYTRA_SWAP_REPLACEMENT_DURABILITY)
+                .setMin(MIN_ELYTRA_DURABILITY)
+                .setMax(MAX_ELYTRA_DURABILITY)
+                .setSaveConsumer(newValue -> config.minElytraSwapReplacementDurability = newValue)
+                .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.emergencyLanding"),
+                        config.emergencyLanding)
+                .setDefaultValue(Config.DEFAULT_EMERGENCY_LANDING)
+                .setSaveConsumer(newValue -> config.emergencyLanding = newValue)
+                .setTooltip(new TranslatableText("tooltip.advancedautopilot.emergencyLanding"))
+                .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startIntField(new TranslatableText(
+                        "option.advancedautopilot.maxEmergencyLandingDurability"),
+                        config.maxEmergencyLandingDurability)
+                .setDefaultValue(Config.DEFAULT_MAX_EMERGENCY_LANDING_DURABILITY)
+                .setSaveConsumer(newValue -> config.maxEmergencyLandingDurability = newValue)
+                .setMin(MIN_ELYTRA_DURABILITY)
+                .setMax(MAX_ELYTRA_DURABILITY)
+                .build());
+    }
+
+    private static void addHudCategory(
+            ConfigBuilder builder,
+            ConfigEntryBuilder entryBuilder,
+            Config config) {
+
+        ConfigCategory hudCategory = builder
+                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.hud"));
+
+        hudCategory.addEntry(entryBuilder
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.showDebugInfo"),
+                        config.showDebugInfo)
+                .setDefaultValue(Config.DEFAULT_SHOW_DEBUG_INFO)
+                .setSaveConsumer(newValue -> config.showDebugInfo = newValue)
+                .build());
+
+        hudCategory.addEntry(entryBuilder
+                .startDoubleField(new TranslatableText("option.advancedautopilot.hudTextWidth"), config.hudTextWidth)
+                .setDefaultValue(Config.DEFAULT_HUD_TEXT_WIDTH)
+                .setSaveConsumer(newValue -> config.hudTextWidth = newValue)
+                .build());
+
+        hudCategory.addEntry(entryBuilder
+                .startDoubleField(new TranslatableText("option.advancedautopilot.hudTextHeight"), config.hudTextHeight)
+                .setDefaultValue(Config.DEFAULT_HUD_TEXT_HEIGHT)
+                .setSaveConsumer(newValue -> config.hudTextHeight = newValue)
+                .build());
+    }
+
+    private static void addAscendingCategory(
+            ConfigBuilder builder,
+            ConfigEntryBuilder entryBuilder,
+            Config config) {
+
+        ConfigCategory ascendingCategory = builder
+                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.ascending"));
+
+        ascendingCategory.addEntry(entryBuilder
+                .startDoubleField(new TranslatableText("option.advancedautopilot.ascentHeight"),
+                        config.ascentHeight)
+                .setDefaultValue(Config.DEFAULT_ASCENT_HEIGHT)
+                .setMin(MIN_HEIGHT)
+                .setSaveConsumer(newValue -> config.ascentHeight = newValue)
+                .build());
+    }
+
+    private static void addGlidingCategory(
+            ConfigBuilder builder,
+            ConfigEntryBuilder entryBuilder,
+            Config config) {
+
+        ConfigCategory glidingCategory = builder
+                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.gliding"));
+
+        glidingCategory.addEntry(entryBuilder
+                .startDoubleField(
+                        new TranslatableText("option.advancedautopilot.minHeightWhileGliding"),
+                        config.minHeightWhileGliding)
+                .setDefaultValue(Config.DEFAULT_MIN_HEIGHT_WHILE_GLIDING)
+                .setMin(MIN_HEIGHT)
+                .setSaveConsumer(newValue -> config.minHeightWhileGliding = newValue)
+                .build());
+
+        glidingCategory.addEntry(entryBuilder
+                .startDoubleField(
+                        new TranslatableText("option.advancedautopilot.minHeightBeforePullingUp"),
+                        config.minHeightBeforePullingUp)
+                .setDefaultValue(Config.DEFAULT_MIN_HEIGHT_BEFORE_PULLING_UP)
+                .setMin(MIN_HEIGHT)
+                .setSaveConsumer(newValue -> config.minHeightBeforePullingUp = newValue)
+                .build());
+
+        glidingCategory.addEntry(entryBuilder
+                .startDoubleField(
+                        new TranslatableText("option.advancedautopilot.maxHeightBeforePullingDown"),
+                        config.maxHeightBeforePullingDown)
+                .setDefaultValue(Config.DEFAULT_MAX_HEIGHT_BEFORE_PULLING_DOWN)
+                .setMin(MIN_HEIGHT)
+                .setSaveConsumer(newValue -> config.maxHeightBeforePullingDown = newValue)
+                .build());
+    }
+
+    private static void addLandingCategory(
+            ConfigBuilder builder,
+            ConfigEntryBuilder entryBuilder,
+            Config config) {
+
+        ConfigCategory landingCategory = builder
+                .getOrCreateCategory(new TranslatableText("category.advancedautopilot.landing"));
+
+        landingCategory.addEntry(entryBuilder
+                .startDoubleField(new TranslatableText("option.advancedautopilot.landingPitch"),
+                        config.landingPitch)
+                .setDefaultValue(Config.DEFAULT_LANDING_PITCH)
+                .setMin(MIN_WRAPPED_ANGLE)
+                .setMax(MAX_WRAPPED_ANGLE)
+                .setSaveConsumer(newValue -> config.landingPitch = newValue)
+                .build());
+
+        landingCategory.addEntry(entryBuilder
+                .startDoubleField(new TranslatableText("option.advancedautopilot.maxLandingSpeed"),
+                        config.maxLandingSpeed)
+                .setDefaultValue(Config.DEFAULT_MAX_LANDING_SPEED)
+                .setMin(MIN_SPEED)
+                .setSaveConsumer(newValue -> config.maxLandingSpeed = newValue)
+                .build());
+    }
+
     private static File findConfigFile() {
         Path configDir = FabricLoader.getInstance().getConfigDir();
         File configFile = Paths.get(configDir.toString(), "advancedautopilot", "config.json").toFile();
@@ -192,30 +233,29 @@ public final class ConfigManager {
         try {
             configFile.createNewFile();
         } catch (IOException e) {
-            AdvancedAutopilotMod.LOGGER.error("Failed to create config file because: " + e.getMessage());
+            AdvancedAutopilotMod.LOGGER.error("Failed to create config file", e);
         }
         return configFile;
     }
 
-    private static AdvancedAutopilotConfig loadConfigFromFile(File configFile) {
+    private static Config loadConfigFromFile(File configFile) {
         Gson gson = new Gson();
         try {
             Reader reader = Files.newBufferedReader(configFile.toPath());
-            AdvancedAutopilotConfig config = gson.fromJson(reader, AdvancedAutopilotConfig.class);
+            Config config = gson.fromJson(reader, Config.class);
             if (config == null) {
                 AdvancedAutopilotMod.LOGGER.warn("Config is null; falling back to default config");
-                return new AdvancedAutopilotConfig();
+                return new Config();
             } else {
                 return config;
             }
         } catch (IOException e) {
-            AdvancedAutopilotMod.LOGGER.error("Failed to load config from file because: " + e.getMessage());
-            AdvancedAutopilotMod.LOGGER.warn("Falling back to default config");
-            return new AdvancedAutopilotConfig();
+            AdvancedAutopilotMod.LOGGER.error("Failed to load config from file; falling back to default config", e);
+            return new Config();
         }
     }
 
-    private static void saveConfigToFile(AdvancedAutopilotConfig config, File configFile) {
+    private static void saveConfigToFile(Config config, File configFile) {
         Gson gson = new Gson();
         String configString = gson.toJson(config);
         try {
@@ -224,7 +264,7 @@ public final class ConfigManager {
             writer.close();
             AdvancedAutopilotMod.LOGGER.info("Saved config to file");
         } catch (IOException e) {
-            AdvancedAutopilotMod.LOGGER.error("Failed to save config to file because: " + e.getMessage());
+            AdvancedAutopilotMod.LOGGER.error("Failed to save config to file", e);
         }
     }
 

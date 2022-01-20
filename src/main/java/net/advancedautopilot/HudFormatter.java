@@ -34,10 +34,10 @@ public class HudFormatter {
 
         if (goal != null) {
             addSpacer();
-            addGoal(goal);
+            addGoalAndEta(goal);
         }
 
-        if (ConfigManager.currentConfig.debug) {
+        if (ConfigManager.currentConfig.showDebugInfo) {
             addSpacer();
             addAverageSpeed();
             addSpacer();
@@ -73,12 +73,14 @@ public class HudFormatter {
                 String.format("%d", (long) playerPos.getZ())));
     }
 
-    private void addGoal(Vec3d goal) {
+    private void addGoalAndEta(Vec3d goal) {
         lines.add(new TranslatableText("text.advancedautopilot.goal",
                 String.format("%d", (long) goal.getX()),
                 String.format("%d", (long) goal.getZ())));
         lines.add(new TranslatableText("text.advancedautopilot.distanceToGoal",
                 String.format("%d", (long) monitor.getHorizontalDistanceToGoal())));
+        lines.add(new TranslatableText("text.advancedautopilot.eta",
+                String.format("%d", (long) monitor.getEta())));
     }
 
     public void addAverageSpeed() {
