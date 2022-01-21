@@ -6,6 +6,14 @@
 
 This mod provides an advanced autopilot system for automatic elytra flight. The autopilot knows how to ascend, glide, and land; it can also travel towards a goal, swap out elytra with low durability, and show flight information in a HUD. The mod is highly configurable, but has sensible defaults for getting started. If you want a simpler autopilot, I recommend TheMegax's [Elytra Autopilot](https://github.com/TheMegax/fabric-elytra-autopilot) mod, which was the inspiration for this mod.
 
+## Features
+
+A few of the mod's features:
+- **Elytra swap**: Swap out elytra when durability is low
+- **Emergency landing**: Perform emergency landing when elytra durability is low
+- **Goals**: Fly towards a goal that is set by the player
+- **HUD**: Show flight information in a HUD (heads-up display)
+
 ## Usage
 
 - To engage or disengage the autopilot, press the toggle key (default <kbd>R</kbd>) while flying
