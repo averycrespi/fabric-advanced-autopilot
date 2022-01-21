@@ -239,6 +239,20 @@ public final class ConfigManager {
                 .setMin(MIN_SPEED)
                 .setSaveConsumer(newValue -> config.maxLandingSpeed = newValue)
                 .build());
+
+        landingCategory.addEntry(entryBuilder
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.riskyLanding"), config.riskyLanding)
+                .setDefaultValue(Config.DEFAULT_RISKY_LANDING)
+                .setSaveConsumer(newValue -> config.riskyLanding = newValue)
+                .build());
+
+        landingCategory.addEntry(entryBuilder
+                .startDoubleField(new TranslatableText("option.advancedautopilot.minRiskyLandingHeight"),
+                        config.minRiskyLandingHeight)
+                .setDefaultValue(Config.DEFAULT_MIN_RISKY_LANDING_HEIGHT)
+                .setMin(MIN_HEIGHT)
+                .setSaveConsumer(newValue -> config.minRiskyLandingHeight = newValue)
+                .build());
     }
 
     private static File findConfigFile() {

@@ -5,32 +5,39 @@ public class Config {
     public static final boolean DEFAULT_SWAP_ELYTRA = true;
     public static final int DEFAULT_MAX_ELYTRA_SWAP_DURABILITY = 5;
     public static final int DEFAULT_MIN_ELYTRA_SWAP_REPLACEMENT_DURABILITY = 50;
+
     public static final boolean DEFAULT_EMERGENCY_LANDING = true;
     public static final int DEFAULT_MAX_EMERGENCY_LANDING_DURABILITY = 50;
-    public static final double DEFAULT_ASCENT_HEIGHT = 240d;
-    public static final double DEFAULT_MIN_HEIGHT_WHILE_GLIDING = 120d;
-    public static final double DEFAULT_MIN_HEIGHT_BEFORE_PULLING_UP = 180d;
-    public static final double DEFAULT_MAX_HEIGHT_BEFORE_PULLING_DOWN = 360d;
-    public static final double DEFAULT_LANDING_PITCH = 30d;
-    public static final double DEFAULT_MAX_LANDING_SPEED = 5d;
+
     public static final boolean DEFAULT_SHOW_ANGLES_IN_HUD = false;
     public static final boolean DEFAULT_SHOW_AVERAGE_SPEED_IN_HUD = false;
     public static final boolean DEFAULT_SHOW_CONFIG_OPTIONS_IN_HUD = false;
     public static final double DEFAULT_HUD_TEXT_WIDTH = 5f;
     public static final double DEFAULT_HUD_TEXT_HEIGHT = 5f;
 
+    public static final double DEFAULT_ASCENT_HEIGHT = 240d;
+
+    public static final double DEFAULT_MIN_HEIGHT_WHILE_GLIDING = 120d;
+    public static final double DEFAULT_MIN_HEIGHT_BEFORE_PULLING_UP = 180d;
+    public static final double DEFAULT_MAX_HEIGHT_BEFORE_PULLING_DOWN = 360d;
+
+    public static final double DEFAULT_LANDING_PITCH = 30d;
+    public static final double DEFAULT_MAX_LANDING_SPEED = 5d;
+    public static final boolean DEFAULT_RISKY_LANDING = false;
+    public static final double DEFAULT_MIN_RISKY_LANDING_HEIGHT = 100d;
+
     public boolean swapElytra = DEFAULT_SWAP_ELYTRA;
     public int maxElytraSwapDurability = DEFAULT_MAX_ELYTRA_SWAP_DURABILITY;
     public int minElytraSwapReplacementDurability = DEFAULT_MIN_ELYTRA_SWAP_REPLACEMENT_DURABILITY;
+
+    public boolean emergencyLanding = DEFAULT_EMERGENCY_LANDING;
+    public int maxEmergencyLandingDurability = DEFAULT_MAX_EMERGENCY_LANDING_DURABILITY;
 
     public boolean showAnglesInHud = DEFAULT_SHOW_ANGLES_IN_HUD;
     public boolean showAverageSpeedInHud = DEFAULT_SHOW_AVERAGE_SPEED_IN_HUD;
     public boolean showConfigOptionsInHud = DEFAULT_SHOW_CONFIG_OPTIONS_IN_HUD;
     public double hudTextWidth = DEFAULT_HUD_TEXT_WIDTH;
     public double hudTextHeight = DEFAULT_HUD_TEXT_HEIGHT;
-
-    public boolean emergencyLanding = DEFAULT_EMERGENCY_LANDING;
-    public int maxEmergencyLandingDurability = DEFAULT_MAX_EMERGENCY_LANDING_DURABILITY;
 
     public double ascentHeight = DEFAULT_ASCENT_HEIGHT;
 
@@ -40,6 +47,8 @@ public class Config {
 
     public double landingPitch = DEFAULT_LANDING_PITCH;
     public double maxLandingSpeed = DEFAULT_MAX_LANDING_SPEED;
+    public boolean riskyLanding = DEFAULT_RISKY_LANDING;
+    public double minRiskyLandingHeight = DEFAULT_MIN_RISKY_LANDING_HEIGHT;
 
     // These are magic witchcraft, don't touch them
     // https://github.com/simonlourson/fabric-elytra-auto-flight/blob/bb4e97fe475bce4231d09231af899593c52eb969/src/main/java/net/elytraautoflight/ElytraConfig.java

@@ -20,6 +20,8 @@
   "option.advancedautopilot.minElytraSwapReplacementDurability": "Minimum durability for replacement elytra during swap",
   "option.advancedautopilot.minHeightBeforePullingUp": "Minimum height before pulling up (m)",
   "option.advancedautopilot.minHeightWhileGliding": "Minimum height while gliding (m)",
+  "option.advancedautopilot.minRiskyLandingHeight": "Minimum height to start or continue a risky landing (m)",
+  "option.advancedautopilot.riskyLanding": "Perform a risky landing by diving straight down while high enough",
   "option.advancedautopilot.showAnglesInHud": "Show pitch and yaw in the HUD",
   "option.advancedautopilot.showAverageSpeedInHud": "Show average speed in the HUD",
   "option.advancedautopilot.showConfigOptionsInHud": "Show config options in the HUD",

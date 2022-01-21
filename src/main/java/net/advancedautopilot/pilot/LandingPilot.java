@@ -20,14 +20,11 @@ public class LandingPilot extends Pilot {
 
     @Override
     public TickResult onClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
-        Config config = ConfigManager.getCurrentConfig();
 
         if (!player.isFallFlying()) {
             AdvancedAutopilotMod.LOGGER.info("Yielded because player is not flying");
             return TickResult.YIELD;
         }
-
-        player.setPitch((float) MathHelper.wrapDegrees(config.landingPitch));
 
         return TickResult.CONTINUE;
     }
@@ -36,6 +33,13 @@ public class LandingPilot extends Pilot {
     public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
         Config config = ConfigManager.getCurrentConfig();
 
+        double height = monitor.getHeight();
+        if (config.riskyLanding && height >= config.minRiskyLandingHeight) {
+            player.setPitch(90f); // Look straight down
+        } else {
+            player.setPitch((float) MathHelper.wrapDegrees(config.landingPitch));
+        }
+
         double speed = monitor.getSpeed();
         if (speed > config.maxLandingSpeed) {
             float oppositeYaw = (float) MathHelper.wrapDegrees(player.getYaw() + 180f);
@@ -43,5 +47,11 @@ public class LandingPilot extends Pilot {
         }
 
         return TickResult.CONTINUE;
+    }
+
+    @Override
+    public void cleanup(MinecraftClient client, PlayerEntity player) {
+        super.cleanup(client, player);
+        player.setPitch(0f); // Look forwards
     }
 }
