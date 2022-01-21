@@ -1,6 +1,7 @@
 package net.advancedautopilot.pilot;
 
 import net.advancedautopilot.AdvancedAutopilotMod;
+import net.advancedautopilot.Config;
 import net.advancedautopilot.ConfigManager;
 import net.advancedautopilot.FlightMonitor;
 import net.minecraft.client.MinecraftClient;
@@ -23,12 +24,14 @@ public class AscendingPilot extends Pilot {
 
     @Override
     public TickResult onClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
+        Config config = ConfigManager.getCurrentConfig();
+
         if (!player.isFallFlying()) {
             client.options.keyJump.setPressed(!client.options.keyJump.isPressed());
             return TickResult.CONTINUE; // Wait for next tick before continuing
         }
 
-        if (monitor.getHeight() >= ConfigManager.currentConfig.ascentHeight) {
+        if (monitor.getHeight() >= config.ascentHeight) {
             AdvancedAutopilotMod.LOGGER.info("Yielded because player reached ascent height");
             return TickResult.YIELD;
         }

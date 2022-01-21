@@ -19,13 +19,8 @@ import net.minecraft.text.TranslatableText;
 
 /**
  * Manages the mod configuration.
- *
- * The configuration can change at any time, so you should always reference
- * ConfigManager.currentConfig to get the current configuration.
  */
 public final class ConfigManager {
-
-    public static Config currentConfig = new Config();
 
     private static final int MIN_ELYTRA_DURABILITY = 1;
     private static final int MAX_ELYTRA_DURABILITY = 432;
@@ -34,12 +29,18 @@ public final class ConfigManager {
     private static final double MIN_WRAPPED_ANGLE = -180d;
     private static final double MAX_WRAPPED_ANGLE = 180d;
 
+    private static Config currentConfig = new Config();
+
     private ConfigManager() {
         // Intentionally left empty
     }
 
     public static void initialize() {
         ConfigManager.currentConfig = loadConfigFromFile(findConfigFile());
+    }
+
+    public static Config getCurrentConfig() {
+        return currentConfig;
     }
 
     public static Screen createConfigScreen(Screen parentScreen) {

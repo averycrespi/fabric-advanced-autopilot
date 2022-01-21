@@ -130,6 +130,8 @@ public class AdvancedAutopilotMod implements ModInitializer {
     }
 
     private void onInfrequentClientTick(PlayerEntity player) {
+        Config config = ConfigManager.getCurrentConfig();
+
         monitor.onInfrequentClientTick(client, player, goal);
         formatter.onInfrequentClientTick(pilot, goal);
 
@@ -143,32 +145,34 @@ public class AdvancedAutopilotMod implements ModInitializer {
             handlePilotYield(player);
         }
 
-        if (ConfigManager.currentConfig.swapElytra || ConfigManager.currentConfig.emergencyLanding) {
+        if (config.swapElytra || config.emergencyLanding) {
             monitorElytraDurability(player);
         }
     }
 
     private void monitorElytraDurability(PlayerEntity player) {
+        Config config = ConfigManager.getCurrentConfig();
+
         if (pilot != null && PilotHelper.hasElytraEquipped(player)) {
             int elytraDurability = PilotHelper.getElytraDurability(player);
 
-            if (ConfigManager.currentConfig.swapElytra && ConfigManager.currentConfig.emergencyLanding) {
+            if (config.swapElytra && config.emergencyLanding) {
                 if (PilotHelper.canSwapElytra(player)) {
-                    if (elytraDurability <= ConfigManager.currentConfig.maxElytraSwapDurability) {
+                    if (elytraDurability <= config.maxElytraSwapDurability) {
                         if (!PilotHelper.swapElytra(client, player)) {
                             LOGGER.warn("Failed to swap elytra despite pre-check; attempting dangerous landing");
                             performEmergencyLanding(player);
                         }
                     }
-                } else if (elytraDurability <= ConfigManager.currentConfig.maxEmergencyLandingDurability) {
+                } else if (elytraDurability <= config.maxEmergencyLandingDurability) {
                     performEmergencyLanding(player);
                 }
-            } else if (ConfigManager.currentConfig.swapElytra) {
-                if (elytraDurability <= ConfigManager.currentConfig.maxElytraSwapDurability) {
+            } else if (config.swapElytra) {
+                if (elytraDurability <= config.maxElytraSwapDurability) {
                     PilotHelper.swapElytra(client, player); // Ignore swap failure
                 }
-            } else if (ConfigManager.currentConfig.emergencyLanding) {
-                if (elytraDurability <= ConfigManager.currentConfig.maxEmergencyLandingDurability) {
+            } else if (config.emergencyLanding) {
+                if (elytraDurability <= config.maxEmergencyLandingDurability) {
                     performEmergencyLanding(player);
                 }
             }
@@ -187,6 +191,8 @@ public class AdvancedAutopilotMod implements ModInitializer {
     }
 
     private void handlePilotYield(PlayerEntity player) {
+        Config config = ConfigManager.getCurrentConfig();
+
         if (pilot != null) {
             pilot.cleanup(client, player);
         }
@@ -195,7 +201,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
             double height = monitor.getHeight();
             if (goal != null && monitor.getHorizontalDistanceToGoal() < 20) {
                 pilot = new LandingPilot(monitor);
-            } else if (height >= ConfigManager.currentConfig.ascentHeight) {
+            } else if (height >= config.ascentHeight) {
                 pilot = new GlidingPilot(monitor);
             } else if (PilotHelper.isHoldingFirework(player)) {
                 pilot = new AscendingPilot(monitor);

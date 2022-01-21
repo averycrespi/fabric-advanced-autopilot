@@ -1,6 +1,7 @@
 package net.advancedautopilot.pilot;
 
 import net.advancedautopilot.AdvancedAutopilotMod;
+import net.advancedautopilot.Config;
 import net.advancedautopilot.ConfigManager;
 import net.advancedautopilot.FlightMonitor;
 import net.minecraft.client.MinecraftClient;
@@ -19,21 +20,24 @@ public class LandingPilot extends Pilot {
 
     @Override
     public TickResult onClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
+        Config config = ConfigManager.getCurrentConfig();
+
         if (!player.isFallFlying()) {
             AdvancedAutopilotMod.LOGGER.info("Yielded because player is not flying");
             return TickResult.YIELD;
         }
 
-        player.setPitch((float) MathHelper.wrapDegrees(ConfigManager.currentConfig.landingPitch));
+        player.setPitch((float) MathHelper.wrapDegrees(config.landingPitch));
 
         return TickResult.CONTINUE;
     }
 
     @Override
     public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
-        double speed = monitor.getSpeed();
+        Config config = ConfigManager.getCurrentConfig();
 
-        if (speed >= ConfigManager.currentConfig.maxLandingSpeed) {
+        double speed = monitor.getSpeed();
+        if (speed > config.maxLandingSpeed) {
             float oppositeYaw = (float) MathHelper.wrapDegrees(player.getYaw() + 180f);
             player.setYaw(oppositeYaw); // Turn around
         }

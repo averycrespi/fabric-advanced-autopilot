@@ -1,6 +1,7 @@
 package net.advancedautopilot.pilot;
 
 import net.advancedautopilot.AdvancedAutopilotMod;
+import net.advancedautopilot.Config;
 import net.advancedautopilot.ConfigManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -53,11 +54,13 @@ public class PilotHelper {
     }
 
     public static boolean canSwapElytra(PlayerEntity player) {
+        Config config = ConfigManager.getCurrentConfig();
+
         // Optimization: look for the first viable replacement, not the best
         for (ItemStack itemStack : player.getInventory().main) {
             if (itemStack.getItem().getTranslationKey().equals(ELYTRA_KEY)) {
                 int itemDurability = itemStack.getMaxDamage() - itemStack.getDamage();
-                if (itemDurability >= ConfigManager.currentConfig.minSpeedBeforePullingDown) {
+                if (itemDurability >= config.minElytraSwapReplacementDurability) {
                     return true;
                 }
             }
@@ -85,8 +88,10 @@ public class PilotHelper {
     }
 
     private static ItemStack findReplacementElytra(PlayerEntity player) {
+        Config config = ConfigManager.getCurrentConfig();
+
         ItemStack replacementElytra = null;
-        int bestDurability = ConfigManager.currentConfig.minElytraSwapReplacementDurability;
+        int bestDurability = config.minElytraSwapReplacementDurability;
         for (ItemStack itemStack : player.getInventory().main) {
             if (itemStack.getItem().getTranslationKey().equals(ELYTRA_KEY)) {
                 int itemDurability = itemStack.getMaxDamage() - itemStack.getDamage();

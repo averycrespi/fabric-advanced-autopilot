@@ -26,6 +26,8 @@ public class HudFormatter {
     }
 
     public void onInfrequentClientTick(Pilot pilot, Vec3d goal) {
+        Config config = ConfigManager.getCurrentConfig();
+
         lines.clear();
 
         addPilot(pilot);
@@ -37,17 +39,17 @@ public class HudFormatter {
             addGoalAndEta(goal);
         }
 
-        if (ConfigManager.currentConfig.showAverageSpeedInHud) {
+        if (config.showAverageSpeedInHud) {
             addSpacer();
             addAverageSpeed();
         }
 
-        if (ConfigManager.currentConfig.showAnglesInHud) {
+        if (config.showAnglesInHud) {
             addSpacer();
             addAngles();
         }
 
-        if (ConfigManager.currentConfig.showConfigOptionsInHud) {
+        if (config.showConfigOptionsInHud) {
             addSpacer();
             addConfigOptions();
         }
@@ -107,12 +109,14 @@ public class HudFormatter {
     }
 
     private void addConfigOptions() {
+        Config config = ConfigManager.getCurrentConfig();
+
         lines.add((Text) new TranslatableText("text.advancedautopilot.swapElytra").append(
-                ConfigManager.currentConfig.swapElytra
+                config.swapElytra
                         ? new TranslatableText("text.advancedautopilot.enabled")
                         : new TranslatableText("text.advancedautopilot.disabled")));
         lines.add((Text) new TranslatableText("text.advancedautopilot.emergencyLanding").append(
-                ConfigManager.currentConfig.emergencyLanding
+                config.emergencyLanding
                         ? new TranslatableText("text.advancedautopilot.enabled")
                         : new TranslatableText("text.advancedautopilot.disabled")));
     }

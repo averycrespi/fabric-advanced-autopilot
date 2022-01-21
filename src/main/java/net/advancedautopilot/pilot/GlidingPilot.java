@@ -22,7 +22,7 @@ public class GlidingPilot extends Pilot {
 
     @Override
     public TickResult onClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
-        Config config = ConfigManager.currentConfig;
+        Config config = ConfigManager.getCurrentConfig();
 
         if (!player.isFallFlying()) {
             AdvancedAutopilotMod.LOGGER.info("Yielded because player is not flying");
@@ -71,7 +71,7 @@ public class GlidingPilot extends Pilot {
     }
 
     public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
-        Config config = ConfigManager.currentConfig;
+        Config config = ConfigManager.getCurrentConfig();
 
         if (goal != null && monitor.getHorizontalDistanceToGoal() < 20) {
             AdvancedAutopilotMod.LOGGER.info("Yielded because player is near goal");
