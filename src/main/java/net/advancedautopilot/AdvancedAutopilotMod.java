@@ -139,6 +139,8 @@ public class AdvancedAutopilotMod implements ModInitializer {
             LOGGER.info("Disengaging autopilot because player touched liquid");
             pilot.cleanup(client, player);
             pilot = null;
+            goal = null;
+            monitor.resetAggregateMetrics();
         }
 
         if (pilot != null && pilot.onInfrequentClientTick(client, player, goal) == TickResult.YIELD) {
