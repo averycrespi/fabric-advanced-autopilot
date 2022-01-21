@@ -211,6 +211,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
         } else {
             pilot = null;
             goal = null;
+            monitor.resetAggregateMetrics();
         }
     }
 
@@ -222,6 +223,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
                         new TranslatableText("text.advancedautopilot.engagedAutopilot").formatted(SUCCESS),
                         true);
                 pilot = new AscendingPilot(monitor);
+                monitor.resetAggregateMetrics();
             } else {
                 player.sendMessage(
                         new TranslatableText("text.advancedautopilot.disengagedAutopilot").formatted(SUCCESS),
@@ -229,6 +231,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
                 pilot.cleanup(client, player);
                 pilot = null;
                 goal = null;
+                monitor.resetAggregateMetrics();
             }
         } else {
             player.sendMessage(new TranslatableText("text.advancedautopilot.notFlying").formatted(FAILURE), true);

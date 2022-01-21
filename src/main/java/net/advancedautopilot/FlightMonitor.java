@@ -60,6 +60,15 @@ public class FlightMonitor {
         approxYaw = MathHelper.wrapDegrees((float) player.getYaw());
     }
 
+    public void resetAggregateMetrics() {
+        pastSpeedIndex = 0;
+        pastSpeeds.clear();
+        pastHorizontalSpeeds.clear();
+        averageSpeed = 0d;
+        averageHorizontalSpeed = 0d;
+        eta = UNKNOWN_ETA;
+    }
+
     public double getHeight() {
         return height;
     }
