@@ -9,6 +9,9 @@ public class Config {
     public static final boolean DEFAULT_EMERGENCY_LANDING = true;
     public static final int DEFAULT_MAX_EMERGENCY_LANDING_DURABILITY = 50;
 
+    public static final boolean DEFAULT_POWERED_FLIGHT = false;
+    public static final double DEFAULT_MAX_POWERED_FLIGHT_SPEED = 15d;
+
     public static final boolean DEFAULT_REFILL_ROCKETS = false;
 
     public static final boolean DEFAULT_SHOW_ANGLES_IN_HUD = false;
@@ -35,6 +38,9 @@ public class Config {
 
     public boolean emergencyLanding = DEFAULT_EMERGENCY_LANDING;
     public int maxEmergencyLandingDurability = DEFAULT_MAX_EMERGENCY_LANDING_DURABILITY;
+
+    public boolean poweredFlight = DEFAULT_POWERED_FLIGHT;
+    public double maxPoweredFlightSpeed = DEFAULT_MAX_POWERED_FLIGHT_SPEED;
 
     public boolean refillRockets = DEFAULT_REFILL_ROCKETS;
 

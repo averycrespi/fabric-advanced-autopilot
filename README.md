@@ -13,6 +13,7 @@ A few of the mod's (configurable) features:
 - **Emergency landing**: Perform emergency landing when elytra durability is low
 - **Goals**: Fly towards a goal that is set by the player
 - **HUD**: Show flight information in a HUD (heads-up display)
+- **Powered flight**: Use rockets while gliding to increase speed
 - **Risky landing**: Dive straight down, then correct at the last moment
 - **Rocket refill**: Refill rockets from inventory into main hand (first hotbar slot)
 

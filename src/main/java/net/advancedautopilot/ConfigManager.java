@@ -124,6 +124,22 @@ public final class ConfigManager {
 
         generalCategory.addEntry(entryBuilder
                 .startBooleanToggle(
+                        new TranslatableText("option.advancedautopilot.poweredFlight"),
+                        config.poweredFlight)
+                .setDefaultValue(Config.DEFAULT_POWERED_FLIGHT)
+                .setSaveConsumer(newValue -> config.poweredFlight = newValue)
+                .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startDoubleField(
+                        new TranslatableText("option.advancedautopilot.maxPoweredFlightSpeed"),
+                        config.maxPoweredFlightSpeed)
+                .setDefaultValue(Config.DEFAULT_MAX_POWERED_FLIGHT_SPEED)
+                .setSaveConsumer(newValue -> config.maxPoweredFlightSpeed = newValue)
+                .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startBooleanToggle(
                         new TranslatableText("option.advancedautopilot.refillRockets"),
                         config.refillRockets)
                 .setDefaultValue(Config.DEFAULT_REFILL_ROCKETS)

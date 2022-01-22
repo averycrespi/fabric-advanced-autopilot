@@ -67,6 +67,18 @@ public class GlidingPilot extends Pilot {
             }
         }
 
+        if (config.poweredFlight) {
+            if (PilotHelper.isHoldingFireworkRocket(player)) {
+                if (speed <= config.maxPoweredFlightSpeed) {
+                    client.options.keyUse.setPressed(true);
+                } else {
+                    client.options.keyUse.setPressed(false);
+                }
+            } else {
+                client.options.keyUse.setPressed(false);
+            }
+        }
+
         return TickResult.CONTINUE;
     }
 
@@ -85,5 +97,11 @@ public class GlidingPilot extends Pilot {
         }
 
         return TickResult.CONTINUE;
+    }
+
+    @Override
+    public void cleanup(MinecraftClient client, PlayerEntity player) {
+        super.cleanup(client, player);
+        client.options.keyUse.setPressed(false);
     }
 }
