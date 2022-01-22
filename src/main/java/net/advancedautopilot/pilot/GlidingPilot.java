@@ -4,6 +4,8 @@ import net.advancedautopilot.AdvancedAutopilotMod;
 import net.advancedautopilot.Config;
 import net.advancedautopilot.ConfigManager;
 import net.advancedautopilot.FlightMonitor;
+import net.advancedautopilot.PilotHelper;
+import net.advancedautopilot.message.YieldedMessage;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -15,6 +17,11 @@ import net.minecraft.util.math.Vec3d;
  * Glides towards an optional goal, adjusting pitch to gain height over time.
  */
 public class GlidingPilot extends Pilot {
+
+    private enum PullDirection {
+        UP,
+        DOWN
+    }
 
     private PullDirection pullDirection = PullDirection.DOWN;
 
@@ -44,7 +51,7 @@ public class GlidingPilot extends Pilot {
         Config config = ConfigManager.getCurrentConfig();
 
         if (!player.isFallFlying()) {
-            AdvancedAutopilotMod.LOGGER.info("Yielded because player is not flying");
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is not flying"));
             return TickResult.YIELD;
         }
 
@@ -105,13 +112,13 @@ public class GlidingPilot extends Pilot {
         Config config = ConfigManager.getCurrentConfig();
 
         if (goal != null && monitor.getHorizontalDistanceToGoal() < 20) {
-            AdvancedAutopilotMod.LOGGER.info("Yielded because player is near goal");
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is near goal"));
             return TickResult.YIELD;
         }
 
         double height = monitor.getHeight();
         if (height < config.minHeightWhileGliding) {
-            AdvancedAutopilotMod.LOGGER.info("Yielded because player is too low");
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is too low"));
             return TickResult.YIELD;
         }
 

@@ -1,5 +1,6 @@
 package net.advancedautopilot.pilot;
 
+import net.advancedautopilot.AdvancedAutopilotMod;
 import net.advancedautopilot.FlightMonitor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,10 +13,16 @@ import net.minecraft.util.math.Vec3d;
  */
 public abstract class Pilot {
 
-    FlightMonitor monitor = null;
+    public enum TickResult {
+        CONTINUE,
+        YIELD
+    }
+
+    FlightMonitor monitor;
 
     public Pilot(FlightMonitor monitor) {
         this.monitor = monitor;
+        AdvancedAutopilotMod.LOGGER.info(String.format("Initialized %s", this.getName().getString()));
     }
 
     public abstract Text getName();

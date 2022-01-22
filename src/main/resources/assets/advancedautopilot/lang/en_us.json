@@ -38,6 +38,8 @@
   "text.advancedautopilot.clearedGoal": "Cleared goal",
   "text.advancedautopilot.disabled": "Disabled",
   "text.advancedautopilot.disengagedAutopilot": "Disengaged autopilot",
+  "text.advancedautopilot.disengagedAutopilot.notFlying": "Disengaged autopilot because player is not flying",
+  "text.advancedautopilot.disengagedAutopilot.touchedLiquid": "Disengaged autopilot because player touched liquid",
   "text.advancedautopilot.distanceToGoal": "Distance to goal : %s m",
   "text.advancedautopilot.emergencyLanding": "Emergency landing : ",
   "text.advancedautopilot.eta": "ETA : %s seconds",

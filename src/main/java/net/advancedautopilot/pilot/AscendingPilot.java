@@ -4,6 +4,8 @@ import net.advancedautopilot.AdvancedAutopilotMod;
 import net.advancedautopilot.Config;
 import net.advancedautopilot.ConfigManager;
 import net.advancedautopilot.FlightMonitor;
+import net.advancedautopilot.PilotHelper;
+import net.advancedautopilot.message.YieldedMessage;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -35,7 +37,7 @@ public class AscendingPilot extends Pilot {
         }
 
         if (monitor.getHeight() >= config.ascentHeight) {
-            AdvancedAutopilotMod.LOGGER.info("Yielded because player reached ascent height");
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player reached ascent height"));
             return TickResult.YIELD;
         }
 
@@ -51,7 +53,7 @@ public class AscendingPilot extends Pilot {
             // Wait for next tick before using rocket
             client.options.keyUse.setPressed(false);
         } else {
-            AdvancedAutopilotMod.LOGGER.info("Yielded because player ran out of rockets");
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player ran out of rockets"));
             return TickResult.YIELD;
         }
 

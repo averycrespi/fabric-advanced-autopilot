@@ -1,8 +1,5 @@
-package net.advancedautopilot.pilot;
+package net.advancedautopilot;
 
-import net.advancedautopilot.AdvancedAutopilotMod;
-import net.advancedautopilot.Config;
-import net.advancedautopilot.ConfigManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

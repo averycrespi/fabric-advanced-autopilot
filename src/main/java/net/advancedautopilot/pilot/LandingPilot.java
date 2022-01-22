@@ -4,6 +4,7 @@ import net.advancedautopilot.AdvancedAutopilotMod;
 import net.advancedautopilot.Config;
 import net.advancedautopilot.ConfigManager;
 import net.advancedautopilot.FlightMonitor;
+import net.advancedautopilot.message.YieldedMessage;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -29,7 +30,7 @@ public class LandingPilot extends Pilot {
     public TickResult onClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
 
         if (!player.isFallFlying()) {
-            AdvancedAutopilotMod.LOGGER.info("Yielded because player is not flying");
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is not flying"));
             return TickResult.YIELD;
         }
 

@@ -19,8 +19,8 @@ public class HudFormatter {
     private static final Text DISABLED = new TranslatableText("text.advancedautopilot.disabled")
             .formatted(Formatting.RED);
 
-    private FlightMonitor monitor = null;
-    private ArrayList<Text> lines = null;
+    private FlightMonitor monitor;
+    private ArrayList<Text> lines;
 
     public HudFormatter(FlightMonitor monitor) {
         this.monitor = monitor;

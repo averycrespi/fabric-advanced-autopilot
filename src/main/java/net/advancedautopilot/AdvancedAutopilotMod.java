@@ -4,8 +4,6 @@ import net.advancedautopilot.pilot.AscendingPilot;
 import net.advancedautopilot.pilot.GlidingPilot;
 import net.advancedautopilot.pilot.LandingPilot;
 import net.advancedautopilot.pilot.Pilot;
-import net.advancedautopilot.pilot.PilotHelper;
-import net.advancedautopilot.pilot.TickResult;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -13,6 +11,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
@@ -29,33 +28,25 @@ public class AdvancedAutopilotMod implements ModInitializer {
     public static final Formatting FAILURE = Formatting.RED;
     public static final Formatting INFO = Formatting.WHITE;
 
-    public static AdvancedAutopilotMod instance = null;
+    public static AdvancedAutopilotMod instance;
 
-    public MinecraftClient client = null;
-    public FlightMonitor monitor = null;
-    public HudFormatter formatter = null;
+    public MinecraftClient client;
+    public FlightMonitor monitor;
+    public HudFormatter formatter;
 
-    private Pilot pilot = null;
-    private KeyBinding keyBinding = null;
+    private Pilot pilot;
+    private Vec3d goal;
+    private KeyBinding keyBinding;
     private boolean keyBindingWasPressedOnPreviousTick = false;
     private int ticksSincePreviousInfrequentTick = 0;
-    private Vec3d goal = null;
 
     @Override
     public void onInitialize() {
         AdvancedAutopilotMod.instance = this;
 
-        if (client == null) {
-            client = MinecraftClient.getInstance();
-        }
-
-        if (monitor == null) {
-            monitor = new FlightMonitor();
-        }
-
-        if (formatter == null) {
-            formatter = new HudFormatter(monitor);
-        }
+        client = MinecraftClient.getInstance();
+        monitor = new FlightMonitor();
+        formatter = new HudFormatter(monitor);
 
         keyBinding = new KeyBinding(
                 "key.advancedautopilot.toggle",
@@ -114,7 +105,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
 
         monitor.onClientTick(client, player);
 
-        if (pilot != null && pilot.onClientTick(client, player, goal) == TickResult.YIELD) {
+        if (pilot != null && pilot.onClientTick(client, player, goal) == Pilot.TickResult.YIELD) {
             handlePilotYield(player);
         }
 
@@ -136,14 +127,14 @@ public class AdvancedAutopilotMod implements ModInitializer {
         formatter.onInfrequentClientTick(pilot, goal);
 
         if (pilot != null && (player.isTouchingWater() || player.isInLava())) {
-            LOGGER.info("Disengaging autopilot because player touched liquid");
-            pilot.cleanup(client, player);
-            pilot = null;
-            goal = null;
-            monitor.resetAggregateMetrics();
+            disengageAutopilot(
+                    client,
+                    player,
+                    new TranslatableText("text.advancedautopilot.disengagedAutopilot.touchedLiquid")
+                            .formatted(FAILURE));
         }
 
-        if (pilot != null && pilot.onInfrequentClientTick(client, player, goal) == TickResult.YIELD) {
+        if (pilot != null && pilot.onInfrequentClientTick(client, player, goal) == Pilot.TickResult.YIELD) {
             handlePilotYield(player);
         }
 
@@ -221,9 +212,10 @@ public class AdvancedAutopilotMod implements ModInitializer {
                 pilot = new LandingPilot(monitor);
             }
         } else {
-            pilot = null;
-            goal = null;
-            monitor.resetAggregateMetrics();
+            disengageAutopilot(
+                    client,
+                    player,
+                    new TranslatableText("text.advancedautopilot.disengagedAutopilot.notFlying").formatted(FAILURE));
         }
     }
 
@@ -231,22 +223,37 @@ public class AdvancedAutopilotMod implements ModInitializer {
         LOGGER.info("Keybinding was pressed");
         if (player.isFallFlying()) {
             if (pilot == null) {
-                player.sendMessage(
-                        new TranslatableText("text.advancedautopilot.engagedAutopilot").formatted(SUCCESS),
-                        true);
-                pilot = new AscendingPilot(monitor);
-                monitor.resetAggregateMetrics();
+                engageAutopilot(player);
             } else {
-                player.sendMessage(
-                        new TranslatableText("text.advancedautopilot.disengagedAutopilot").formatted(SUCCESS),
-                        true);
-                pilot.cleanup(client, player);
-                pilot = null;
-                goal = null;
-                monitor.resetAggregateMetrics();
+                disengageAutopilot(
+                        client,
+                        player,
+                        new TranslatableText("text.advancedautopilot.disengagedAutopilot").formatted(INFO));
             }
         } else {
             player.sendMessage(new TranslatableText("text.advancedautopilot.notFlying").formatted(FAILURE), true);
         }
+    }
+
+    private void engageAutopilot(PlayerEntity player) {
+        player.sendMessage(
+                new TranslatableText("text.advancedautopilot.engagedAutopilot").formatted(SUCCESS),
+                true);
+        pilot = new AscendingPilot(monitor);
+        monitor.resetAggregateMetrics();
+    }
+
+    private void disengageAutopilot(MinecraftClient client, PlayerEntity player, Text message) {
+        if (message != null) {
+            player.sendMessage(message, true);
+        }
+
+        if (pilot != null) {
+            pilot.cleanup(client, player);
+            pilot = null;
+        }
+
+        goal = null;
+        monitor.resetAggregateMetrics();
     }
 }
