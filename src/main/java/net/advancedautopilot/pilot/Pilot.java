@@ -36,6 +36,6 @@ public abstract class Pilot {
     public abstract TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal);
 
     public void cleanup(MinecraftClient client, PlayerEntity player) {
-        // Intentionally left empty
+        AdvancedAutopilotMod.LOGGER.info(String.format("Cleaned up %s", this.getName().getString()));
     }
 }
