@@ -192,6 +192,14 @@ public final class ConfigManager {
                 .setMin(MIN_HEIGHT)
                 .setSaveConsumer(newValue -> config.ascentHeight = newValue)
                 .build());
+
+        ascendingCategory.addEntry(entryBuilder
+                .startDoubleField(
+                        new TranslatableText("option.advancedautopilot.maxAscendingVerticalVelocity"),
+                        config.maxAscendingVerticalVelocity)
+                .setDefaultValue(Config.DEFAULT_MAX_ASCENDING_VERTICAL_VELOCITY)
+                .setSaveConsumer(newValue -> config.maxAscendingVerticalVelocity = newValue)
+                .build());
     }
 
     private static void addGlidingCategory(

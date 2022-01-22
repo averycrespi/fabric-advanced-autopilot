@@ -13,6 +13,7 @@
   "option.advancedautopilot.hudTextHeight": "Text height in the HUD",
   "option.advancedautopilot.hudTextWidth": "Text width in the HUD",
   "option.advancedautopilot.landingPitch": "Landing pitch (degrees)",
+  "option.advancedautopilot.maxAscendingVerticalVelocity": "Maximum vertical velocity while ascending (m/s)",
   "option.advancedautopilot.maxElytraSwapDurability": "Maximum durability to swap elytra at",
   "option.advancedautopilot.maxEmergencyLandingDurability": "Maximum elytra durability to perform emergency landing at",
   "option.advancedautopilot.maxHeightBeforePullingDown": "Maximum height before pulling down (m)",

@@ -18,6 +18,7 @@ public class Config {
     public static final double DEFAULT_HUD_TEXT_HEIGHT = 5f;
 
     public static final double DEFAULT_ASCENT_HEIGHT = 240d;
+    public static final double DEFAULT_MAX_ASCENDING_VERTICAL_VELOCITY = 15d;
 
     public static final double DEFAULT_MIN_HEIGHT_WHILE_GLIDING = 120d;
     public static final double DEFAULT_MIN_HEIGHT_BEFORE_PULLING_UP = 180d;
@@ -44,6 +45,7 @@ public class Config {
     public double hudTextHeight = DEFAULT_HUD_TEXT_HEIGHT;
 
     public double ascentHeight = DEFAULT_ASCENT_HEIGHT;
+    public double maxAscendingVerticalVelocity = DEFAULT_MAX_ASCENDING_VERTICAL_VELOCITY;
 
     public double minHeightWhileGliding = DEFAULT_MIN_HEIGHT_WHILE_GLIDING;
     public double minHeightBeforePullingUp = DEFAULT_MIN_HEIGHT_BEFORE_PULLING_UP;
