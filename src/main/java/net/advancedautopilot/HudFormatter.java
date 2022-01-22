@@ -6,12 +6,18 @@ import net.advancedautopilot.pilot.Pilot;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
 
 /**
  * Formats the contents of the HUD.
  */
 public class HudFormatter {
+
+    private static final Text ENABLED = new TranslatableText("text.advancedautopilot.enabled")
+            .formatted(Formatting.GREEN);
+    private static final Text DISABLED = new TranslatableText("text.advancedautopilot.disabled")
+            .formatted(Formatting.RED);
 
     private FlightMonitor monitor = null;
     private ArrayList<Text> lines = null;
@@ -112,12 +118,14 @@ public class HudFormatter {
         Config config = ConfigManager.getCurrentConfig();
 
         lines.add((Text) new TranslatableText("text.advancedautopilot.swapElytra").append(
-                config.swapElytra
-                        ? new TranslatableText("text.advancedautopilot.enabled")
-                        : new TranslatableText("text.advancedautopilot.disabled")));
+                config.swapElytra ? ENABLED : DISABLED));
         lines.add((Text) new TranslatableText("text.advancedautopilot.emergencyLanding").append(
-                config.emergencyLanding
-                        ? new TranslatableText("text.advancedautopilot.enabled")
-                        : new TranslatableText("text.advancedautopilot.disabled")));
+                config.emergencyLanding ? ENABLED : DISABLED));
+        lines.add((Text) new TranslatableText("text.advancedautopilot.poweredFlight").append(
+                config.poweredFlight ? ENABLED : DISABLED));
+        lines.add((Text) new TranslatableText("text.advancedautopilot.refillRockets").append(
+                config.refillRockets ? ENABLED : DISABLED));
+        lines.add((Text) new TranslatableText("text.advancedautopilot.riskyLanding").append(
+                config.riskyLanding ? ENABLED : DISABLED));
     }
 }
