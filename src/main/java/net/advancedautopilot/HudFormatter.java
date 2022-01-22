@@ -37,6 +37,10 @@ public class HudFormatter {
         lines.clear();
 
         addPilot(pilot);
+        if (config.showPilotStateInHud) {
+            addPilotState(pilot);
+        }
+
         addSpacer();
         addMetrics();
 
@@ -66,8 +70,17 @@ public class HudFormatter {
     }
 
     private void addPilot(Pilot pilot) {
-        lines.add(new TranslatableText("text.advancedautopilot.pilot",
-                pilot == null ? "None" : pilot.getClass().getSimpleName()));
+        lines.add((Text) new TranslatableText("text.advancedautopilot.pilot")
+                .append(pilot == null
+                        ? new TranslatableText("text.advancedautopilot.noPilot")
+                        : pilot.getName()));
+    }
+
+    private void addPilotState(Pilot pilot) {
+        lines.add((Text) new TranslatableText("text.advancedautopilot.pilotState")
+                .append(pilot == null
+                        ? new TranslatableText("text.advancedautopilot.noPilotState")
+                        : pilot.getState()));
     }
 
     private void addMetrics() {

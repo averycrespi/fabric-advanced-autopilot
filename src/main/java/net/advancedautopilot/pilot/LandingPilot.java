@@ -6,6 +6,8 @@ import net.advancedautopilot.ConfigManager;
 import net.advancedautopilot.FlightMonitor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -16,6 +18,11 @@ public class LandingPilot extends Pilot {
 
     public LandingPilot(FlightMonitor monitor) {
         super(monitor);
+    }
+
+    @Override
+    public Text getName() {
+        return new TranslatableText("text.advancedautopilot.landingPilot");
     }
 
     @Override

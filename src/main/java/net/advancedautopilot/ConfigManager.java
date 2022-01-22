@@ -180,6 +180,14 @@ public final class ConfigManager {
                 .build());
 
         hudCategory.addEntry(entryBuilder
+                .startBooleanToggle(
+                        new TranslatableText("option.advancedautopilot.showPilotStateInHud"),
+                        config.showPilotStateInHud)
+                .setDefaultValue(Config.DEFAULT_SHOW_PILOT_STATE_IN_HUD)
+                .setSaveConsumer(newValue -> config.showPilotStateInHud = newValue)
+                .build());
+
+        hudCategory.addEntry(entryBuilder
                 .startDoubleField(new TranslatableText("option.advancedautopilot.hudTextWidth"), config.hudTextWidth)
                 .setDefaultValue(Config.DEFAULT_HUD_TEXT_WIDTH)
                 .setSaveConsumer(newValue -> config.hudTextWidth = newValue)

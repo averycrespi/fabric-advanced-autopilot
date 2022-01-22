@@ -3,6 +3,8 @@ package net.advancedautopilot.pilot;
 import net.advancedautopilot.FlightMonitor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Vec3d;
 
 /**
@@ -14,6 +16,12 @@ public abstract class Pilot {
 
     public Pilot(FlightMonitor monitor) {
         this.monitor = monitor;
+    }
+
+    public abstract Text getName();
+
+    public Text getState() {
+        return new TranslatableText("text.advancedautopilot.noPilotState");
     }
 
     public abstract TickResult onClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal);

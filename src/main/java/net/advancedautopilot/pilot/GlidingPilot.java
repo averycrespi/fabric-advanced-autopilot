@@ -6,6 +6,8 @@ import net.advancedautopilot.ConfigManager;
 import net.advancedautopilot.FlightMonitor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -18,6 +20,23 @@ public class GlidingPilot extends Pilot {
 
     public GlidingPilot(FlightMonitor monitor) {
         super(monitor);
+    }
+
+    @Override
+    public Text getName() {
+        return new TranslatableText("text.advancedautopilot.glidingPilot");
+    }
+
+    @Override
+    public Text getState() {
+        switch (pullDirection) {
+            case UP:
+                return new TranslatableText("text.advancedautopilot.pullingUp");
+            case DOWN:
+                return new TranslatableText("text.advancedautopilot.pullingDown");
+            default:
+                return new TranslatableText("text.advancedautopilot.noPilotState");
+        }
     }
 
     @Override

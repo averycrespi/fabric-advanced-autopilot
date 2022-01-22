@@ -17,6 +17,7 @@ public class Config {
     public static final boolean DEFAULT_SHOW_ANGLES_IN_HUD = false;
     public static final boolean DEFAULT_SHOW_AVERAGE_SPEED_IN_HUD = false;
     public static final boolean DEFAULT_SHOW_CONFIG_OPTIONS_IN_HUD = false;
+    public static final boolean DEFAULT_SHOW_PILOT_STATE_IN_HUD = false;
     public static final double DEFAULT_HUD_TEXT_WIDTH = 5f;
     public static final double DEFAULT_HUD_TEXT_HEIGHT = 5f;
 
@@ -47,6 +48,7 @@ public class Config {
     public boolean showAnglesInHud = DEFAULT_SHOW_ANGLES_IN_HUD;
     public boolean showAverageSpeedInHud = DEFAULT_SHOW_AVERAGE_SPEED_IN_HUD;
     public boolean showConfigOptionsInHud = DEFAULT_SHOW_CONFIG_OPTIONS_IN_HUD;
+    public boolean showPilotStateInHud = DEFAULT_SHOW_PILOT_STATE_IN_HUD;
     public double hudTextWidth = DEFAULT_HUD_TEXT_WIDTH;
     public double hudTextHeight = DEFAULT_HUD_TEXT_HEIGHT;
 
