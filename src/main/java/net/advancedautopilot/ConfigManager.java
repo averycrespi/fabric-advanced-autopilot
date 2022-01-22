@@ -76,14 +76,16 @@ public final class ConfigManager {
                 .getOrCreateCategory(new TranslatableText("category.advancedautopilot.general"));
 
         generalCategory.addEntry(entryBuilder
-                .startBooleanToggle(new TranslatableText("option.advancedautopilot.swapElytra"),
+                .startBooleanToggle(
+                        new TranslatableText("option.advancedautopilot.swapElytra"),
                         config.swapElytra)
                 .setDefaultValue(Config.DEFAULT_SWAP_ELYTRA)
                 .setSaveConsumer(newValue -> config.swapElytra = newValue)
                 .build());
 
         generalCategory.addEntry(entryBuilder
-                .startIntField(new TranslatableText("option.advancedautopilot.maxElytraSwapDurability"),
+                .startIntField(
+                        new TranslatableText("option.advancedautopilot.maxElytraSwapDurability"),
                         config.maxElytraSwapDurability)
                 .setDefaultValue(Config.DEFAULT_MAX_ELYTRA_SWAP_DURABILITY)
                 .setMin(MIN_ELYTRA_DURABILITY)
@@ -102,7 +104,8 @@ public final class ConfigManager {
                 .build());
 
         generalCategory.addEntry(entryBuilder
-                .startBooleanToggle(new TranslatableText("option.advancedautopilot.emergencyLanding"),
+                .startBooleanToggle(
+                        new TranslatableText("option.advancedautopilot.emergencyLanding"),
                         config.emergencyLanding)
                 .setDefaultValue(Config.DEFAULT_EMERGENCY_LANDING)
                 .setSaveConsumer(newValue -> config.emergencyLanding = newValue)
@@ -110,13 +113,21 @@ public final class ConfigManager {
                 .build());
 
         generalCategory.addEntry(entryBuilder
-                .startIntField(new TranslatableText(
-                        "option.advancedautopilot.maxEmergencyLandingDurability"),
+                .startIntField(
+                        new TranslatableText("option.advancedautopilot.maxEmergencyLandingDurability"),
                         config.maxEmergencyLandingDurability)
                 .setDefaultValue(Config.DEFAULT_MAX_EMERGENCY_LANDING_DURABILITY)
                 .setSaveConsumer(newValue -> config.maxEmergencyLandingDurability = newValue)
                 .setMin(MIN_ELYTRA_DURABILITY)
                 .setMax(MAX_ELYTRA_DURABILITY)
+                .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startBooleanToggle(
+                        new TranslatableText("option.advancedautopilot.refillRockets"),
+                        config.refillRockets)
+                .setDefaultValue(Config.DEFAULT_REFILL_ROCKETS)
+                .setSaveConsumer(newValue -> config.refillRockets = newValue)
                 .build());
     }
 
@@ -129,21 +140,24 @@ public final class ConfigManager {
                 .getOrCreateCategory(new TranslatableText("category.advancedautopilot.hud"));
 
         hudCategory.addEntry(entryBuilder
-                .startBooleanToggle(new TranslatableText("option.advancedautopilot.showAnglesInHud"),
+                .startBooleanToggle(
+                        new TranslatableText("option.advancedautopilot.showAnglesInHud"),
                         config.showAnglesInHud)
                 .setDefaultValue(Config.DEFAULT_SHOW_ANGLES_IN_HUD)
                 .setSaveConsumer(newValue -> config.showAnglesInHud = newValue)
                 .build());
 
         hudCategory.addEntry(entryBuilder
-                .startBooleanToggle(new TranslatableText("option.advancedautopilot.showAverageSpeedInHud"),
+                .startBooleanToggle(
+                        new TranslatableText("option.advancedautopilot.showAverageSpeedInHud"),
                         config.showAverageSpeedInHud)
                 .setDefaultValue(Config.DEFAULT_SHOW_AVERAGE_SPEED_IN_HUD)
                 .setSaveConsumer(newValue -> config.showAverageSpeedInHud = newValue)
                 .build());
 
         hudCategory.addEntry(entryBuilder
-                .startBooleanToggle(new TranslatableText("option.advancedautopilot.showConfigOptionsInHud"),
+                .startBooleanToggle(
+                        new TranslatableText("option.advancedautopilot.showConfigOptionsInHud"),
                         config.showConfigOptionsInHud)
                 .setDefaultValue(Config.DEFAULT_SHOW_CONFIG_OPTIONS_IN_HUD)
                 .setSaveConsumer(newValue -> config.showConfigOptionsInHud = newValue)
@@ -171,7 +185,8 @@ public final class ConfigManager {
                 .getOrCreateCategory(new TranslatableText("category.advancedautopilot.ascending"));
 
         ascendingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.ascentHeight"),
+                .startDoubleField(
+                        new TranslatableText("option.advancedautopilot.ascentHeight"),
                         config.ascentHeight)
                 .setDefaultValue(Config.DEFAULT_ASCENT_HEIGHT)
                 .setMin(MIN_HEIGHT)
@@ -224,7 +239,8 @@ public final class ConfigManager {
                 .getOrCreateCategory(new TranslatableText("category.advancedautopilot.landing"));
 
         landingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.landingPitch"),
+                .startDoubleField(
+                        new TranslatableText("option.advancedautopilot.landingPitch"),
                         config.landingPitch)
                 .setDefaultValue(Config.DEFAULT_LANDING_PITCH)
                 .setMin(MIN_WRAPPED_ANGLE)
@@ -233,7 +249,8 @@ public final class ConfigManager {
                 .build());
 
         landingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.maxLandingSpeed"),
+                .startDoubleField(
+                        new TranslatableText("option.advancedautopilot.maxLandingSpeed"),
                         config.maxLandingSpeed)
                 .setDefaultValue(Config.DEFAULT_MAX_LANDING_SPEED)
                 .setMin(MIN_SPEED)
@@ -247,7 +264,8 @@ public final class ConfigManager {
                 .build());
 
         landingCategory.addEntry(entryBuilder
-                .startDoubleField(new TranslatableText("option.advancedautopilot.minRiskyLandingHeight"),
+                .startDoubleField(
+                        new TranslatableText("option.advancedautopilot.minRiskyLandingHeight"),
                         config.minRiskyLandingHeight)
                 .setDefaultValue(Config.DEFAULT_MIN_RISKY_LANDING_HEIGHT)
                 .setMin(MIN_HEIGHT)

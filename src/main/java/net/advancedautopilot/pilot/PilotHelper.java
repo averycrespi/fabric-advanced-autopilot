@@ -18,6 +18,7 @@ import net.minecraft.util.math.Vec3d;
  */
 public class PilotHelper {
 
+    private static final int MAIN_HAND_SLOT = 36;
     private static final int CHEST_SLOT = 6;
     private static final String ELYTRA_KEY = "item.minecraft.elytra";
     private static final String FIREWORK_ROCKET_KEY = "item.minecraft.firework_rocket";
@@ -36,11 +37,41 @@ public class PilotHelper {
         return goalYaw;
     }
 
-    public static boolean isHoldingFirework(PlayerEntity player) {
+    public static boolean isHoldingFireworkRocket(PlayerEntity player) {
         Item mainHandItem = player.getMainHandStack().getItem();
         Item offHandItem = player.getOffHandStack().getItem();
         return mainHandItem.getTranslationKey().equals(FIREWORK_ROCKET_KEY)
                 || offHandItem.getTranslationKey().equals(FIREWORK_ROCKET_KEY);
+    }
+
+    public static boolean swapFireworkRocketsIntoMainHand(MinecraftClient client, PlayerEntity player) {
+        ItemStack replacementStack = null;
+        int bestCount = 0;
+        for (ItemStack itemStack : player.getInventory().main) {
+            if (itemStack.getItem().getTranslationKey().equals(FIREWORK_ROCKET_KEY)) {
+                int count = itemStack.getCount();
+                if (count > bestCount) {
+                    replacementStack = itemStack;
+                    bestCount = count;
+                }
+            }
+        }
+
+        if (replacementStack != null) {
+            // PlayerInventory.swapSlotWithHotbar() is doesn't work on client-side
+            client.interactionManager.clickSlot(
+                    player.playerScreenHandler.syncId,
+                    MAIN_HAND_SLOT,
+                    player.getInventory().main.indexOf(replacementStack),
+                    SlotActionType.SWAP,
+                    player);
+            player.sendMessage(
+                    new TranslatableText("text.advancedautopilot.refilledRockets").formatted(AdvancedAutopilotMod.INFO),
+                    true);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public static boolean hasElytraEquipped(PlayerEntity player) {

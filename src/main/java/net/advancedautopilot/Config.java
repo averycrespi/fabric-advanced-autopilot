@@ -9,6 +9,8 @@ public class Config {
     public static final boolean DEFAULT_EMERGENCY_LANDING = true;
     public static final int DEFAULT_MAX_EMERGENCY_LANDING_DURABILITY = 50;
 
+    public static final boolean DEFAULT_REFILL_ROCKETS = false;
+
     public static final boolean DEFAULT_SHOW_ANGLES_IN_HUD = false;
     public static final boolean DEFAULT_SHOW_AVERAGE_SPEED_IN_HUD = false;
     public static final boolean DEFAULT_SHOW_CONFIG_OPTIONS_IN_HUD = false;
@@ -32,6 +34,8 @@ public class Config {
 
     public boolean emergencyLanding = DEFAULT_EMERGENCY_LANDING;
     public int maxEmergencyLandingDurability = DEFAULT_MAX_EMERGENCY_LANDING_DURABILITY;
+
+    public boolean refillRockets = DEFAULT_REFILL_ROCKETS;
 
     public boolean showAnglesInHud = DEFAULT_SHOW_ANGLES_IN_HUD;
     public boolean showAverageSpeedInHud = DEFAULT_SHOW_AVERAGE_SPEED_IN_HUD;

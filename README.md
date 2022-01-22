@@ -8,12 +8,13 @@ This mod provides an advanced autopilot system for automatic elytra flight. The 
 
 ## Features
 
-A few of the mod's features:
+A few of the mod's (configurable) features:
 - **Elytra swap**: Swap out elytra when durability is low
 - **Emergency landing**: Perform emergency landing when elytra durability is low
 - **Goals**: Fly towards a goal that is set by the player
 - **HUD**: Show flight information in a HUD (heads-up display)
 - **Risky landing**: Dive straight down, then correct at the last moment
+- **Rocket refill**: Refill rockets from inventory into main hand (first hotbar slot)
 
 ## Usage
 
@@ -58,6 +59,7 @@ else:
     - When gliding, it will happily crash you into a wall
     - When landing, it will happily drop you into lava
     - Due to this limitation, for the safest long-distance flight, I recommend flying above the nether roof
+- Rockets can only be refilled into the main hand (i.e. the first hotbar slot), not into the selected slot
 
 ## Requirements
 

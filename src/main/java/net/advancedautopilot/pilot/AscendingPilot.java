@@ -37,15 +37,18 @@ public class AscendingPilot extends Pilot {
         }
 
         Vec3d velocity = monitor.getVelocity();
-        if (PilotHelper.isHoldingFirework(player)) {
+        if (PilotHelper.isHoldingFireworkRocket(player)) {
             if (velocity.getY() <= MAX_FIREWORK_VERTICAL_VELOCITY) {
                 player.setPitch(-90f); // Look upwards
                 client.options.keyUse.setPressed(true);
             } else {
                 client.options.keyUse.setPressed(false);
             }
+        } else if (config.refillRockets && PilotHelper.swapFireworkRocketsIntoMainHand(client, player)) {
+            // Wait for next tick before using rocket
+            client.options.keyUse.setPressed(false);
         } else {
-            AdvancedAutopilotMod.LOGGER.info("Yielded because player ran out of fireworks");
+            AdvancedAutopilotMod.LOGGER.info("Yielded because player ran out of rockets");
             return TickResult.YIELD;
         }
 

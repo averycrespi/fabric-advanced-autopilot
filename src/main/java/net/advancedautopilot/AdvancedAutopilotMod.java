@@ -147,8 +147,18 @@ public class AdvancedAutopilotMod implements ModInitializer {
             handlePilotYield(player);
         }
 
+        if (config.refillRockets) {
+            monitorRockets(player);
+        }
+
         if (config.swapElytra || config.emergencyLanding) {
             monitorElytraDurability(player);
+        }
+    }
+
+    private void monitorRockets(PlayerEntity player) {
+        if (pilot != null && !PilotHelper.isHoldingFireworkRocket(player)) {
+            PilotHelper.swapFireworkRocketsIntoMainHand(client, player); // Ignore swap failure
         }
     }
 
@@ -205,7 +215,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
                 pilot = new LandingPilot(monitor);
             } else if (height >= config.ascentHeight) {
                 pilot = new GlidingPilot(monitor);
-            } else if (PilotHelper.isHoldingFirework(player)) {
+            } else if (PilotHelper.isHoldingFireworkRocket(player)) {
                 pilot = new AscendingPilot(monitor);
             } else {
                 pilot = new LandingPilot(monitor);
