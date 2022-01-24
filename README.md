@@ -40,6 +40,8 @@ The pseudocode below describes the rough behaviour of the autopilot:
 ```
 if a goal is set and we are close to the goal:
     land
+else if we are flying through an unloaded chunk:
+    land
 else if we are high enough to start gliding:
     glide
 else if we are holding fireworks:
