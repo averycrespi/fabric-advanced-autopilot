@@ -15,7 +15,8 @@ A few of the mod's (configurable) features:
 - **HUD**: Show flight information in a HUD (heads-up display)
 - **Powered flight**: Use rockets while gliding to increase speed
 - **Risky landing**: Dive straight down, then correct at the last moment
-- **Rocket refill**: Refill rockets from inventory into main hand (first hotbar slot)
+- **Rocket refill**: Refill rockets from inventory into main hand
+- **Unloaded chunk handling**: Fly through unloaded chunks (for a limited time) before landing
 
 ## Usage
 
