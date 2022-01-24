@@ -34,7 +34,7 @@ A few of the mod's (configurable) features:
 
 ### Behaviour
 
-- The pseudocode below describes the rough behaviour of the autopilot:
+The pseudocode below describes the rough behaviour of the autopilot:
 
 ```
 if a goal is set and we are close to the goal:
@@ -51,7 +51,9 @@ else:
 
 - The mod features extensive configuration for (almost) anything that you'd want to change
 - To access the configuration page, open the [ModMenu](https://www.curseforge.com/minecraft/mc-mods/modmenu)
-- Alternatively, you can manually edit the `advancedautopilot/config.json` file in your mod config directory
+  - Alternatively, you can manually edit the `advancedautopilot/config.json` file in your mod config directory
+- Note: in the configuration, _height_ refers to the vertical distance from the player to the ground, _not_ the player's Y coordinate
+    - E.g. when flying above the ocean at a height of 150, the player's Y coordinate will be approximately 150 + 65 = 215
 
 ### Limitations
 
