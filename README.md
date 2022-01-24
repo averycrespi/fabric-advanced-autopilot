@@ -4,7 +4,7 @@
 
 > Advanced, automatic elytra flight.
 
-This mod provides an advanced autopilot system for automatic elytra flight. The autopilot knows how to ascend, glide, and land; it can also travel towards a goal, swap out elytra with low durability, and show flight information in a HUD. The mod is highly configurable, but has sensible defaults for getting started. If you want a simpler autopilot, I recommend TheMegax's [Elytra Autopilot](https://github.com/TheMegax/fabric-elytra-autopilot) mod, which was the inspiration for this mod.
+This mod provides an advanced autopilot system for elytra flight. The autopilot knows how to ascend, glide, and land; it can also travel towards a goal, swap out elytra with low durability, and show flight information in a HUD. The mod is highly configurable, but has sensible defaults for getting started. If you want a simpler autopilot, I recommend TheMegax's [Elytra Autopilot](https://github.com/TheMegax/fabric-elytra-autopilot) mod, which was the inspiration for this mod.
 
 ## Features
 
@@ -59,7 +59,7 @@ else:
 
 ### Limitations
 
-- The autopilot does not monitor your surroundings (except your height above the ground)
+- The autopilot does not monitor your surroundings (except your height)
     - When ascending, it will happily crash you into a ceiling
     - When gliding, it will happily crash you into a wall
     - When landing, it will happily drop you into lava
