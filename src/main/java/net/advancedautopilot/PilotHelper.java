@@ -55,10 +55,9 @@ public class PilotHelper {
         }
 
         if (replacementStack != null) {
-            // PlayerInventory.swapSlotWithHotbar() is doesn't work on client-side
             client.interactionManager.clickSlot(
                     player.playerScreenHandler.syncId,
-                    MAIN_HAND_SLOT,
+                    MAIN_HAND_SLOT + player.getInventory().selectedSlot,
                     player.getInventory().main.indexOf(replacementStack),
                     SlotActionType.SWAP,
                     player);

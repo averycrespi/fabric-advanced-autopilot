@@ -62,7 +62,6 @@ else:
     - When gliding, it will happily crash you into a wall
     - When landing, it will happily drop you into lava
     - Due to this limitation, for the safest long-distance flight, I recommend flying above the nether roof
-- Rockets can only be refilled into the main hand (i.e. the first hotbar slot), not into the selected slot
 
 ## Requirements
 
