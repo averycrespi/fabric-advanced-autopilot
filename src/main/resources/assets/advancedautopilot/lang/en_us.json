@@ -7,6 +7,7 @@
 
   "key.advancedautopilot.toggle": "Toggle Autopilot",
 
+  "option.advancedautopilot.allowUnloadedChunks": "Allow flight in unloaded chunks",
   "option.advancedautopilot.ascentHeight": "Height to ascend to (m)",
   "option.advancedautopilot.debug": "Show debug information in the HUD",
   "option.advancedautopilot.emergencyLanding": "Perform emergency landing when elytra durability is low",
@@ -19,6 +20,7 @@
   "option.advancedautopilot.maxHeightBeforePullingDown": "Maximum height before pulling down (m)",
   "option.advancedautopilot.maxLandingSpeed": "Maximum landing speed (m/s)",
   "option.advancedautopilot.maxPoweredFlightSpeed": "Maximum speed to use rockets at while gliding (m/s)",
+  "option.advancedautopilot.maxTimeInUnloadedChunks": "Maximum amount of time to fly in unloaded chunks before landing (seconds)",
   "option.advancedautopilot.minElytraSwapReplacementDurability": "Minimum durability for replacement elytra during swap",
   "option.advancedautopilot.minHeightBeforePullingUp": "Minimum height before pulling up (m)",
   "option.advancedautopilot.minHeightWhileGliding": "Minimum height while gliding (m)",

@@ -2,6 +2,7 @@ package net.advancedautopilot.pilot;
 
 import net.advancedautopilot.AdvancedAutopilotMod;
 import net.advancedautopilot.FlightMonitor;
+import net.advancedautopilot.message.TransitionedMessage;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
@@ -20,9 +21,9 @@ public abstract class Pilot {
 
     FlightMonitor monitor;
 
-    public Pilot(FlightMonitor monitor) {
+    public Pilot(FlightMonitor monitor, String reason) {
         this.monitor = monitor;
-        AdvancedAutopilotMod.LOGGER.info(String.format("Initialized %s", this.getName().getString()));
+        AdvancedAutopilotMod.LOGGER.info(new TransitionedMessage(this, reason));
     }
 
     public abstract Text getName();

@@ -33,6 +33,10 @@ public class FlightMonitor {
     private double averageHorizontalSpeed = 0d;
     private double eta = UNKNOWN_ETA;
 
+    // We can't trust the server to tell us whether or not we're in an unloaded
+    // chunk, so we piggyback on updateHeight() to check for blocks beneath us
+    private int timeInUnloadedChunks = 0;
+
     // The approximate pitch and yaw are tracked for the benefit of the HUD
     // formatter; pilots should call player.getPitch() or player.getYaw() directly
     private double approxPitch = 0d;
@@ -101,6 +105,10 @@ public class FlightMonitor {
         return eta;
     }
 
+    public int getTimeInUnloadedChunks() {
+        return timeInUnloadedChunks;
+    }
+
     public double getApproxPitch() {
         return approxPitch;
     }
@@ -110,6 +118,8 @@ public class FlightMonitor {
     }
 
     private void updateHeight(PlayerEntity player) {
+        Config config = ConfigManager.getCurrentConfig();
+
         Vec3d playerPos = player.getPos();
         double playerX = (double) playerPos.getX();
         double playerY = (double) playerPos.getY();
@@ -119,16 +129,19 @@ public class FlightMonitor {
         double bottomY = (double) world.getBottomY();
 
         // Search downwards from the player until we find a solid block
-        height = UNKNOWN_HEIGHT;
-        if (player.world.isChunkLoaded((int) playerX, (int) playerZ)) {
-            for (double y = playerY; y > bottomY; y--) {
-                BlockPos blockPos = new BlockPos(playerX, y, playerZ);
-                if (world.getBlockState(blockPos).isSolidBlock(world, blockPos)) {
-                    height = playerY - y;
-                    return;
-                }
+        for (double y = playerY; y > bottomY; y--) {
+            BlockPos blockPos = new BlockPos(playerX, y, playerZ);
+            if (world.getBlockState(blockPos).isSolidBlock(world, blockPos)) {
+                height = playerY - y;
+                timeInUnloadedChunks = 0;
+                return;
             }
         }
+        timeInUnloadedChunks += 1;
+        if (!config.allowUnloadedChunks) {
+            height = UNKNOWN_HEIGHT;
+        }
+
     }
 
     private void updateVelocity(PlayerEntity player, double callsPerSecond) {

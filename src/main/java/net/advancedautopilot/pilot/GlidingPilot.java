@@ -25,8 +25,8 @@ public class GlidingPilot extends Pilot {
 
     private PullDirection pullDirection = PullDirection.DOWN;
 
-    public GlidingPilot(FlightMonitor monitor) {
-        super(monitor);
+    public GlidingPilot(FlightMonitor monitor, String reason) {
+        super(monitor, reason);
     }
 
     @Override
@@ -113,6 +113,15 @@ public class GlidingPilot extends Pilot {
 
         if (goal != null && monitor.getHorizontalDistanceToGoal() < 20) {
             AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is near goal"));
+            return TickResult.YIELD;
+        }
+
+        int timeInUnloadedChunks = monitor.getTimeInUnloadedChunks();
+        if (config.allowUnloadedChunks && timeInUnloadedChunks > config.maxTimeInUnloadedChunks) {
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "maximum time in unloaded chunks has elapsed"));
+            return TickResult.YIELD;
+        } else if (!config.allowUnloadedChunks && timeInUnloadedChunks > 0) {
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is in unloaded chunk"));
             return TickResult.YIELD;
         }
 

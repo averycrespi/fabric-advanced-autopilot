@@ -17,8 +17,8 @@ import net.minecraft.util.math.Vec3d;
  */
 public class LandingPilot extends Pilot {
 
-    public LandingPilot(FlightMonitor monitor) {
-        super(monitor);
+    public LandingPilot(FlightMonitor monitor, String reason) {
+        super(monitor, reason);
     }
 
     @Override

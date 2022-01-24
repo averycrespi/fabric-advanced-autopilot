@@ -5,14 +5,14 @@ import org.apache.logging.log4j.message.Message;
 import net.advancedautopilot.pilot.Pilot;
 
 /**
- * Represents a pilot yielding for a reason.
+ * Represents transitioning to a pilot for a reason.
  */
-public class YieldedMessage implements Message {
+public class TransitionedMessage implements Message {
 
     private Pilot pilot;
     private String reason;
 
-    public YieldedMessage(Pilot pilot, String reason) {
+    public TransitionedMessage(Pilot pilot, String reason) {
         this.pilot = pilot;
         this.reason = reason;
     }
@@ -20,9 +20,9 @@ public class YieldedMessage implements Message {
     @Override
     public String getFormattedMessage() {
         if (pilot == null) {
-            return String.format("Yielded because %s", reason);
+            return String.format("Transitioned because %s", reason);
         } else {
-            return String.format("Yielded from %s because %s", pilot.getName().getString(), reason);
+            return String.format("Transitioned to %s because %s", pilot.getName().getString(), reason);
         }
     }
 
@@ -40,4 +40,5 @@ public class YieldedMessage implements Message {
     public Throwable getThrowable() {
         return null;
     }
+
 }

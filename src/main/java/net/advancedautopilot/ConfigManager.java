@@ -26,6 +26,7 @@ public final class ConfigManager {
     private static final int MAX_ELYTRA_DURABILITY = 432;
     private static final double MIN_HEIGHT = 0d; // Cannot be negative
     private static final double MIN_SPEED = 0d; // Cannot be negative
+    private static final int MIN_TIME = 0; // Cannot be negative
     private static final double MIN_WRAPPED_ANGLE = -180d;
     private static final double MAX_WRAPPED_ANGLE = 180d;
 
@@ -144,6 +145,23 @@ public final class ConfigManager {
                         config.refillRockets)
                 .setDefaultValue(Config.DEFAULT_REFILL_ROCKETS)
                 .setSaveConsumer(newValue -> config.refillRockets = newValue)
+                .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startBooleanToggle(
+                        new TranslatableText("option.advancedautopilot.allowUnloadedChunks"),
+                        config.allowUnloadedChunks)
+                .setDefaultValue(Config.DEFAULT_ALLOW_UNLOADED_CHUNKS)
+                .setSaveConsumer(newValue -> config.allowUnloadedChunks = newValue)
+                .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startIntField(
+                        new TranslatableText("option.advancedautopilot.maxTimeInUnloadedChunks"),
+                        config.maxTimeInUnloadedChunks)
+                .setDefaultValue(Config.DEFAULT_MAX_TIME_IN_UNLOADED_CHUNKS)
+                .setMin(MIN_TIME)
+                .setSaveConsumer(newValue -> config.maxTimeInUnloadedChunks = newValue)
                 .build());
     }
 

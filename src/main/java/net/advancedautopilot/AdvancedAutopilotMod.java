@@ -88,7 +88,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
         player.sendMessage(
                 new TranslatableText("text.advancedautopilot.performingAutomaticLanding").formatted(SUCCESS),
                 true);
-        pilot = new LandingPilot(monitor);
+        pilot = new LandingPilot(monitor, "player sent land command");
     }
 
     private void onClientTick() {
@@ -127,11 +127,9 @@ public class AdvancedAutopilotMod implements ModInitializer {
         formatter.onInfrequentClientTick(pilot, goal);
 
         if (pilot != null && (player.isTouchingWater() || player.isInLava())) {
-            disengageAutopilot(
-                    client,
-                    player,
-                    new TranslatableText("text.advancedautopilot.disengagedAutopilot.touchedLiquid")
-                            .formatted(FAILURE));
+            Text disengageMessage = new TranslatableText("text.advancedautopilot.disengagedAutopilot.touchedLiquid")
+                    .formatted(FAILURE);
+            disengageAutopilot(client, player, disengageMessage);
         }
 
         if (pilot != null && pilot.onInfrequentClientTick(client, player, goal) == Pilot.TickResult.YIELD) {
@@ -190,32 +188,36 @@ public class AdvancedAutopilotMod implements ModInitializer {
         player.sendMessage(
                 new TranslatableText("text.advancedautopilot.performingEmergencyLanding").formatted(SUCCESS),
                 true);
-        pilot = new LandingPilot(monitor);
+        pilot = new LandingPilot(monitor, "performing emergency landing");
     }
 
     private void handlePilotYield(PlayerEntity player) {
         Config config = ConfigManager.getCurrentConfig();
 
-        if (pilot != null) {
-            pilot.cleanup(client, player);
-        }
-
         if (player.isFallFlying()) {
+            if (pilot != null) {
+                pilot.cleanup(client, player);
+            }
+
             double height = monitor.getHeight();
+            int timeInUnloadedChunks = monitor.getTimeInUnloadedChunks();
             if (goal != null && monitor.getHorizontalDistanceToGoal() < 20) {
-                pilot = new LandingPilot(monitor);
+                pilot = new LandingPilot(monitor, "player is near goal");
+            } else if (config.allowUnloadedChunks && timeInUnloadedChunks > config.maxTimeInUnloadedChunks) {
+                pilot = new LandingPilot(monitor, "maximum time in unloaded chunks has elapsed");
+            } else if (!config.allowUnloadedChunks && timeInUnloadedChunks > 0) {
+                pilot = new LandingPilot(monitor, "player is in unloaded chunk");
             } else if (height >= config.ascentHeight) {
-                pilot = new GlidingPilot(monitor);
+                pilot = new GlidingPilot(monitor, "player is above ascent height");
             } else if (PilotHelper.isHoldingFireworkRocket(player)) {
-                pilot = new AscendingPilot(monitor);
+                pilot = new AscendingPilot(monitor, "player is holding rockets");
             } else {
-                pilot = new LandingPilot(monitor);
+                pilot = new LandingPilot(monitor, "no other condition was satisfied");
             }
         } else {
-            disengageAutopilot(
-                    client,
-                    player,
-                    new TranslatableText("text.advancedautopilot.disengagedAutopilot.notFlying").formatted(FAILURE));
+            Text disengageMessage = new TranslatableText("text.advancedautopilot.disengagedAutopilot.notFlying")
+                    .formatted(FAILURE);
+            disengageAutopilot(client, player, disengageMessage);
         }
     }
 
@@ -225,10 +227,9 @@ public class AdvancedAutopilotMod implements ModInitializer {
             if (pilot == null) {
                 engageAutopilot(player);
             } else {
-                disengageAutopilot(
-                        client,
-                        player,
-                        new TranslatableText("text.advancedautopilot.disengagedAutopilot").formatted(INFO));
+                Text disengageMessage = new TranslatableText("text.advancedautopilot.disengagedAutopilot")
+                        .formatted(INFO);
+                disengageAutopilot(client, player, disengageMessage);
             }
         } else {
             player.sendMessage(new TranslatableText("text.advancedautopilot.notFlying").formatted(FAILURE), true);
@@ -239,7 +240,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
         player.sendMessage(
                 new TranslatableText("text.advancedautopilot.engagedAutopilot").formatted(SUCCESS),
                 true);
-        pilot = new AscendingPilot(monitor);
+        pilot = new AscendingPilot(monitor, "player engaged autopilot");
         monitor.resetAggregateMetrics();
     }
 

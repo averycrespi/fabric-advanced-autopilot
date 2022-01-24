@@ -18,8 +18,8 @@ import net.minecraft.util.math.Vec3d;
  */
 public class AscendingPilot extends Pilot {
 
-    public AscendingPilot(FlightMonitor monitor) {
-        super(monitor);
+    public AscendingPilot(FlightMonitor monitor, String reason) {
+        super(monitor, reason);
     }
 
     @Override
@@ -61,6 +61,17 @@ public class AscendingPilot extends Pilot {
     }
 
     public TickResult onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
+        Config config = ConfigManager.getCurrentConfig();
+
+        int timeInUnloadedChunks = monitor.getTimeInUnloadedChunks();
+        if (config.allowUnloadedChunks && timeInUnloadedChunks > config.maxTimeInUnloadedChunks) {
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "maximum time in unloaded chunks has elapsed"));
+            return TickResult.YIELD;
+        } else if (!config.allowUnloadedChunks && timeInUnloadedChunks > 0) {
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is in unloaded chunk"));
+            return TickResult.YIELD;
+        }
+
         return TickResult.CONTINUE;
     }
 
