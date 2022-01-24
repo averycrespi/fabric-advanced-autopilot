@@ -31,7 +31,7 @@ public class Config {
     public static final double DEFAULT_LANDING_PITCH = 30d;
     public static final double DEFAULT_MAX_LANDING_SPEED = 5d;
     public static final boolean DEFAULT_RISKY_LANDING = false;
-    public static final double DEFAULT_MIN_RISKY_LANDING_HEIGHT = 100d;
+    public static final double DEFAULT_MIN_RISKY_LANDING_HEIGHT = 150d;
 
     public boolean swapElytra = DEFAULT_SWAP_ELYTRA;
     public int maxElytraSwapDurability = DEFAULT_MAX_ELYTRA_SWAP_DURABILITY;
