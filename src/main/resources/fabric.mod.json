@@ -11,7 +11,7 @@
     "sources": "https://github.com/averycrespi/fabric-advanced-autopilot"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/advancedautopilot/icon.png",
 
   "environment": "*",
