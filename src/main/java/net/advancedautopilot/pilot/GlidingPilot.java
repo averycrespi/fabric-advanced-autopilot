@@ -25,7 +25,7 @@ public class GlidingPilot extends Pilot {
 
     private PullDirection pullDirection = PullDirection.DOWN;
 
-    public GlidingPilot(FlightMonitor monitor, String reason) {
+    public GlidingPilot(FlightMonitor monitor, TransitionReason reason) {
         super(monitor, reason);
     }
 
@@ -51,7 +51,7 @@ public class GlidingPilot extends Pilot {
         Config config = ConfigManager.getCurrentConfig();
 
         if (!player.isFallFlying()) {
-            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is not flying"));
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, YieldReason.NOT_FLYING));
             return TickResult.YIELD;
         }
 
@@ -112,22 +112,22 @@ public class GlidingPilot extends Pilot {
         Config config = ConfigManager.getCurrentConfig();
 
         if (goal != null && monitor.getHorizontalDistanceToGoal() < 20) {
-            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is near goal"));
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, YieldReason.NEAR_GOAL));
             return TickResult.YIELD;
         }
 
         int timeInUnloadedChunks = monitor.getTimeInUnloadedChunks();
         if (config.allowUnloadedChunks && timeInUnloadedChunks > config.maxTimeInUnloadedChunks) {
-            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "maximum time in unloaded chunks has elapsed"));
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, YieldReason.MAX_TIME_IN_UNLOADED_CHUNKS_ELAPSED));
             return TickResult.YIELD;
         } else if (!config.allowUnloadedChunks && timeInUnloadedChunks > 0) {
-            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is in unloaded chunk"));
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, YieldReason.IN_UNLOADED_CHUNK));
             return TickResult.YIELD;
         }
 
         double height = monitor.getHeight();
         if (height < config.minHeightWhileGliding) {
-            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is too low"));
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, YieldReason.TOO_LOW));
             return TickResult.YIELD;
         }
 

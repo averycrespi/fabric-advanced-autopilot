@@ -27,6 +27,7 @@
   "option.advancedautopilot.minRiskyLandingHeight": "Minimum height to start or continue a risky landing (m)",
   "option.advancedautopilot.poweredFlight": "Use rockets while gliding to increase speed",
   "option.advancedautopilot.refillRockets": "Refill rockets from inventory into main hand",
+  "option.advancedautopilot.resumeFlightTowardsGoal": "Try to resume flight towards goal after error [experimental]",
   "option.advancedautopilot.riskyLanding": "Perform a risky landing by diving straight down while high enough",
   "option.advancedautopilot.showAnglesInHud": "Show pitch and yaw in the HUD",
   "option.advancedautopilot.showAverageSpeedInHud": "Show average speed in the HUD",
@@ -65,6 +66,7 @@
   "text.advancedautopilot.pullingUp": "Pulling up",
   "text.advancedautopilot.refillRockets": "Rocket refill : ",
   "text.advancedautopilot.refilledRockets": "Refilled rockets from inventory",
+  "text.advancedautopilot.resumeFlightTowardsGoal": "Flight resumption : ",
   "text.advancedautopilot.riskyLanding": "Risky landing : ",
   "text.advancedautopilot.setGoal": "Set goal to %s / %s",
   "text.advancedautopilot.speed": "Speed : %s m/s",
@@ -76,5 +78,6 @@
   "title.advancedautopilot": "Advanced Autopilot",
   "title.advancedautopilot.config": "Advanced Autopilot Settings",
 
-  "tooltip.advancedautopilot.emergencyLanding": "If elytra swap is enabled, this only activates when all elytra have low durability"
+  "tooltip.advancedautopilot.emergencyLanding": "If elytra swap is enabled, this only activates when all elytra have low durability",
+  "tooltip.advancedautopilot.resumeFlightTowardsGoal": "Warning: this could cause landing to fail!"
 }

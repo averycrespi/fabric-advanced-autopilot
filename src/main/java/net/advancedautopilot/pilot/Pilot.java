@@ -19,10 +19,41 @@ public abstract class Pilot {
         YIELD
     }
 
-    FlightMonitor monitor;
+    /**
+     * Reasons why a pilot was transitioned to.
+     */
+    public enum TransitionReason {
+        ABOVE_ASCENT_HEIGHT,
+        ENGAGED_AUTOPILOT,
+        HOLDING_ROCKETS,
+        IN_UNLOADED_CHUNK,
+        LAND_COMMAND_SENT,
+        NEAR_GOAL,
+        NOT_HOLDING_ROCKETS,
+        MAX_TIME_IN_UNLOADED_CHUNKS_ELAPSED,
+        PERFORMING_EMERGENCY_LANDING,
+    }
 
-    public Pilot(FlightMonitor monitor, String reason) {
+    /**
+     * Reasons why a pilot yielded.
+     */
+    public enum YieldReason {
+        ATTEMPTING_TO_RESUME_FLIGHT_TOWARDS_GOAL,
+        IN_UNLOADED_CHUNK,
+        MAX_TIME_IN_UNLOADED_CHUNKS_ELAPSED,
+        NEAR_GOAL,
+        NOT_FLYING,
+        OUT_OF_ROCKETS,
+        REACHED_ASCENT_HEIGHT,
+        TOO_LOW
+    }
+
+    FlightMonitor monitor;
+    TransitionReason reason;
+
+    public Pilot(FlightMonitor monitor, TransitionReason reason) {
         this.monitor = monitor;
+        this.reason = reason;
         AdvancedAutopilotMod.LOGGER.info(new TransitionedMessage(this, reason));
     }
 

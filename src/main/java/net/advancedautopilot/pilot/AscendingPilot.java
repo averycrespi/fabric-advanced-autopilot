@@ -18,7 +18,7 @@ import net.minecraft.util.math.Vec3d;
  */
 public class AscendingPilot extends Pilot {
 
-    public AscendingPilot(FlightMonitor monitor, String reason) {
+    public AscendingPilot(FlightMonitor monitor, TransitionReason reason) {
         super(monitor, reason);
     }
 
@@ -37,7 +37,7 @@ public class AscendingPilot extends Pilot {
         }
 
         if (monitor.getHeight() >= config.ascentHeight) {
-            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player reached ascent height"));
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, YieldReason.REACHED_ASCENT_HEIGHT));
             return TickResult.YIELD;
         }
 
@@ -53,7 +53,7 @@ public class AscendingPilot extends Pilot {
             // Wait for next tick before using rocket
             client.options.keyUse.setPressed(false);
         } else {
-            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player ran out of rockets"));
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, YieldReason.OUT_OF_ROCKETS));
             return TickResult.YIELD;
         }
 
@@ -65,10 +65,10 @@ public class AscendingPilot extends Pilot {
 
         int timeInUnloadedChunks = monitor.getTimeInUnloadedChunks();
         if (config.allowUnloadedChunks && timeInUnloadedChunks > config.maxTimeInUnloadedChunks) {
-            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "maximum time in unloaded chunks has elapsed"));
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, YieldReason.MAX_TIME_IN_UNLOADED_CHUNKS_ELAPSED));
             return TickResult.YIELD;
         } else if (!config.allowUnloadedChunks && timeInUnloadedChunks > 0) {
-            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is in unloaded chunk"));
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, YieldReason.IN_UNLOADED_CHUNK));
             return TickResult.YIELD;
         }
 

@@ -163,6 +163,14 @@ public final class ConfigManager {
                 .setMin(MIN_TIME)
                 .setSaveConsumer(newValue -> config.maxTimeInUnloadedChunks = newValue)
                 .build());
+
+        generalCategory.addEntry(entryBuilder
+                .startBooleanToggle(new TranslatableText("option.advancedautopilot.resumeFlightTowardsGoal"),
+                        config.resumeFlightTowardsGoal)
+                .setDefaultValue(Config.DEFAULT_RESUME_FLIGHT_TOWARDS_GOAL)
+                .setTooltip(new TranslatableText("tooltip.advancedautopilot.resumeFlightTowardsGoal"))
+                .setSaveConsumer(newValue -> config.resumeFlightTowardsGoal = newValue)
+                .build());
     }
 
     private static void addHudCategory(

@@ -19,6 +19,8 @@ public class Config {
     public static final boolean DEFAULT_ALLOW_UNLOADED_CHUNKS = false;
     public static final int DEFAULT_MAX_TIME_IN_UNLOADED_CHUNKS = 3;
 
+    public static final boolean DEFAULT_RESUME_FLIGHT_TOWARDS_GOAL = false;
+
     public static final boolean DEFAULT_SHOW_ANGLES_IN_HUD = false;
     public static final boolean DEFAULT_SHOW_AVERAGE_SPEED_IN_HUD = false;
     public static final boolean DEFAULT_SHOW_CONFIG_OPTIONS_IN_HUD = false;
@@ -54,6 +56,8 @@ public class Config {
 
     public boolean allowUnloadedChunks = DEFAULT_ALLOW_UNLOADED_CHUNKS;
     public int maxTimeInUnloadedChunks = DEFAULT_MAX_TIME_IN_UNLOADED_CHUNKS;
+
+    public boolean resumeFlightTowardsGoal = DEFAULT_RESUME_FLIGHT_TOWARDS_GOAL;
 
     // HUD
 

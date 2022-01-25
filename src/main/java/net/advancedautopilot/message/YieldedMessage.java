@@ -10,9 +10,9 @@ import net.advancedautopilot.pilot.Pilot;
 public class YieldedMessage implements Message {
 
     private Pilot pilot;
-    private String reason;
+    private Pilot.YieldReason reason;
 
-    public YieldedMessage(Pilot pilot, String reason) {
+    public YieldedMessage(Pilot pilot, Pilot.YieldReason reason) {
         this.pilot = pilot;
         this.reason = reason;
     }
@@ -28,7 +28,7 @@ public class YieldedMessage implements Message {
 
     @Override
     public String getFormat() {
-        return (pilot == null ? "" : pilot.getName().getString()) + " " + reason;
+        return (pilot == null ? "" : pilot.getName().getString()) + " " + reason.toString();
     }
 
     @Override

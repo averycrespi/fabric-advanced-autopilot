@@ -10,9 +10,9 @@ import net.advancedautopilot.pilot.Pilot;
 public class TransitionedMessage implements Message {
 
     private Pilot pilot;
-    private String reason;
+    private Pilot.TransitionReason reason;
 
-    public TransitionedMessage(Pilot pilot, String reason) {
+    public TransitionedMessage(Pilot pilot, Pilot.TransitionReason reason) {
         this.pilot = pilot;
         this.reason = reason;
     }
@@ -20,15 +20,15 @@ public class TransitionedMessage implements Message {
     @Override
     public String getFormattedMessage() {
         if (pilot == null) {
-            return String.format("Transitioned because %s", reason);
+            return String.format("Transitioned because %s", reason.toString());
         } else {
-            return String.format("Transitioned to %s because %s", pilot.getName().getString(), reason);
+            return String.format("Transitioned to %s because %s", pilot.getName().getString(), reason.toString());
         }
     }
 
     @Override
     public String getFormat() {
-        return (pilot == null ? "" : pilot.getName().getString()) + " " + reason;
+        return (pilot == null ? "" : pilot.getName().getString()) + " " + reason.toString();
     }
 
     @Override

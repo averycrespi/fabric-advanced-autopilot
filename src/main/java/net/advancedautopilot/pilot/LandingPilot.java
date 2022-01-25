@@ -17,7 +17,7 @@ import net.minecraft.util.math.Vec3d;
  */
 public class LandingPilot extends Pilot {
 
-    public LandingPilot(FlightMonitor monitor, String reason) {
+    public LandingPilot(FlightMonitor monitor, TransitionReason reason) {
         super(monitor, reason);
     }
 
@@ -30,7 +30,7 @@ public class LandingPilot extends Pilot {
     public TickResult onClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
 
         if (!player.isFallFlying()) {
-            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, "player is not flying"));
+            AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, YieldReason.NOT_FLYING));
             return TickResult.YIELD;
         }
 
@@ -52,6 +52,20 @@ public class LandingPilot extends Pilot {
         if (speed > config.maxLandingSpeed) {
             float oppositeYaw = (float) MathHelper.wrapDegrees(player.getYaw() + 180f);
             player.setYaw(oppositeYaw); // Turn around
+        }
+
+        // This should run after the pitch and yaw adjustments so that we will slow down
+        // if we are flying through unloaded chunnks
+        if (config.resumeFlightTowardsGoal && goal != null) {
+            switch (reason) {
+                case IN_UNLOADED_CHUNK:
+                case MAX_TIME_IN_UNLOADED_CHUNKS_ELAPSED:
+                    AdvancedAutopilotMod.LOGGER
+                            .info(new YieldedMessage(this, YieldReason.ATTEMPTING_TO_RESUME_FLIGHT_TOWARDS_GOAL));
+                    return TickResult.YIELD;
+                default:
+                    // Intentionally left empty
+            }
         }
 
         return TickResult.CONTINUE;

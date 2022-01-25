@@ -142,5 +142,7 @@ public class HudFormatter {
                 config.riskyLanding ? ENABLED : DISABLED));
         lines.add((Text) new TranslatableText("text.advancedautopilot.allowUnloadedChunks").append(
                 config.allowUnloadedChunks ? ENABLED : DISABLED));
+        lines.add((Text) new TranslatableText("text.advancedautopilot.resumeFlightTowardsGoal").append(
+                config.resumeFlightTowardsGoal ? ENABLED : DISABLED));
     }
 }

@@ -88,7 +88,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
         player.sendMessage(
                 new TranslatableText("text.advancedautopilot.performingAutomaticLanding").formatted(SUCCESS),
                 true);
-        pilot = new LandingPilot(monitor, "player sent land command");
+        pilot = new LandingPilot(monitor, Pilot.TransitionReason.LAND_COMMAND_SENT);
     }
 
     private void onClientTick() {
@@ -188,7 +188,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
         player.sendMessage(
                 new TranslatableText("text.advancedautopilot.performingEmergencyLanding").formatted(SUCCESS),
                 true);
-        pilot = new LandingPilot(monitor, "performing emergency landing");
+        pilot = new LandingPilot(monitor, Pilot.TransitionReason.PERFORMING_EMERGENCY_LANDING);
     }
 
     private void handlePilotYield(PlayerEntity player) {
@@ -202,17 +202,17 @@ public class AdvancedAutopilotMod implements ModInitializer {
             double height = monitor.getHeight();
             int timeInUnloadedChunks = monitor.getTimeInUnloadedChunks();
             if (goal != null && monitor.getHorizontalDistanceToGoal() < 20) {
-                pilot = new LandingPilot(monitor, "player is near goal");
+                pilot = new LandingPilot(monitor, Pilot.TransitionReason.NEAR_GOAL);
             } else if (config.allowUnloadedChunks && timeInUnloadedChunks > config.maxTimeInUnloadedChunks) {
-                pilot = new LandingPilot(monitor, "maximum time in unloaded chunks has elapsed");
+                pilot = new LandingPilot(monitor, Pilot.TransitionReason.MAX_TIME_IN_UNLOADED_CHUNKS_ELAPSED);
             } else if (!config.allowUnloadedChunks && timeInUnloadedChunks > 0) {
-                pilot = new LandingPilot(monitor, "player is in unloaded chunk");
+                pilot = new LandingPilot(monitor, Pilot.TransitionReason.IN_UNLOADED_CHUNK);
             } else if (height >= config.ascentHeight) {
-                pilot = new GlidingPilot(monitor, "player is above ascent height");
+                pilot = new GlidingPilot(monitor, Pilot.TransitionReason.ABOVE_ASCENT_HEIGHT);
             } else if (PilotHelper.isHoldingFireworkRocket(player)) {
-                pilot = new AscendingPilot(monitor, "player is holding rockets");
+                pilot = new AscendingPilot(monitor, Pilot.TransitionReason.HOLDING_ROCKETS);
             } else {
-                pilot = new LandingPilot(monitor, "no other condition was satisfied");
+                pilot = new LandingPilot(monitor, Pilot.TransitionReason.NOT_HOLDING_ROCKETS);
             }
         } else {
             Text disengageMessage = new TranslatableText("text.advancedautopilot.disengagedAutopilot.notFlying")
@@ -240,7 +240,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
         player.sendMessage(
                 new TranslatableText("text.advancedautopilot.engagedAutopilot").formatted(SUCCESS),
                 true);
-        pilot = new AscendingPilot(monitor, "player engaged autopilot");
+        pilot = new AscendingPilot(monitor, Pilot.TransitionReason.ENGAGED_AUTOPILOT);
         monitor.resetAggregateMetrics();
     }
 
