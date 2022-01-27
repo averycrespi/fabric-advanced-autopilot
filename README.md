@@ -11,6 +11,7 @@ This mod provides an advanced autopilot system for elytra flight. The autopilot 
 A few of the mod's (configurable) features:
 - **Elytra swap**: Swap out elytra when durability is low
 - **Emergency landing**: Perform emergency landing when elytra durability is low
+- **Flight resumption**: Try to resume flight towards goal after error [experimental]
 - **Goals**: Fly towards a goal that is set by the player
 - **HUD**: Show flight information in a HUD (heads-up display)
 - **Powered flight**: Use rockets while gliding to increase speed
