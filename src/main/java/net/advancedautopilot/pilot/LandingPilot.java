@@ -60,9 +60,11 @@ public class LandingPilot extends Pilot {
             switch (reason) {
                 case IN_UNLOADED_CHUNK:
                 case MAX_TIME_IN_UNLOADED_CHUNKS_ELAPSED:
-                    AdvancedAutopilotMod.LOGGER
-                            .info(new YieldedMessage(this, YieldReason.ATTEMPTING_TO_RESUME_FLIGHT_TOWARDS_GOAL));
-                    return TickResult.YIELD;
+                    if (monitor.getTimeInUnloadedChunks() == 0) {
+                        AdvancedAutopilotMod.LOGGER
+                                .info(new YieldedMessage(this, YieldReason.ATTEMPTING_TO_RESUME_FLIGHT_TOWARDS_GOAL));
+                        return TickResult.YIELD;
+                    }
                 default:
                     // Intentionally left empty
             }

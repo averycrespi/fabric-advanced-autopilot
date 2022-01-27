@@ -14,9 +14,8 @@ import net.minecraft.world.World;
  */
 public class FlightMonitor {
 
-    private static final int AVERAGE_SPEED_WINDOW_IN_SECONDS = 10;
     private static final int CLIENT_TICKS_PER_SECOND = 20;
-    private static final int MAX_PAST_VELOCITIES = AVERAGE_SPEED_WINDOW_IN_SECONDS * CLIENT_TICKS_PER_SECOND;
+    private static final int MAX_PAST_VELOCITIES = 30;
     private static final double UNKNOWN_HEIGHT = -1d;
     private static final double UNKNOWN_DISTANCE = 1e9d;
     private static final double UNKNOWN_ETA = 1e9d;
@@ -33,8 +32,6 @@ public class FlightMonitor {
     private double averageHorizontalSpeed = 0d;
     private double eta = UNKNOWN_ETA;
 
-    // We can't trust the server to tell us whether or not we're in an unloaded
-    // chunk, so we piggyback on updateHeight() to check for blocks beneath us
     private int timeInUnloadedChunks = 0;
 
     // The approximate pitch and yaw are tracked for the benefit of the HUD
@@ -44,21 +41,14 @@ public class FlightMonitor {
 
     public void onClientTick(MinecraftClient client, PlayerEntity player) {
         updateVelocity(player, CLIENT_TICKS_PER_SECOND);
-        updatePastVelocities();
     }
 
     public void onInfrequentClientTick(MinecraftClient client, PlayerEntity player, Vec3d goal) {
-        updateHeight(player);
+        updateHeightAndTimeInUnloadedChunks(player);
         updateHorizontalDistanceToGoal(player, goal);
+        updatePastVelocities();
         updateAverageSpeeds();
-
-        if (goal == null) {
-            eta = UNKNOWN_ETA;
-        } else if (averageHorizontalSpeed < 0.01) {
-            eta = UNKNOWN_ETA;
-        } else {
-            eta = horizontalDistanceToGoal / averageHorizontalSpeed;
-        }
+        updateEta(goal);
 
         approxPitch = MathHelper.wrapDegrees((float) player.getPitch());
         approxYaw = MathHelper.wrapDegrees((float) player.getYaw());
@@ -117,7 +107,7 @@ public class FlightMonitor {
         return approxYaw;
     }
 
-    private void updateHeight(PlayerEntity player) {
+    private void updateHeightAndTimeInUnloadedChunks(PlayerEntity player) {
         Config config = ConfigManager.getCurrentConfig();
 
         Vec3d playerPos = player.getPos();
@@ -137,11 +127,11 @@ public class FlightMonitor {
                 return;
             }
         }
+
         timeInUnloadedChunks += 1;
         if (!config.allowUnloadedChunks) {
             height = UNKNOWN_HEIGHT;
         }
-
     }
 
     private void updateVelocity(PlayerEntity player, double callsPerSecond) {
@@ -168,6 +158,16 @@ public class FlightMonitor {
                 .stream().mapToDouble(val -> val).average().orElse(0d);
         averageHorizontalSpeed = pastHorizontalSpeeds
                 .stream().mapToDouble(val -> val).average().orElse(0d);
+    }
+
+    private void updateEta(Vec3d goal) {
+        if (goal == null) {
+            eta = UNKNOWN_ETA;
+        } else if (averageHorizontalSpeed < 0.01) {
+            eta = UNKNOWN_ETA;
+        } else {
+            eta = horizontalDistanceToGoal / averageHorizontalSpeed;
+        }
     }
 
     private void updateHorizontalDistanceToGoal(PlayerEntity player, Vec3d goal) {
