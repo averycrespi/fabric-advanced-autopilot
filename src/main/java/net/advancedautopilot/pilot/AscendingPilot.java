@@ -9,7 +9,6 @@ import net.advancedautopilot.message.YieldedMessage;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Vec3d;
 
 /**
@@ -24,7 +23,7 @@ public class AscendingPilot extends Pilot {
 
     @Override
     public Text getName() {
-        return new TranslatableText("text.advancedautopilot.ascendingPilot");
+        return Text.translatable("text.advancedautopilot.ascendingPilot");
     }
 
     @Override
@@ -32,7 +31,7 @@ public class AscendingPilot extends Pilot {
         Config config = ConfigManager.getCurrentConfig();
 
         if (!player.isFallFlying()) {
-            client.options.keyJump.setPressed(!client.options.keyJump.isPressed());
+            client.options.jumpKey.setPressed(!client.options.jumpKey.isPressed());
             return TickResult.CONTINUE; // Wait for next tick before continuing
         }
 
@@ -45,13 +44,13 @@ public class AscendingPilot extends Pilot {
         if (PilotHelper.isHoldingFireworkRocket(player)) {
             if (velocity.getY() <= config.maxAscendingVerticalVelocity) {
                 player.setPitch(-90f); // Look upwards
-                client.options.keyUse.setPressed(true);
+                client.options.useKey.setPressed(true);
             } else {
-                client.options.keyUse.setPressed(false);
+                client.options.useKey.setPressed(false);
             }
         } else if (config.refillRockets && PilotHelper.swapFireworkRocketsIntoMainHand(client, player)) {
             // Wait for next tick before using rocket
-            client.options.keyUse.setPressed(false);
+            client.options.useKey.setPressed(false);
         } else {
             AdvancedAutopilotMod.LOGGER.info(new YieldedMessage(this, YieldReason.OUT_OF_ROCKETS));
             return TickResult.YIELD;
@@ -78,8 +77,8 @@ public class AscendingPilot extends Pilot {
     @Override
     public void cleanup(MinecraftClient client, PlayerEntity player) {
         super.cleanup(client, player);
-        client.options.keyUse.setPressed(false);
-        client.options.keyJump.setPressed(false);
+        client.options.useKey.setPressed(false);
+        client.options.jumpKey.setPressed(false);
         player.setPitch(0); // Look forwards
     }
 }

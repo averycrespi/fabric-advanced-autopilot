@@ -9,7 +9,6 @@ import net.advancedautopilot.message.YieldedMessage;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -31,18 +30,18 @@ public class GlidingPilot extends Pilot {
 
     @Override
     public Text getName() {
-        return new TranslatableText("text.advancedautopilot.glidingPilot");
+        return Text.translatable("text.advancedautopilot.glidingPilot");
     }
 
     @Override
     public Text getState() {
         switch (pullDirection) {
             case UP:
-                return new TranslatableText("text.advancedautopilot.pullingUp");
+                return Text.translatable("text.advancedautopilot.pullingUp");
             case DOWN:
-                return new TranslatableText("text.advancedautopilot.pullingDown");
+                return Text.translatable("text.advancedautopilot.pullingDown");
             default:
-                return new TranslatableText("text.advancedautopilot.noPilotState");
+                return Text.translatable("text.advancedautopilot.noPilotState");
         }
     }
 
@@ -96,12 +95,12 @@ public class GlidingPilot extends Pilot {
         if (config.poweredFlight) {
             if (PilotHelper.isHoldingFireworkRocket(player)) {
                 if (speed <= config.maxPoweredFlightSpeed) {
-                    client.options.keyUse.setPressed(true);
+                    client.options.useKey.setPressed(true);
                 } else {
-                    client.options.keyUse.setPressed(false);
+                    client.options.useKey.setPressed(false);
                 }
             } else {
-                client.options.keyUse.setPressed(false);
+                client.options.useKey.setPressed(false);
             }
         }
 
@@ -137,6 +136,6 @@ public class GlidingPilot extends Pilot {
     @Override
     public void cleanup(MinecraftClient client, PlayerEntity player) {
         super.cleanup(client, player);
-        client.options.keyUse.setPressed(false);
+        client.options.useKey.setPressed(false);
     }
 }

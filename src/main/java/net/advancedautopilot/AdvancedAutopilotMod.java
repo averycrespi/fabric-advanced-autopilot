@@ -12,7 +12,6 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vec3d;
 
@@ -86,7 +85,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
         }
 
         player.sendMessage(
-                new TranslatableText("text.advancedautopilot.performingAutomaticLanding").formatted(SUCCESS),
+                Text.translatable("text.advancedautopilot.performingAutomaticLanding").formatted(SUCCESS),
                 true);
         pilot = new LandingPilot(monitor, Pilot.TransitionReason.LAND_COMMAND_SENT);
     }
@@ -127,7 +126,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
         formatter.onInfrequentClientTick(pilot, goal);
 
         if (pilot != null && (player.isTouchingWater() || player.isInLava())) {
-            Text disengageMessage = new TranslatableText("text.advancedautopilot.disengagedAutopilot.touchedLiquid")
+            Text disengageMessage = Text.translatable("text.advancedautopilot.disengagedAutopilot.touchedLiquid")
                     .formatted(FAILURE);
             disengageAutopilot(client, player, disengageMessage);
         }
@@ -186,7 +185,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
         }
 
         player.sendMessage(
-                new TranslatableText("text.advancedautopilot.performingEmergencyLanding").formatted(SUCCESS),
+                Text.translatable("text.advancedautopilot.performingEmergencyLanding").formatted(SUCCESS),
                 true);
         pilot = new LandingPilot(monitor, Pilot.TransitionReason.PERFORMING_EMERGENCY_LANDING);
     }
@@ -215,7 +214,7 @@ public class AdvancedAutopilotMod implements ModInitializer {
                 pilot = new LandingPilot(monitor, Pilot.TransitionReason.NOT_HOLDING_ROCKETS);
             }
         } else {
-            Text disengageMessage = new TranslatableText("text.advancedautopilot.disengagedAutopilot.notFlying")
+            Text disengageMessage = Text.translatable("text.advancedautopilot.disengagedAutopilot.notFlying")
                     .formatted(FAILURE);
             disengageAutopilot(client, player, disengageMessage);
         }
@@ -227,18 +226,18 @@ public class AdvancedAutopilotMod implements ModInitializer {
             if (pilot == null) {
                 engageAutopilot(player);
             } else {
-                Text disengageMessage = new TranslatableText("text.advancedautopilot.disengagedAutopilot")
+                Text disengageMessage = Text.translatable("text.advancedautopilot.disengagedAutopilot")
                         .formatted(INFO);
                 disengageAutopilot(client, player, disengageMessage);
             }
         } else {
-            player.sendMessage(new TranslatableText("text.advancedautopilot.notFlying").formatted(FAILURE), true);
+            player.sendMessage(Text.translatable("text.advancedautopilot.notFlying").formatted(FAILURE), true);
         }
     }
 
     private void engageAutopilot(PlayerEntity player) {
         player.sendMessage(
-                new TranslatableText("text.advancedautopilot.engagedAutopilot").formatted(SUCCESS),
+                Text.translatable("text.advancedautopilot.engagedAutopilot").formatted(SUCCESS),
                 true);
         pilot = new AscendingPilot(monitor, Pilot.TransitionReason.ENGAGED_AUTOPILOT);
         monitor.resetAggregateMetrics();

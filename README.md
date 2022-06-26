@@ -68,7 +68,7 @@ else:
 
 ## Requirements
 
-- Minecraft 1.18.1
+- Minecraft 1.19
 - [Fabric Loader](https://fabricmc.net/use/installer)
 - [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 - [Cloth Config API](https://www.curseforge.com/minecraft/mc-mods/cloth-config)

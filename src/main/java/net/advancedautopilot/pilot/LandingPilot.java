@@ -8,7 +8,6 @@ import net.advancedautopilot.message.YieldedMessage;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -23,7 +22,7 @@ public class LandingPilot extends Pilot {
 
     @Override
     public Text getName() {
-        return new TranslatableText("text.advancedautopilot.landingPilot");
+        return Text.translatable("text.advancedautopilot.landingPilot");
     }
 
     @Override

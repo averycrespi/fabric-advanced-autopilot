@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -62,7 +62,7 @@ public class PilotHelper {
                     SlotActionType.SWAP,
                     player);
             player.sendMessage(
-                    new TranslatableText("text.advancedautopilot.refilledRockets").formatted(AdvancedAutopilotMod.INFO),
+                    Text.translatable("text.advancedautopilot.refilledRockets").formatted(AdvancedAutopilotMod.INFO),
                     true);
             return true;
         } else {
@@ -106,7 +106,7 @@ public class PilotHelper {
                     player);
             player.playSound(SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA, 1.0F, 1.0F);
             player.sendMessage(
-                    new TranslatableText("text.advancedautopilot.swappedElytra").formatted(AdvancedAutopilotMod.INFO),
+                    Text.translatable("text.advancedautopilot.swappedElytra").formatted(AdvancedAutopilotMod.INFO),
                     true);
             return true;
         } else {
